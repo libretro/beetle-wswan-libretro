@@ -277,6 +277,8 @@ static void CloseGame(void)
 {
  WSwan_MemoryKill(); // saves sram/eeprom
 
+ WSwan_SoundKill();
+
  if(wsCartROM)
  {
   free(wsCartROM);
