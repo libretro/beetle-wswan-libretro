@@ -140,26 +140,6 @@ HW_SOUND_SOURCES := $(MEDNAFEN_DIR)/hw_sound/gb_apu/Gb_Apu.cpp \
 						$(MEDNAFEN_DIR)/hw_sound/gb_apu/Gb_Oscs.cpp
 EXTRA_CORE_INCDIR = $(MEDNAFEN_DIR)/hw_sound/ $(MEDNAFEN_DIR)/include/blip
 TARGET_NAME := mednafen_$(core)_libretro
-else ifeq ($(core), vb)
-   core = vb
-   NEED_BPP = 32
-	WANT_NEW_API = 1
-   NEED_BLIP = 1
-	NEED_STEREO_SOUND = 1
-   CORE_DEFINE := -DWANT_VB_EMU
-   CORE_DIR := $(MEDNAFEN_DIR)/vb
-
-CORE_SOURCES := $(CORE_DIR)/input.cpp \
-	$(CORE_DIR)/timer.cpp \
-	$(CORE_DIR)/vb.cpp \
-	$(CORE_DIR)/vip.cpp \
-	$(CORE_DIR)/vsu.cpp
-
-LIBRETRO_SOURCES_C := $(MEDNAFEN_DIR)/hw_cpu/v810/fpu-new/softfloat.c
-HW_CPU_SOURCES := $(MEDNAFEN_DIR)/hw_cpu/v810/v810_cpu.cpp \
-						$(MEDNAFEN_DIR)/hw_cpu/v810/v810_cpuD.cpp
-EXTRA_CORE_INCDIR = $(MEDNAFEN_DIR)/hw_sound/ $(MEDNAFEN_DIR)/include/blip
-TARGET_NAME := mednafen_$(core)_libretro
 else ifeq ($(core), pcfx)
    core = pcfx
    NEED_BPP = 32

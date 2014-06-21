@@ -73,9 +73,6 @@ extern MDFNGI EmulatedPCFX;
 #elif defined WANT_NGP_EMU
 extern MDFNGI EmulatedNGP;
 #define MDFNGI_CORE &EmulatedNGP
-#elif defined WANT_VB_EMU
-extern MDFNGI EmulatedVB;
-#define MDFNGI_CORE &EmulatedVB
 #elif defined WANT_WSWAN_EMU
 extern MDFNGI EmulatedWSwan;
 #define MDFNGI_CORE &EmulatedWSwan

@@ -25,10 +25,6 @@
 uint32_t setting_ngp_language = 0;
 #elif defined(WANT_GBA_EMU)
 uint32_t setting_gba_hle = 1;
-#elif defined(WANT_VB_EMU)
-uint32_t setting_vb_lcolor=0xFF0000;
-uint32_t setting_vb_rcolor=0x000000;
-uint32_t setting_vb_anaglyph_preset=0;
 #endif
 
 bool MDFN_SaveSettings(const char *path)
@@ -38,15 +34,7 @@ bool MDFN_SaveSettings(const char *path)
 
 uint64 MDFN_GetSettingUI(const char *name)
 {
-#if defined(WANT_VB_EMU)
-   if (!strcmp("vb.anaglyph.lcolor", name))
-   {
-      fprintf(stderr, "Setting UI: %s=%x\n", name, setting_vb_lcolor);
-      return setting_vb_lcolor;
-   }
-   if (!strcmp("vb.anaglyph.rcolor", name))
-      return setting_vb_rcolor;
-#elif defined(WANT_PCFX_EMU)
+#if defined(WANT_PCFX_EMU)
    if (!strcmp("pcfx.cdspeed", name))
       return 2;
    if (!strcmp("pcfx.slend", name))
@@ -78,10 +66,7 @@ uint64 MDFN_GetSettingUI(const char *name)
 
 int64 MDFN_GetSettingI(const char *name)
 {
-#if defined(WANT_VB_EMU)
-   if (!strcmp("vb.anaglyph.preset", name))
-      return setting_vb_anaglyph_preset;
-#elif defined(WANT_PCFX_EMU)
+#if defined(WANT_PCFX_EMU)
    if (!strcmp("pcfx.cpu_emulation", name))
       return 2;
 #elif defined(WANT_WSWAN_EMU)
@@ -117,12 +102,7 @@ bool MDFN_GetSettingB(const char *name)
    /* LIBRETRO */
    if (!strcmp("libretro.cd_load_into_ram", name))
       return 0;
-#if defined(WANT_VB_EMU)
-   if (!strcmp("vb.instant_display_hack", name))
-      return 1;
-   if (!strcmp("vb.allow_draw_skip", name))
-      return 1;
-#elif defined(WANT_PCFX_EMU)
+#if defined(WANT_PCFX_EMU)
    if (!strcmp("pcfx.disable_softreset", name))
       return 0; /* TODO - make configurable */
    if (!strcmp("pcfx.disable_softreset", name))

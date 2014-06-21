@@ -129,20 +129,6 @@ static bool is_pal = false;
 #define FB_WIDTH 512
 #define FB_HEIGHT 512
 
-#elif defined(WANT_VB_EMU)
-#define MEDNAFEN_CORE_NAME_MODULE "vb"
-#define MEDNAFEN_CORE_NAME "Mednafen VB"
-#define MEDNAFEN_CORE_VERSION "v0.9.36"
-#define MEDNAFEN_CORE_EXTENSIONS "vb|vboy|bin"
-#define MEDNAFEN_CORE_TIMING_FPS 50.27
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W (game->nominal_width)
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H (game->nominal_height)
-#define MEDNAFEN_CORE_GEOMETRY_MAX_W 384
-#define MEDNAFEN_CORE_GEOMETRY_MAX_H 224
-#define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (4.0 / 3.0)
-#define FB_WIDTH 384
-#define FB_HEIGHT 224
-
 #elif defined(WANT_PCFX_EMU)
 #define MEDNAFEN_CORE_NAME_MODULE "pcfx"
 #define MEDNAFEN_CORE_NAME "Mednafen PC-FX"
@@ -285,47 +271,6 @@ static void check_variables(void)
       else if (strcmp(var.value, "disabled") == 0)
          setting_gba_hle = 0;
    }
-#elif defined (WANT_VB_EMU)   
-    var.key = "vb_color_mode";
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (strcmp(var.value, "black & red") == 0)
-	  {
-         setting_vb_lcolor = 0xFF0000;
-		 setting_vb_rcolor = 0x000000;
-	  }
-      else if (strcmp(var.value, "black & white") == 0)
-	  {
-         setting_vb_lcolor = 0xFFFFFF;      
-		 setting_vb_rcolor = 0x000000;
-	  }
-      log_cb(RETRO_LOG_INFO, "[%s]: Palette changed: %s .\n", mednafen_core_str, var.value);  
-   }   
-   
-    var.key = "vb_anaglyph_preset";
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-   
-   
-      if (strcmp(var.value, "disabled") == 0)
-		setting_vb_anaglyph_preset = 0; 
-      else if (strcmp(var.value, "red & blue") == 0)
-         setting_vb_anaglyph_preset = 1;      
-      else if (strcmp(var.value, "red & cyan") == 0)
-         setting_vb_anaglyph_preset = 2;      
-	  else if (strcmp(var.value, "red & electric cyan") == 0)	 
-         setting_vb_anaglyph_preset = 3;      
-      else if (strcmp(var.value, "red & green") == 0)
-         setting_vb_anaglyph_preset = 4;      
-      else if (strcmp(var.value, "green & magenta") == 0)
-         setting_vb_anaglyph_preset = 5;      
-      else if (strcmp(var.value, "yellow & blue") == 0)
-         setting_vb_anaglyph_preset = 6;      
-
-      log_cb(RETRO_LOG_INFO, "[%s]: Palette changed: %s .\n", mednafen_core_str, var.value);  
-   }      
 #endif
 }
 
@@ -358,12 +303,6 @@ static uint16_t input_buf;
 #define MAX_PLAYERS 5
 #define MAX_BUTTONS 14
 static uint8_t input_buf[MAX_PLAYERS][2];
-
-#elif defined(WANT_VB_EMU)
-
-#define MAX_PLAYERS 1
-#define MAX_BUTTONS 14
-static uint16_t input_buf[MAX_PLAYERS];
 
 #elif defined(WANT_PCFX_EMU)
 
@@ -399,9 +338,6 @@ static void hookup_ports(bool force)
    // Possible endian bug ...
    for (unsigned i = 0; i < MAX_PLAYERS; i++)
       currgame->SetInput(i, "gamepad", &input_buf[i][0]);
-#elif defined(WANT_VB_EMU)
-   // Possible endian bug ...
-   currgame->SetInput(0, "gamepad", &input_buf[0]);
 #else
    // Possible endian bug ...
    currgame->SetInput(0, "gamepad", &input_buf[0]);
@@ -431,10 +367,6 @@ bool retro_load_game(const struct retro_game_info *info)
    set_basename(info->path);
 
 #if defined(WANT_GBA_EMU)
-   check_variables();
-#endif
-
-#if defined(WANT_VB_EMU)
    check_variables();
 #endif
 
@@ -616,41 +548,6 @@ static void update_input(void)
 #else
       input_buf[j][0] = (input_state >> 0) & 0xff;
       input_buf[j][1] = (input_state >> 8) & 0xff;
-#endif
-   }
-
-#elif defined(WANT_VB_EMU)
-   input_buf[0] = 0;
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_B,
-      RETRO_DEVICE_ID_JOYPAD_R,
-      RETRO_DEVICE_ID_JOYPAD_L,
-      RETRO_DEVICE_ID_JOYPAD_L2, //right d-pad UP
-      RETRO_DEVICE_ID_JOYPAD_R3, //right d-pad RIGHT
-      RETRO_DEVICE_ID_JOYPAD_RIGHT, //left d-pad
-      RETRO_DEVICE_ID_JOYPAD_LEFT, //left d-pad
-      RETRO_DEVICE_ID_JOYPAD_DOWN, //left d-pad
-      RETRO_DEVICE_ID_JOYPAD_UP, //left d-pad
-      RETRO_DEVICE_ID_JOYPAD_START,
-      RETRO_DEVICE_ID_JOYPAD_SELECT,
-      RETRO_DEVICE_ID_JOYPAD_R2, //right d-pad LEFT
-      RETRO_DEVICE_ID_JOYPAD_L3, //right d-pad DOWN
-   };
-
-   for (unsigned j = 0; j < MAX_PLAYERS; j++)
-   {
-      for (unsigned i = 0; i < MAX_BUTTONS; i++)
-         input_buf[j] |= map[i] != -1u &&
-            input_state_cb(j, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
-
-#ifdef MSB_FIRST
-      union {
-         uint8_t b[2];
-         uint16_t s;
-      } u;
-      u.s = input_buf[j];
-      input_buf[j] = u.b[0] | u.b[1] << 8;
 #endif
    }
 
@@ -892,14 +789,6 @@ void retro_set_environment(retro_environment_t cb)
       { NULL, NULL },
    };
    cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);
-#elif defined(WANT_VB_EMU)
-    static const struct retro_variable vars[] = {
-	  { "vb_anaglyph_preset", "Anaglyph preset (restart); disabled|red & blue|red & cyan|red & electric cyan|red & green|green & magenta|yellow & blue" },
-      { "vb_color_mode", "Palette (restart); black & red|black & white" },
-      { NULL, NULL },
-   };
-   cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);
-   
 #endif
 }
 
