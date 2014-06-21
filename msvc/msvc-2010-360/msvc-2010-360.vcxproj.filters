@@ -95,9 +95,6 @@
     <ClCompile Include="..\..\..\mednafen\trio\trio.c">
       <Filter>Source Files\mednafen\trio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\mednafen\cputest\cputest.c">
-      <Filter>Source Files\mednafen\cpu_test</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\mednafen\wswan\eeprom.cpp">
       <Filter>Source Files\mednafen\wswan</Filter>
     </ClCompile>

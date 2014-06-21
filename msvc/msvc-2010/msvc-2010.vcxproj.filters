@@ -24,9 +24,6 @@
     <Filter Include="Source Files\mednafen\wswan">
       <UniqueIdentifier>{67b0fb70-90af-4316-b8fb-60ec05d88029}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\mednafen\cputest">
-      <UniqueIdentifier>{371e39e8-7bd6-4cc1-897d-651db028a4b1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\mednafen\Stream.cpp">
@@ -121,9 +118,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\mednafen\wswan\wswan-memory.cpp">
       <Filter>Source Files\mednafen\wswan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\mednafen\cputest\cputest.c">
-      <Filter>Source Files\mednafen\cputest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
