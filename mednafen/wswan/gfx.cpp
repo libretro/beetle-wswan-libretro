@@ -275,7 +275,7 @@ void WSwan_SetPixelFormat(const MDFN_PixelFormat &format)
     neo_g = g * 17;
     neo_b = b * 17;
 
-    ColorMap[(r << 8) | (g << 4) | (b << 0)] = format.MakeColor(neo_r, neo_g, neo_b); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
+    ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR(neo_r, neo_g, neo_b, 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
    }
 
  for(int i = 0; i < 16; i++)
@@ -286,7 +286,7 @@ void WSwan_SetPixelFormat(const MDFN_PixelFormat &format)
   neo_g = (i) * 17;
   neo_b = (i) * 17;
 
-  ColorMapG[i] = format.MakeColor(neo_r, neo_g, neo_b); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
+  ColorMapG[i] = MAKECOLOR(neo_r, neo_g, neo_b, 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
  }
 }
 
