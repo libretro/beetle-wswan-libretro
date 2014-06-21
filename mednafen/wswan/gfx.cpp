@@ -33,8 +33,8 @@ static uint32 wsMonoPal[16][4];
 static uint32 wsColors[8];
 static uint32 wsCols[16][16];
 
-static uint32 ColorMapG[16];
-static uint32 ColorMap[16*16*16];
+static uint16 ColorMapG[16];
+static uint16 ColorMap[16*16*16];
 static uint32 LayerEnabled;
 
 static uint8 wsLine;                 /*current scanline*/
@@ -193,7 +193,7 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
 	if(wsLine < 144)
 	{
 	 if(!skip)
-          wsScanline(surface->pixels + wsLine * surface->pitch32);
+          wsScanline(surface->pixels16 + wsLine * surface->pitchinpix);
 	}
 
 	WSwan_CheckSoundDMA();
@@ -290,7 +290,7 @@ void WSwan_SetPixelFormat(const MDFN_PixelFormat &format)
  }
 }
 
-void wsScanline(uint32 *target)
+void wsScanline(uint16 *target)
 {
 	uint32		start_tile_n,map_a,startindex,adrbuf,b1,b2,j,t,l;
 	char		ys2;

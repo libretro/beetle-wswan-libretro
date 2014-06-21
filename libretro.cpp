@@ -178,16 +178,6 @@ bool retro_load_game(const struct retro_game_info *info)
    if (failed_init)
       return false;
 
-#ifdef WANT_32BPP
-   enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_XRGB8888;
-   if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
-   {
-      if (log_cb)
-         log_cb(RETRO_LOG_ERROR, "Pixel format XRGB8888 not supported by platform, cannot use %s.\n", MEDNAFEN_CORE_NAME);
-      return false;
-   }
-#endif
-
    overscan = false;
    environ_cb(RETRO_ENVIRONMENT_GET_OVERSCAN, &overscan);
 
@@ -306,13 +296,8 @@ void retro_run()
    unsigned width  = spec.DisplayRect.w;
    unsigned height = spec.DisplayRect.h;
 
-#if defined(WANT_32BPP)
-   const uint32_t *pix = surf->pixels;
-   video_cb(pix, width, height, FB_WIDTH << 2);
-#elif defined(WANT_16BPP)
    const uint16_t *pix = surf->pixels16;
    video_cb(pix, width, height, FB_WIDTH << 1);
-#endif
 
    video_frames++;
    audio_frames += spec.SoundBufSize;

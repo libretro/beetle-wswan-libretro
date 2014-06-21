@@ -32,7 +32,7 @@ LOCAL_MODULE    := libretro
 CACHE_CD = 0
 
 core = wswan
-NEED_BPP = 32
+NEED_BPP = 16
 WANT_NEW_API = 1
 NEED_BLIP = 1
 NEED_STEREO_SOUND = 1

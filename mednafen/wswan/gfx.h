@@ -20,7 +20,7 @@ void wsMakeTiles(void);
 void wsGetTile(uint32,uint32,int,int,int);
 void wsSetVideo(int, bool);
 
-void wsScanline(uint32 *target);
+void wsScanline(uint16 *target);
 
 extern uint32		dx_r,dx_g,dx_b,dx_sr,dx_sg,dx_sb;
 extern uint32		dx_bits,dx_pitch,cmov,dx_linewidth_blit,dx_buffer_line;

@@ -26,7 +26,7 @@ endif
 CACHE_CD = 0
 
 core = wswan
-NEED_BPP = 32
+NEED_BPP = 16
 NEED_BLIP = 1
 NEED_STEREO_SOUND = 1
 WANT_NEW_API = 1
@@ -306,10 +306,6 @@ endif
 
 ifeq ($(FRONTEND_SUPPORTS_RGB565), 1)
 FLAGS += -DFRONTEND_SUPPORTS_RGB565
-endif
-
-ifeq ($(NEED_BPP), 32)
-FLAGS += -DWANT_32BPP
 endif
 
 ifeq ($(WANT_NEW_API), 1)
