@@ -21,9 +21,7 @@
 #include <string>
 #include "settings.h"
 
-#if defined(WANT_NGP_EMU)
-uint32_t setting_ngp_language = 0;
-#elif defined(WANT_GBA_EMU)
+#if defined(WANT_GBA_EMU)
 uint32_t setting_gba_hle = 1;
 #endif
 
@@ -128,9 +126,6 @@ bool MDFN_GetSettingB(const char *name)
       return 0;
    if (!strcmp("snes.input.port2.multitap", name))
       return 0;
-#elif defined(WANT_NGP_EMU)
-   if (!strcmp("ngp.language", name))
-      return setting_ngp_language;
 #elif defined(WANT_WSWAN_EMU)
    if (!strcmp("wswan.forcemono", name))
       return 0;

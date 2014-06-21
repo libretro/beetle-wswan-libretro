@@ -87,20 +87,6 @@ static bool is_pal = false;
 #define FB_WIDTH 224
 #define FB_HEIGHT 144
 
-#elif defined(WANT_NGP_EMU)
-#define MEDNAFEN_CORE_NAME_MODULE "ngp"
-#define MEDNAFEN_CORE_NAME "Mednafen Neopop"
-#define MEDNAFEN_CORE_VERSION "v0.9.33.3"
-#define MEDNAFEN_CORE_EXTENSIONS "ngp|ngc"
-#define MEDNAFEN_CORE_TIMING_FPS 60.25
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W (game->nominal_width)
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H (game->nominal_height)
-#define MEDNAFEN_CORE_GEOMETRY_MAX_W 160
-#define MEDNAFEN_CORE_GEOMETRY_MAX_H 152
-#define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (4.0 / 3.0)
-#define FB_WIDTH 160
-#define FB_HEIGHT 152
-
 #elif defined(WANT_GBA_EMU)
 #define MEDNAFEN_CORE_NAME_MODULE "gba"
 #define MEDNAFEN_CORE_NAME "Mednafen VBA-M"
@@ -250,18 +236,7 @@ static void check_variables(void)
 {
    struct retro_variable var = {0};
 
-#if defined(WANT_NGP_EMU)
-   var.key = "ngp_language";
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (strcmp(var.value, "japanese") == 0)
-         setting_ngp_language = 0;
-      else if (strcmp(var.value, "english") == 0)
-         setting_ngp_language = 1;    
-      retro_reset();
-   }
-#elif defined (WANT_GBA_EMU)
+#if defined (WANT_GBA_EMU)
    var.key = "gba_hle";
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
@@ -285,12 +260,6 @@ static uint8_t input_buf[MAX_PLAYERS][2] = {0};
 #define MAX_PLAYERS 1
 #define MAX_BUTTONS 11
 static uint16_t input_buf;
-
-#elif defined(WANT_NGP_EMU)
-
-#define MAX_PLAYERS 1
-#define MAX_BUTTONS 7
-static uint8_t input_buf;
 
 #elif defined(WANT_GBA_EMU)
 
@@ -328,8 +297,6 @@ static void hookup_ports(bool force)
 #if defined(WANT_LYNX_EMU)
    currgame->SetInput(0, "gamepad", &input_buf);
 #elif defined(WANT_WSWAN_EMU)
-   currgame->SetInput(0, "gamepad", &input_buf);
-#elif defined(WANT_NGP_EMU)
    currgame->SetInput(0, "gamepad", &input_buf);
 #elif defined(WANT_GBA_EMU)
    // Possible endian bug ...
@@ -446,32 +413,6 @@ static void update_input(void)
       RETRO_DEVICE_ID_JOYPAD_START,
       RETRO_DEVICE_ID_JOYPAD_A,
       RETRO_DEVICE_ID_JOYPAD_B,
-   };
-
-   for (unsigned i = 0; i < MAX_BUTTONS; i++)
-      input_buf |= map[i] != -1u &&
-         input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
-
-#ifdef MSB_FIRST
-   union {
-      uint8_t b[2];
-      uint16_t s;
-   } u;
-   u.s = input_buf;
-   input_buf = u.b[0] | u.b[1] << 8;
-#endif
-
-#elif defined(WANT_NGP_EMU)
-   input_buf = 0;
-
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_UP, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_DOWN, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_LEFT, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_RIGHT, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_B,
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_START,
    };
 
    for (unsigned i = 0; i < MAX_BUTTONS; i++)
@@ -780,12 +721,6 @@ void retro_set_environment(retro_environment_t cb)
 #elif defined(WANT_GBA_EMU)
    static const struct retro_variable vars[] = {
       { "gba_hle", "HLE bios emulation; enabled|disabled" },
-      { NULL, NULL },
-   };
-   cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);
-#elif defined(WANT_NGP_EMU)
-   static const struct retro_variable vars[] = {
-      { "ngp_language", "Language; japanese|english" },
       { NULL, NULL },
    };
    cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);

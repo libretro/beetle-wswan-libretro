@@ -3,16 +3,7 @@
 
 #include <string>
 
-#if defined(WANT_PCE_FAST_EMU)
-extern int setting_pce_fast_nospritelimit;
-extern int setting_pce_fast_cddavolume;
-extern int setting_pce_fast_adpcmvolume;
-extern int setting_pce_fast_cdpsgvolume;
-extern uint32_t setting_pce_fast_cdspeed;
-extern uint32_t setting_pce_keepaspect;
-#elif defined(WANT_NGP_EMU)
-extern uint32_t setting_ngp_language;
-#elif defined(WANT_GBA_EMU)
+#if defined(WANT_GBA_EMU)
 extern uint32_t setting_gba_hle;
 #endif
 
