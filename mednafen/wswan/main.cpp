@@ -254,10 +254,6 @@ static int Load(const char *name, MDFNFILE *fp)
 
  MDFNMP_Init(16384, (1 << 20) / 1024);
 
- #ifdef WANT_DEBUGGER
- WSwanDBG_Init();
- #endif
-
  v30mz_init(WSwan_readmem20, WSwan_writemem20, WSwan_readport, WSwan_writeport);
  WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); // EEPROM and SRAM are loaded in this func.
  WSwan_GfxInit();
@@ -420,32 +416,6 @@ static InputInfoStruct InputInfo =
  PortInfo
 };
 
-
-#ifdef WANT_DEBUGGER
-static DebuggerInfoStruct DBGInfo =
-{
- "shift_jis",
- 7 + 1 + 8,	// Fixme, probably not right...  maximum number of prefixes + 1 for opcode + 4 for operand(go with 8 to be safe)
- 1,             // Instruction alignment(bytes)
- 16,
- 20,
- 0x0000,
- ~0U,
-
- WSwanDBG_MemPeek,
- WSwanDBG_Disassemble,
- WSwanDBG_ToggleSyntax,
- WSwanDBG_IRQ,
- NULL, //NESDBG_GetVector,
- WSwanDBG_FlushBreakPoints,
- WSwanDBG_AddBreakPoint,
- WSwanDBG_SetCPUCallback,
- WSwanDBG_EnableBranchTrace,
- WSwanDBG_GetBranchTrace,
- WSwan_GfxSetGraphicsDecode,
-};
-#endif
-
 static const FileExtensionSpecStruct KnownExtensions[] =
 {
  { ".ws", gettext_noop("WonderSwan ROM Image") },
@@ -464,11 +434,7 @@ MDFNGI EmulatedWSwan =
  "WonderSwan",
  KnownExtensions,
  MODPRIO_INTERNAL_HIGH,
- #ifdef WANT_DEBUGGER
- &DBGInfo,
- #else
  NULL,
- #endif
  &InputInfo,
  Load,
  TestMagic,
