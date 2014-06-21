@@ -3,9 +3,6 @@
 #include "mednafen/git.h"
 #include "mednafen/general.h"
 #include "mednafen/md5.h"
-#ifdef NEED_DEINTERLACER
-#include	"mednafen/video/Deinterlacer.h"
-#endif
 #include "libretro.h"
 #include "thread.h"
 
@@ -52,11 +49,6 @@ static void set_basename(const char *path)
 
    retro_base_name = retro_base_name.substr(0, retro_base_name.find_last_of('.'));
 }
-
-#ifdef NEED_DEINTERLACER
-static bool PrevInterlaced;
-static Deinterlacer deint;
-#endif
 
 #if defined(WANT_LYNX_EMU)
 #define MEDNAFEN_CORE_NAME_MODULE "lynx"
@@ -333,10 +325,6 @@ bool retro_load_game(const struct retro_game_info *info)
 
    set_basename(info->path);
 
-#if defined(WANT_GBA_EMU)
-   check_variables();
-#endif
-
    game = MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE, info->path);
    if (!game)
       return false;
@@ -345,15 +333,6 @@ bool retro_load_game(const struct retro_game_info *info)
    memset(&last_pixel_format, 0, sizeof(MDFN_PixelFormat));
    
    surf = new MDFN_Surface(mednafen_buf, FB_WIDTH, FB_HEIGHT, FB_WIDTH, pix_fmt);
-
-#ifdef NEED_DEINTERLACER
-	PrevInterlaced = false;
-	deint.ClearState();
-#endif
-
-#if !defined(WANT_PCFX_EMU)
-   hookup_ports(true);
-#endif
 
    check_variables();
 
@@ -588,23 +567,6 @@ void retro_run()
    }
 
    curgame->Emulate(&spec);
-
-#ifdef NEED_DEINTERLACER
-   if (spec.InterlaceOn)
-   {
-      if (!PrevInterlaced)
-         deint.ClearState();
-
-      deint.Process(spec.surface, spec.DisplayRect, spec.LineWidths, spec.InterlaceField);
-
-      PrevInterlaced = true;
-
-      spec.InterlaceOn = false;
-      spec.InterlaceField = 0;
-   }
-   else
-      PrevInterlaced = false;
-#endif
 
    int16 *const SoundBuf = spec.SoundBuf + spec.SoundBufSizeALMS * curgame->soundchan;
    int32 SoundBufSize = spec.SoundBufSize - spec.SoundBufSizeALMS;
