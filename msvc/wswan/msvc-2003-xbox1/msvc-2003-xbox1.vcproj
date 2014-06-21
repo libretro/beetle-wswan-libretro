@@ -304,31 +304,31 @@
 					Name="wswan"
 					Filter="">
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\eeprom.cpp">
+						RelativePath="..\..\..\mednafen\wswan\eeprom.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\gfx.cpp">
+						RelativePath="..\..\..\mednafen\wswan\gfx.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\interrupt.cpp">
+						RelativePath="..\..\..\mednafen\wswan\interrupt.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\main.cpp">
+						RelativePath="..\..\..\mednafen\wswan\main.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\rtc.cpp">
+						RelativePath="..\..\..\mednafen\wswan\rtc.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\sound.cpp">
+						RelativePath="..\..\..\mednafen\wswan\sound.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\tcache.cpp">
+						RelativePath="..\..\..\mednafen\wswan\tcache.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\v30mz.cpp">
+						RelativePath="..\..\..\mednafen\wswan\v30mz.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan-09333\wswan-memory.cpp">
+						RelativePath="..\..\..\mednafen\wswan\wswan-memory.cpp">
 					</File>
 				</Filter>
 				<Filter
