@@ -28,10 +28,6 @@ static MDFN_Surface *surf;
 
 static bool failed_init;
 
-static void hookup_ports(bool force);
-
-static bool initial_ports_hookup = false;
-
 std::string retro_base_directory;
 std::string retro_base_name;
 std::string retro_save_directory;
@@ -177,18 +173,6 @@ static void check_variables(void)
 static uint16_t input_buf;
 
 
-static void hookup_ports(bool force)
-{
-   MDFNGI *currgame = game;
-
-   if (initial_ports_hookup && !force)
-      return;
-
-   currgame->SetInput(0, "gamepad", &input_buf);
-
-   initial_ports_hookup = true;
-}
-
 bool retro_load_game(const struct retro_game_info *info)
 {
    if (failed_init)
@@ -212,6 +196,8 @@ bool retro_load_game(const struct retro_game_info *info)
    game = MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE, info->path);
    if (!game)
       return false;
+
+   game->SetInput(0, "gamepad", &input_buf);
 
    MDFN_PixelFormat pix_fmt(MDFN_COLORSPACE_RGB, 16, 8, 0, 24);
    memset(&last_pixel_format, 0, sizeof(MDFN_PixelFormat));
