@@ -40,7 +40,6 @@ CORE_DEFINE := -DWANT_WSWAN_EMU
 CORE_DIR := $(MEDNAFEN_DIR)/wswan
 
 CORE_SOURCES := $(CORE_DIR)/gfx.cpp \
-	$(CORE_DIR)/main.cpp \
 	$(CORE_DIR)/wswan-memory.cpp \
 	$(CORE_DIR)/v30mz.cpp \
 	$(CORE_DIR)/sound.cpp \

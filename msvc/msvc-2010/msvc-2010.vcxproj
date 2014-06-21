@@ -40,7 +40,6 @@
     <ClCompile Include="..\..\..\mednafen\wswan\eeprom.cpp" />
     <ClCompile Include="..\..\..\mednafen\wswan\gfx.cpp" />
     <ClCompile Include="..\..\..\mednafen\wswan\interrupt.cpp" />
-    <ClCompile Include="..\..\..\mednafen\wswan\main.cpp" />
     <ClCompile Include="..\..\..\mednafen\wswan\rtc.cpp" />
     <ClCompile Include="..\..\..\mednafen\wswan\sound.cpp" />
     <ClCompile Include="..\..\..\mednafen\wswan\tcache.cpp" />

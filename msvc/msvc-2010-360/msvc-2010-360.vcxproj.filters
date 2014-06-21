@@ -104,9 +104,6 @@
     <ClCompile Include="..\..\..\mednafen\wswan\interrupt.cpp">
       <Filter>Source Files\mednafen\wswan</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\mednafen\wswan\main.cpp">
-      <Filter>Source Files\mednafen\wswan</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\mednafen\wswan\rtc.cpp">
       <Filter>Source Files\mednafen\wswan</Filter>
     </ClCompile>

@@ -310,9 +310,6 @@
 						RelativePath="..\..\..\mednafen\wswan\interrupt.cpp">
 					</File>
 					<File
-						RelativePath="..\..\..\mednafen\wswan\main.cpp">
-					</File>
-					<File
 						RelativePath="..\..\..\mednafen\wswan\rtc.cpp">
 					</File>
 					<File
