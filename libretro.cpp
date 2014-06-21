@@ -50,22 +50,6 @@ static void set_basename(const char *path)
    retro_base_name = retro_base_name.substr(0, retro_base_name.find_last_of('.'));
 }
 
-#if defined(WANT_LYNX_EMU)
-#define MEDNAFEN_CORE_NAME_MODULE "lynx"
-#define MEDNAFEN_CORE_NAME "Mednafen Lynx"
-#define MEDNAFEN_CORE_VERSION "v0.9.32"
-#define MEDNAFEN_CORE_EXTENSIONS "lnx"
-#define MEDNAFEN_CORE_TIMING_FPS 75
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W 160
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H 102
-#define MEDNAFEN_CORE_GEOMETRY_MAX_W 160
-#define MEDNAFEN_CORE_GEOMETRY_MAX_H 102
-#define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (4.0 / 3.0)
-#define FB_WIDTH 160
-#define FB_HEIGHT 102
-static bool is_pal = false;
-
-#elif defined(WANT_WSWAN_EMU)
 #define MEDNAFEN_CORE_NAME_MODULE "wswan"
 #define MEDNAFEN_CORE_NAME "Mednafen WonderSwan"
 #define MEDNAFEN_CORE_VERSION "v0.9.35.1"
@@ -79,48 +63,6 @@ static bool is_pal = false;
 #define FB_WIDTH 224
 #define FB_HEIGHT 144
 
-#elif defined(WANT_GBA_EMU)
-#define MEDNAFEN_CORE_NAME_MODULE "gba"
-#define MEDNAFEN_CORE_NAME "Mednafen VBA-M"
-#define MEDNAFEN_CORE_VERSION "v0.9.33.3"
-#define MEDNAFEN_CORE_EXTENSIONS "gba|agb|bin"
-#define MEDNAFEN_CORE_TIMING_FPS 59.73
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W (game->nominal_width)
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H (game->nominal_height)
-#define MEDNAFEN_CORE_GEOMETRY_MAX_W 240
-#define MEDNAFEN_CORE_GEOMETRY_MAX_H 160
-#define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (4.0 / 3.0)
-#define FB_WIDTH 240
-#define FB_HEIGHT 160
-
-#elif defined(WANT_SNES_EMU)
-#define MEDNAFEN_CORE_NAME_MODULE "snes"
-#define MEDNAFEN_CORE_NAME "Mednafen bSNES"
-#define MEDNAFEN_CORE_VERSION "v0.9.26"
-#define MEDNAFEN_CORE_EXTENSIONS "smc|fig|bs|st|sfc"
-#define MEDNAFEN_CORE_TIMING_FPS 60.10
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W (game->nominal_width)
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H (game->nominal_height)
-#define MEDNAFEN_CORE_GEOMETRY_MAX_W 512
-#define MEDNAFEN_CORE_GEOMETRY_MAX_H 512
-#define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (4.0 / 3.0)
-#define FB_WIDTH 512
-#define FB_HEIGHT 512
-
-#elif defined(WANT_PCFX_EMU)
-#define MEDNAFEN_CORE_NAME_MODULE "pcfx"
-#define MEDNAFEN_CORE_NAME "Mednafen PC-FX"
-#define MEDNAFEN_CORE_VERSION "v0.9.33.3"
-#define MEDNAFEN_CORE_EXTENSIONS "cue|ccd"
-#define MEDNAFEN_CORE_TIMING_FPS 59.94
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W (game->nominal_width)
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H (game->nominal_height)
-#define MEDNAFEN_CORE_GEOMETRY_MAX_W 341
-#define MEDNAFEN_CORE_GEOMETRY_MAX_H 480
-#define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (4.0 / 3.0)
-#define FB_WIDTH 344
-#define FB_HEIGHT 480
-#endif
 
 
 #define FB_MAX_HEIGHT FB_HEIGHT
@@ -228,56 +170,12 @@ static void check_variables(void)
 {
    struct retro_variable var = {0};
 
-#if defined (WANT_GBA_EMU)
-   var.key = "gba_hle";
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-   {
-      if (strcmp(var.value, "enabled") == 0)
-         setting_gba_hle = 1;
-      else if (strcmp(var.value, "disabled") == 0)
-         setting_gba_hle = 0;
-   }
-#endif
 }
 
-#if defined(WANT_LYNX_EMU)
-
-#define MAX_PLAYERS 1
-#define MAX_BUTTONS 9
-static uint8_t input_buf[MAX_PLAYERS][2] = {0};
-
-#elif defined(WANT_WSWAN_EMU)
-
 #define MAX_PLAYERS 1
 #define MAX_BUTTONS 11
 static uint16_t input_buf;
 
-#elif defined(WANT_GBA_EMU)
-
-#define MAX_PLAYERS 1
-#define MAX_BUTTONS 11
-static uint16_t input_buf;
-
-#elif defined(WANT_SNES_EMU)
-
-#define MAX_PLAYERS 5
-#define MAX_BUTTONS 14
-static uint8_t input_buf[MAX_PLAYERS][2];
-
-#elif defined(WANT_PCFX_EMU)
-
-#define MAX_PLAYERS 2
-#define MAX_BUTTONS 12
-static uint16_t input_buf[MAX_PLAYERS];
-
-#else
-
-#define MAX_PLAYERS 1
-#define MAX_BUTTONS 7
-
-static uint16_t input_buf[1];
-#endif
 
 static void hookup_ports(bool force)
 {
@@ -286,21 +184,7 @@ static void hookup_ports(bool force)
    if (initial_ports_hookup && !force)
       return;
 
-#if defined(WANT_LYNX_EMU)
    currgame->SetInput(0, "gamepad", &input_buf);
-#elif defined(WANT_WSWAN_EMU)
-   currgame->SetInput(0, "gamepad", &input_buf);
-#elif defined(WANT_GBA_EMU)
-   // Possible endian bug ...
-   currgame->SetInput(0, "gamepad", &input_buf);
-#elif defined(WANT_SNES_EMU)
-   // Possible endian bug ...
-   for (unsigned i = 0; i < MAX_PLAYERS; i++)
-      currgame->SetInput(i, "gamepad", &input_buf[i][0]);
-#else
-   // Possible endian bug ...
-   currgame->SetInput(0, "gamepad", &input_buf[0]);
-#endif
 
    initial_ports_hookup = true;
 }
@@ -354,30 +238,6 @@ void retro_unload_game()
 static void update_input(void)
 {
    MDFNGI *currgame = (MDFNGI*)game;
-#if defined(WANT_LYNX_EMU)
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_B,
-      RETRO_DEVICE_ID_JOYPAD_L,
-      RETRO_DEVICE_ID_JOYPAD_R,
-      RETRO_DEVICE_ID_JOYPAD_LEFT,
-      RETRO_DEVICE_ID_JOYPAD_RIGHT,
-      RETRO_DEVICE_ID_JOYPAD_UP,
-      RETRO_DEVICE_ID_JOYPAD_DOWN,
-      RETRO_DEVICE_ID_JOYPAD_START,
-   };
-
-   for (unsigned j = 0; j < MAX_PLAYERS; j++)
-   {
-      uint16_t input_state = 0;
-      for (unsigned i = 0; i < MAX_BUTTONS; i++)
-         input_state |= input_state_cb(j, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
-
-      // Input data must be little endian.
-      input_buf[j][0] = (input_state >> 0) & 0xff;
-      input_buf[j][1] = (input_state >> 8) & 0xff;
-   }
-#elif defined(WANT_WSWAN_EMU)
    input_buf = 0;
 
    static unsigned map[] = {
@@ -407,123 +267,6 @@ static void update_input(void)
    input_buf = u.b[0] | u.b[1] << 8;
 #endif
 
-#elif defined(WANT_GBA_EMU)
-   input_buf = 0;
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_A, //A button
-      RETRO_DEVICE_ID_JOYPAD_B, //B button
-      RETRO_DEVICE_ID_JOYPAD_SELECT,
-      RETRO_DEVICE_ID_JOYPAD_START,
-      RETRO_DEVICE_ID_JOYPAD_RIGHT,
-      RETRO_DEVICE_ID_JOYPAD_LEFT,
-      RETRO_DEVICE_ID_JOYPAD_UP,
-      RETRO_DEVICE_ID_JOYPAD_DOWN,
-      RETRO_DEVICE_ID_JOYPAD_R,
-      RETRO_DEVICE_ID_JOYPAD_L,
-   };
-
-   for (unsigned i = 0; i < MAX_BUTTONS; i++)
-      input_buf |= map[i] != -1u &&
-         input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
-
-#ifdef MSB_FIRST
-   union {
-      uint8_t b[2];
-      uint16_t s;
-   } u;
-   u.s = input_buf;
-   input_buf = u.b[0] | u.b[1] << 8;
-#endif
-
-#elif defined(WANT_SNES_EMU)
-
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_B,
-      RETRO_DEVICE_ID_JOYPAD_Y,
-      RETRO_DEVICE_ID_JOYPAD_SELECT,
-      RETRO_DEVICE_ID_JOYPAD_START,
-      RETRO_DEVICE_ID_JOYPAD_UP,
-      RETRO_DEVICE_ID_JOYPAD_DOWN,
-      RETRO_DEVICE_ID_JOYPAD_LEFT,
-      RETRO_DEVICE_ID_JOYPAD_RIGHT,
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_X,
-      RETRO_DEVICE_ID_JOYPAD_L,
-      RETRO_DEVICE_ID_JOYPAD_R,
-   };
-
-   for (unsigned j = 0; j < MAX_PLAYERS; j++)
-   {
-      uint16_t input_state = 0;
-      for (unsigned i = 0; i < MAX_BUTTONS; i++)
-         input_state |= input_state_cb(j, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
-
-#ifdef MSB_FIRST
-      union {
-         uint8_t b[2];
-         uint16_t s;
-      } u;
-      u.s = input_buf[j];
-      input_buf[j] = u.b[0] | u.b[1] << 8;
-#else
-      input_buf[j][0] = (input_state >> 0) & 0xff;
-      input_buf[j][1] = (input_state >> 8) & 0xff;
-#endif
-   }
-
-#elif defined(WANT_PCFX_EMU)
-   input_buf[0] = input_buf[1] = 0;
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_B,
-      RETRO_DEVICE_ID_JOYPAD_X,
-      RETRO_DEVICE_ID_JOYPAD_Y,
-      RETRO_DEVICE_ID_JOYPAD_L,
-      RETRO_DEVICE_ID_JOYPAD_R,
-      RETRO_DEVICE_ID_JOYPAD_SELECT,
-      RETRO_DEVICE_ID_JOYPAD_START,
-      RETRO_DEVICE_ID_JOYPAD_UP,
-      RETRO_DEVICE_ID_JOYPAD_RIGHT,
-      RETRO_DEVICE_ID_JOYPAD_DOWN,
-      RETRO_DEVICE_ID_JOYPAD_LEFT,
-   };
-
-   for (unsigned j = 0; j < MAX_PLAYERS; j++)
-   {
-      for (unsigned i = 0; i < MAX_BUTTONS; i++)
-         input_buf[j] |= map[i] != -1u &&
-            input_state_cb(j, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
-
-#ifdef MSB_FIRST
-      union {
-         uint8_t b[2];
-         uint16_t s;
-      } u;
-      u.s = input_buf[j];
-      input_buf[j] = u.b[0] | u.b[1] << 8;
-#endif
-
-   }
-#else
-   input_buf[0] = 0;
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_UP,
-      RETRO_DEVICE_ID_JOYPAD_DOWN,
-      RETRO_DEVICE_ID_JOYPAD_LEFT,
-      RETRO_DEVICE_ID_JOYPAD_RIGHT,
-      RETRO_DEVICE_ID_JOYPAD_A, //A button
-      RETRO_DEVICE_ID_JOYPAD_B, //B button
-      RETRO_DEVICE_ID_JOYPAD_START, //Option button
-   };
-
-   for (unsigned j = 0; j < MAX_PLAYERS; j++)
-   {
-      for (unsigned i = 0; i < MAX_BUTTONS; i++)
-         input_buf[j] |= map[i] != -1u &&
-            input_state_cb(j, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
-   }
-
-#endif
 }
 
 static uint64_t video_frames, audio_frames;
@@ -643,50 +386,11 @@ unsigned retro_api_version(void)
 
 void retro_set_controller_port_device(unsigned in_port, unsigned device)
 {
-   MDFNGI *currgame = (MDFNGI*)game;
-
-   if (!currgame)
-      return;
-
-#if defined(WANT_PCFX_EMU)
-   switch(device)
-   {
-      case RETRO_DEVICE_JOYPAD:
-         if (currgame->SetInput)
-            currgame->SetInput(in_port, "gamepad", &input_buf[in_port]);
-         break;
-      case RETRO_DEVICE_MOUSE:
-         if (currgame->SetInput)
-            currgame->SetInput(in_port, "mouse", &input_buf[in_port]);
-         break;
-   }
-#endif
 }
 
 void retro_set_environment(retro_environment_t cb)
 {
    environ_cb = cb;
-
-#if defined(WANT_PCFX_EMU)
-   static const struct retro_controller_description pads[] = {
-      { "PCFX Joypad", RETRO_DEVICE_JOYPAD },
-      { "Mouse", RETRO_DEVICE_MOUSE },
-   };
-
-   static const struct retro_controller_info ports[] = {
-      { pads, 2 },
-      { pads, 2 },
-      { 0 },
-   };
-
-   environ_cb(RETRO_ENVIRONMENT_SET_CONTROLLER_INFO, (void*)ports);
-#elif defined(WANT_GBA_EMU)
-   static const struct retro_variable vars[] = {
-      { "gba_hle", "HLE bios emulation; enabled|disabled" },
-      { NULL, NULL },
-   };
-   cb(RETRO_ENVIRONMENT_SET_VARIABLES, (void*)vars);
-#endif
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
@@ -854,48 +558,3 @@ void MDFND_Sleep(unsigned int time)
 {
    retro_sleep(time);
 }
-
-#ifdef WANT_THREADING
-MDFN_Thread *MDFND_CreateThread(int (*fn)(void *), void *data)
-{
-   return (MDFN_Thread*)sthread_create((void (*)(void*))fn, data);
-}
-
-void MDFND_WaitThread(MDFN_Thread *thr, int *val)
-{
-   sthread_join((sthread_t*)thr);
-
-   if (val)
-   {
-      *val = 0;
-      fprintf(stderr, "WaitThread relies on return value.\n");
-   }
-}
-
-void MDFND_KillThread(MDFN_Thread *)
-{
-   fprintf(stderr, "Killing a thread is a BAD IDEA!\n");
-}
-
-MDFN_Mutex *MDFND_CreateMutex()
-{
-   return (MDFN_Mutex*)slock_new();
-}
-
-void MDFND_DestroyMutex(MDFN_Mutex *lock)
-{
-   slock_free((slock_t*)lock);
-}
-
-int MDFND_LockMutex(MDFN_Mutex *lock)
-{
-   slock_lock((slock_t*)lock);
-   return 0;
-}
-
-int MDFND_UnlockMutex(MDFN_Mutex *lock)
-{
-   slock_unlock((slock_t*)lock);
-   return 0;
-}
-#endif

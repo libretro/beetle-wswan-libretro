@@ -56,34 +56,10 @@ endif
 
 CORE_INCDIR := $(CORE_DIR)
 
-ifeq ($(NEED_THREADING), 1)
-FLAGS += -DWANT_THREADING
-THREAD_SOURCES += $(MEDNAFEN_LIBRETRO_DIR)/threads.c
-endif
-
 ifeq ($(NEED_CRC32), 1)
 FLAGS += -DWANT_CRC32
 CORE_SOURCES += $(MEDNAFEN_LIBRETRO_DIR)/scrc32.cpp
 endif
-
-ifeq ($(NEED_DEINTERLACER), 1)
-FLAGS += -DNEED_DEINTERLACER
-endif
-
-ifeq ($(NEED_SCSI_CD), 1)
-SCSI_CD_SOURCES := $(MEDNAFEN_DIR)/cdrom/scsicd.cpp
-endif
-
-ifeq ($(NEED_CD), 1)
-CDROM_SOURCES := $(MEDNAFEN_DIR)/cdrom/CDAccess.cpp $(MEDNAFEN_DIR)/cdrom/CDAccess_Image.cpp $(MEDNAFEN_DIR)/cdrom/CDAccess_CCD.cpp $(MEDNAFEN_DIR)/cdrom/CDUtility.cpp $(MEDNAFEN_DIR)/cdrom/lec.cpp $(MEDNAFEN_DIR)/cdrom/SimpleFIFO.cpp $(MEDNAFEN_DIR)/cdrom/audioreader.cpp $(MEDNAFEN_DIR)/cdrom/galois.cpp $(MEDNAFEN_DIR)/cdrom/recover-raw.cpp $(MEDNAFEN_DIR)/cdrom/l-ec.cpp $(MEDNAFEN_DIR)/cdrom/cdromif.cpp $(MEDNAFEN_DIR)/cdrom/crc32.cpp
-FLAGS += -DNEED_CD
-endif
-
-ifeq ($(NEED_TREMOR), 1)
-TREMOR_SRC := $(wildcard $(MEDNAFEN_DIR)/tremor/*.c)
-FLAGS += -DNEED_TREMOR
-endif
-
 
 MEDNAFEN_SOURCES := $(MEDNAFEN_DIR)/mednafen.cpp \
 	$(MEDNAFEN_DIR)/error.cpp \
@@ -106,11 +82,11 @@ MEDNAFEN_SOURCES := $(MEDNAFEN_DIR)/mednafen.cpp \
 	$(MEDNAFEN_DIR)/md5.cpp
 
 
-LIBRETRO_SOURCES := $(MEDNAFEN_LIBRETRO_DIR)/libretro.cpp $(THREAD_STUBS)
+LIBRETRO_SOURCES := $(MEDNAFEN_LIBRETRO_DIR)/libretro.cpp 
 
-SOURCES_C := 	$(TREMOR_SRC) $(LIBRETRO_SOURCES_C) $(MEDNAFEN_DIR)/trio/trio.c $(MEDNAFEN_DIR)/trio/triostr.c $(THREAD_SOURCES)
+SOURCES_C := 	$(TREMOR_SRC) $(LIBRETRO_SOURCES_C) $(MEDNAFEN_DIR)/trio/trio.c $(MEDNAFEN_DIR)/trio/triostr.c
 
-LOCAL_SRC_FILES += $(LIBRETRO_SOURCES) $(CORE_SOURCES) $(MEDNAFEN_SOURCES) $(CDROM_SOURCES) $(SCSI_CD_SOURCES) $(HW_CPU_SOURCES) $(HW_MISC_SOURCES) $(HW_SOUND_SOURCES) $(HW_VIDEO_SOURCES) $(SOURCES_C) $(CORE_CD_SOURCES)
+LOCAL_SRC_FILES += $(LIBRETRO_SOURCES) $(CORE_SOURCES) $(MEDNAFEN_SOURCES) $(HW_CPU_SOURCES) $(HW_MISC_SOURCES) $(HW_SOUND_SOURCES) $(HW_VIDEO_SOURCES) $(SOURCES_C) $(CORE_CD_SOURCES)
 
 WARNINGS := -Wall \
 	-Wno-sign-compare \
