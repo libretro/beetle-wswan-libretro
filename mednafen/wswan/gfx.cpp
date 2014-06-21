@@ -34,7 +34,7 @@ static uint32 wsColors[8];
 static uint32 wsCols[16][16];
 
 static uint16 ColorMapG[16];
-static uint16 ColorMap[16*16*16];
+static uint16 ColorMap[4096];
 static uint32 LayerEnabled;
 
 static uint8 wsLine;                 /*current scanline*/
@@ -268,26 +268,10 @@ void WSwan_SetPixelFormat(const MDFN_PixelFormat &format)
  for(int r = 0; r < 16; r++)
   for(int g = 0; g < 16; g++)
    for(int b = 0; b < 16; b++)
-   {
-    uint32 neo_r, neo_g, neo_b;
-
-    neo_r = r * 17;
-    neo_g = g * 17;
-    neo_b = b * 17;
-
-    ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR(neo_r, neo_g, neo_b, 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
-   }
+      ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR((r * 17), (g * 17), (b * 17), 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
 
  for(int i = 0; i < 16; i++)
- {
-  uint32 neo_r, neo_g, neo_b;
-
-  neo_r = (i) * 17;
-  neo_g = (i) * 17;
-  neo_b = (i) * 17;
-
-  ColorMapG[i] = MAKECOLOR(neo_r, neo_g, neo_b, 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
- }
+  ColorMapG[i] = MAKECOLOR((i * 17), (i * 17), (i * 17), 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
 }
 
 void wsScanline(uint16 *target)
