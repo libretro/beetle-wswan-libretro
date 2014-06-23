@@ -4,7 +4,6 @@
 #include "mednafen/general.h"
 #include "mednafen/md5.h"
 #include "libretro.h"
-#include "thread.h"
 
 static MDFNGI *game;
 
@@ -991,9 +990,4 @@ void MDFND_PrintError(const char* err)
 {
    if (log_cb)
       log_cb(RETRO_LOG_ERROR, "%s\n", err);
-}
-
-void MDFND_Sleep(unsigned int time)
-{
-   retro_sleep(time);
 }
