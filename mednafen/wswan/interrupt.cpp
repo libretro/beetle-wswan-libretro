@@ -1,7 +1,7 @@
 #include "wswan.h"
 #include "interrupt.h"
 #include "v30mz.h"
-#include <trio/trio.h>
+#include "../include/trio/trio.h"
 
 namespace MDFN_IEN_WSWAN
 {

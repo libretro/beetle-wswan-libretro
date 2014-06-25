@@ -28,7 +28,7 @@
 #include "../mempatcher.h"
 #include <time.h>
 #include <math.h>
-#include <trio/trio.h>
+#include "../include/trio/trio.h"
 
 namespace MDFN_IEN_WSWAN
 {

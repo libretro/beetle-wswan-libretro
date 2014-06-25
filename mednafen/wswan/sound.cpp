@@ -24,7 +24,7 @@
 #include "v30mz.h"
 #include "wswan-memory.h"
 
-#include <blip/Blip_Buffer.h>
+#include "../include/blip/Blip_Buffer.h"
 
 namespace MDFN_IEN_WSWAN
 {
