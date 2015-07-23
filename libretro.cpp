@@ -539,8 +539,6 @@ void retro_init(void)
    else 
       log_cb = NULL;
 
-   MDFNI_InitializeModule();
-
    const char *dir = NULL;
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir)
@@ -552,8 +550,6 @@ void retro_init(void)
          last++;
 
       retro_base_directory = retro_base_directory.substr(0, last);
-
-      MDFNI_Initialize(retro_base_directory.c_str());
    }
    else
    {

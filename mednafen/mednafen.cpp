@@ -107,14 +107,3 @@ void MDFNI_CloseGame(void)
 
    MDFNGameInfo = NULL;
 }
-
-bool MDFNI_InitializeModule(void)
-{
-
- return(1);
-}
-
-int MDFNI_Initialize(const char *basedir)
-{
-	return(1);
-}
