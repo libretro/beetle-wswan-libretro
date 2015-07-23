@@ -212,9 +212,6 @@
 					RelativePath="..\..\mednafen\file.cpp">
 				</File>
 				<File
-					RelativePath="..\..\mednafen\FileStream.cpp">
-				</File>
-				<File
 					RelativePath="..\..\mednafen\FileWrapper.cpp">
 				</File>
 				<File
@@ -230,9 +227,6 @@
 					RelativePath="..\..\mednafen\mednafen.cpp">
 				</File>
 				<File
-					RelativePath="..\..\mednafen\MemoryStream.cpp">
-				</File>
-				<File
 					RelativePath="..\..\mednafen\mempatcher.cpp">
 				</File>
 				<File
@@ -240,9 +234,6 @@
 				</File>
 				<File
 					RelativePath="..\..\mednafen\state.cpp">
-				</File>
-				<File
-					RelativePath="..\..\mednafen\Stream.cpp">
 				</File>
 				<Filter
 					Name="trio"
