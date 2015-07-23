@@ -6,11 +6,28 @@ typedef enum { AW, CW, DW, BW, SP, BP, IX, IY } WREGS;
 
 #define NEC_NMI_INT_VECTOR 2
 
-#ifdef LSB_FIRST
-typedef enum { AL,AH,CL,CH,DL,DH,BL,BH,SPL,SPH,BPL,BPH,IXL,IXH,IYL,IYH } BREGS;
+typedef enum
+{
+#ifdef MSB_FIRST
+   AH,AL,
+   CH,CL,
+   DH,DL,
+   BH,BL,
+   SPH,SPL,
+   BPH,BPL,
+   IXH,IXL,
+   IYH,IYL
 #else
-typedef enum { AH,AL,CH,CL,DH,DL,BH,BL,SPH,SPL,BPH,BPL,IXH,IXL,IYH,IYL } BREGS;
+   AL,AH,
+   CL,CH,
+   DL,DH,
+   BL,BH,
+   SPL,SPH,
+   BPL,BPH,
+   IXL,IXH,
+   IYL,IYH
 #endif
+} BREGS;
 
 /* parameter x = result, y = source 1, z = source 2 */
 
