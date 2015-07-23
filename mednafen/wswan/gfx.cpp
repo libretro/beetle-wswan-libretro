@@ -26,9 +26,6 @@
 #include "../video.h"
 #include "../include/trio/trio.h"
 
-namespace MDFN_IEN_WSWAN
-{
-
 static uint32 wsMonoPal[16][4];
 static uint32 wsColors[8];
 static uint32 wsCols[16][16];
@@ -598,60 +595,58 @@ void WSwan_GfxReset(void)
 
 int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
 {
- SFORMAT StateRegs[] =
- {
-  SFARRAY32N(&wsMonoPal[0][0], 16 * 4, "wsMonoPal"),
-  SFARRAY32(wsColors, 8),
+   SFORMAT StateRegs[] =
+   {
+      SFARRAY32N(&wsMonoPal[0][0], 16 * 4, "wsMonoPal"),
+      SFARRAY32(wsColors, 8),
 
-  SFVAR(wsLine),
+      SFVAR(wsLine),
 
-  SFARRAYN(&SpriteTable[0][0], 0x80 * 4, "SpriteTable"),
-  SFVAR(SpriteCountCache),
-  SFVAR(DispControl),
-  SFVAR(BGColor),
-  SFVAR(LineCompare),
-  SFVAR(SPRBase),
-  SFVAR(SpriteStart),
-  SFVAR(SpriteCount),
-  SFVAR(FGBGLoc),
-  SFVAR(FGx0),
-  SFVAR(FGy0),
-  SFVAR(FGx1),
-  SFVAR(FGy1),
+      SFARRAYN(&SpriteTable[0][0], 0x80 * 4, "SpriteTable"),
+      SFVAR(SpriteCountCache),
+      SFVAR(DispControl),
+      SFVAR(BGColor),
+      SFVAR(LineCompare),
+      SFVAR(SPRBase),
+      SFVAR(SpriteStart),
+      SFVAR(SpriteCount),
+      SFVAR(FGBGLoc),
+      SFVAR(FGx0),
+      SFVAR(FGy0),
+      SFVAR(FGx1),
+      SFVAR(FGy1),
 
-  SFVAR(SPRx0),
-  SFVAR(SPRy0),
+      SFVAR(SPRx0),
+      SFVAR(SPRy0),
 
-  SFVAR(SPRx1),
-  SFVAR(SPRy1),
+      SFVAR(SPRx1),
+      SFVAR(SPRy1),
 
-  SFVAR(BGXScroll),
-  SFVAR(BGYScroll),
-  SFVAR(FGXScroll),
-  SFVAR(FGYScroll),
-  SFVAR(LCDControl),
-  SFVAR(LCDIcons),
+      SFVAR(BGXScroll),
+      SFVAR(BGYScroll),
+      SFVAR(FGXScroll),
+      SFVAR(FGYScroll),
+      SFVAR(LCDControl),
+      SFVAR(LCDIcons),
 
-  SFVAR(BTimerControl),
-  SFVAR(HBTimerPeriod),
-  SFVAR(VBTimerPeriod),
+      SFVAR(BTimerControl),
+      SFVAR(HBTimerPeriod),
+      SFVAR(VBTimerPeriod),
 
-  SFVAR(HBCounter),
-  SFVAR(VBCounter),
+      SFVAR(HBCounter),
+      SFVAR(VBCounter),
 
-  SFVAR(VideoMode),
-  SFEND
- };
+      SFVAR(VideoMode),
+      SFEND
+   };
 
- if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "GFX"))
-  return(0);
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "GFX"))
+      return(0);
 
- if(load)
- {
-  wsSetVideo(VideoMode >> 5, TRUE);
- }
+   if(load)
+   {
+      wsSetVideo(VideoMode >> 5, TRUE);
+   }
 
- return(1);
-}
-
+   return(1);
 }

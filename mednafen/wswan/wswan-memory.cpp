@@ -30,10 +30,6 @@
 #include <math.h>
 #include "../include/trio/trio.h"
 
-namespace MDFN_IEN_WSWAN
-{
-
-
 static bool SkipSL; // Skip save and load
 
 uint32 wsRAMSize;
@@ -586,41 +582,39 @@ void WSwan_MemoryReset(void)
 
 int WSwan_MemoryStateAction(StateMem *sm, int load, int data_only)
 {
- SFORMAT StateRegs[] =
- {
-  SFARRAYN(wsRAM, 65536, "RAM"),
-  SFARRAYN(sram_size ? wsSRAM : NULL, sram_size, "SRAM"),
-  SFVAR(ButtonWhich),
-  SFVAR(ButtonReadLatch),
-  SFVAR(WSButtonStatus),
-  SFVAR(DMASource),
-  SFVAR(DMADest),
-  SFVAR(DMALength),
-  SFVAR(DMAControl),
+   SFORMAT StateRegs[] =
+   {
+      SFARRAYN(wsRAM, 65536, "RAM"),
+      SFARRAYN(sram_size ? wsSRAM : NULL, sram_size, "SRAM"),
+      SFVAR(ButtonWhich),
+      SFVAR(ButtonReadLatch),
+      SFVAR(WSButtonStatus),
+      SFVAR(DMASource),
+      SFVAR(DMADest),
+      SFVAR(DMALength),
+      SFVAR(DMAControl),
 
-  SFVAR(SoundDMASource),
-  SFVAR(SoundDMALength),
-  SFVAR(SoundDMAControl),
+      SFVAR(SoundDMASource),
+      SFVAR(SoundDMALength),
+      SFVAR(SoundDMAControl),
 
-  SFVAR(CommControl),
-  SFVAR(CommData),
+      SFVAR(CommControl),
+      SFVAR(CommData),
 
-  SFARRAY(BankSelector, 4),
+      SFARRAY(BankSelector, 4),
 
-  SFEND
- };
+      SFEND
+   };
 
- if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "MEMR"))
-  return(0);
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "MEMR"))
+      return(0);
 
- if(load)
- {
-  for(uint32 A = 0xfe00; A <= 0xFFFF; A++)
-  {
-   WSwan_GfxWSCPaletteRAMWrite(A, wsRAM[A]);
-  }
- }
- return(1);
-}
-
+   if(load)
+   {
+      for(uint32 A = 0xfe00; A <= 0xFFFF; A++)
+      {
+         WSwan_GfxWSCPaletteRAMWrite(A, wsRAM[A]);
+      }
+   }
+   return(1);
 }

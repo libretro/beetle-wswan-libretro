@@ -23,14 +23,9 @@
 #include "wswan-memory.h"
 #include <ctype.h>
 
-namespace MDFN_IEN_WSWAN
-{
-
-
-
-uint8 wsEEPROM[2048];
-static uint8 iEEPROM[0x400];
-static const uint8 iEEPROM_Init[0x400] = 
+uint8_t wsEEPROM[2048];
+static uint8_t iEEPROM[0x400];
+static const uint8_t iEEPROM_Init[0x400] = 
 {
  255,255,255,255,255,255,192,255,0,0,0,0,
  0,0,0,0,0,0,0,0,0,0,0,0,
@@ -120,38 +115,38 @@ static const uint8 iEEPROM_Init[0x400] =
  255,255,255,255
 };
 
-static uint8 iEEPROM_Command, EEPROM_Command;
-static uint16 iEEPROM_Address, EEPROM_Address;
+static uint8_t iEEPROM_Command, EEPROM_Command;
+static uint16_t iEEPROM_Address, EEPROM_Address;
 
-uint8 WSwan_EEPROMRead(uint32 A)
+uint8_t WSwan_EEPROMRead(uint32_t A)
 {
- switch(A)
- {
-  default: printf("Read: %04x\n", A); break;
+   switch(A)
+   {
+      default: printf("Read: %04x\n", A); break;
 
-  case 0xBA: return(iEEPROM[(iEEPROM_Address << 1) & 0x3FF]);
-  case 0xBB: return(iEEPROM[((iEEPROM_Address << 1) | 1) & 0x3FF]);
-  case 0xBC: return(iEEPROM_Address >> 0);
-  case 0xBD: return(iEEPROM_Address >> 8);
-  case 0xBE:
-        if(iEEPROM_Command & 0x20) return iEEPROM_Command|2;
-        if(iEEPROM_Command & 0x10) return iEEPROM_Command|1;
-        return iEEPROM_Command | 3;
+      case 0xBA: return(iEEPROM[(iEEPROM_Address << 1) & 0x3FF]);
+      case 0xBB: return(iEEPROM[((iEEPROM_Address << 1) | 1) & 0x3FF]);
+      case 0xBC: return(iEEPROM_Address >> 0);
+      case 0xBD: return(iEEPROM_Address >> 8);
+      case 0xBE:
+                 if(iEEPROM_Command & 0x20) return iEEPROM_Command|2;
+                 if(iEEPROM_Command & 0x10) return iEEPROM_Command|1;
+                 return iEEPROM_Command | 3;
 
 
-  case 0xC4: return(wsEEPROM[(EEPROM_Address << 1) & (eeprom_size - 1)]);
-  case 0xC5: return(wsEEPROM[((EEPROM_Address << 1) | 1) & (eeprom_size - 1)]);
-  case 0xC6: return(EEPROM_Address >> 0);
-  case 0xC7: return(EEPROM_Address >> 8);
-  case 0xC8: if(EEPROM_Command & 0x20) return EEPROM_Command|2;
-             if(EEPROM_Command & 0x10) return EEPROM_Command|1;
-             return EEPROM_Command | 3;
- }
- return(0);
+      case 0xC4: return(wsEEPROM[(EEPROM_Address << 1) & (eeprom_size - 1)]);
+      case 0xC5: return(wsEEPROM[((EEPROM_Address << 1) | 1) & (eeprom_size - 1)]);
+      case 0xC6: return(EEPROM_Address >> 0);
+      case 0xC7: return(EEPROM_Address >> 8);
+      case 0xC8: if(EEPROM_Command & 0x20) return EEPROM_Command|2;
+                    if(EEPROM_Command & 0x10) return EEPROM_Command|1;
+                 return EEPROM_Command | 3;
+   }
+   return(0);
 }
 
 
-void WSwan_EEPROMWrite(uint32 A, uint8 V)
+void WSwan_EEPROMWrite(uint32_t A, uint8_t V)
 {
  switch(A)
  {
@@ -176,56 +171,54 @@ void WSwan_EEPROMReset(void)
  iEEPROM_Address = EEPROM_Address = 0;
 }
 
-void WSwan_EEPROMInit(const char *Name, const uint16 BYear, const uint8 BMonth, const uint8 BDay, const uint8 Sex, const uint8 Blood)
+void WSwan_EEPROMInit(const char *Name, const uint16_t BYear, const uint8_t BMonth, const uint8_t BDay, const uint8_t Sex, const uint8_t Blood)
 {
- memset(wsEEPROM, 0, 2048);
- memcpy(iEEPROM, iEEPROM_Init, 0x400);
+   memset(wsEEPROM, 0, 2048);
+   memcpy(iEEPROM, iEEPROM_Init, 0x400);
 
- for(unsigned int x = 0; x < 16; x++)
- {
-  uint8 zechar = 0;
+   for(unsigned int x = 0; x < 16; x++)
+   {
+      uint8_t zechar = 0;
 
-  if(x < strlen(Name))
-  {
-   char tc = toupper(Name[x]);
-   if(tc == ' ') zechar = 0;
-   else if(tc >= '0' && tc <= '9') zechar = tc - '0' + 0x1;
-   else if(tc >= 'A' && tc <= 'Z') zechar = tc - 'A' + 0xB;
-   else if(tc >= 'a' && tc <= 'z') zechar = tc - 'a' + 0xB + 26;
-  }
-  iEEPROM[0x360 + x] = zechar;
- }
+      if(x < strlen(Name))
+      {
+         char tc = toupper(Name[x]);
+         if(tc == ' ') zechar = 0;
+         else if(tc >= '0' && tc <= '9') zechar = tc - '0' + 0x1;
+         else if(tc >= 'A' && tc <= 'Z') zechar = tc - 'A' + 0xB;
+         else if(tc >= 'a' && tc <= 'z') zechar = tc - 'a' + 0xB + 26;
+      }
+      iEEPROM[0x360 + x] = zechar;
+   }
 
- #define  mBCD16(value) ( (((((value)%100) / 10) <<4)|((value)%10)) | ((((((value / 100)%100) / 10) <<4)|((value / 100)%10))<<8) )
- #define INT16_TO_BCD(A)  ((((((A) % 100) / 10) * 16 + ((A) % 10))) | (((((((A) / 100) % 100) / 10) * 16 + (((A) / 100) % 10))) << 8))   // convert INT16 --> BCD
+#define  mBCD16(value) ( (((((value)%100) / 10) <<4)|((value)%10)) | ((((((value / 100)%100) / 10) <<4)|((value / 100)%10))<<8) )
+#define INT16_TO_BCD(A)  ((((((A) % 100) / 10) * 16 + ((A) % 10))) | (((((((A) / 100) % 100) / 10) * 16 + (((A) / 100) % 10))) << 8))   // convert INT16 --> BCD
 
- uint16 bcd_BYear = INT16_TO_BCD(BYear);
+   uint16_t bcd_BYear = INT16_TO_BCD(BYear);
 
- iEEPROM[0x370] = (bcd_BYear >> 8) & 0xFF;
- iEEPROM[0x371] = (bcd_BYear >> 0) & 0xFF;
- iEEPROM[0x372] = mBCD(BMonth);
- iEEPROM[0x373] = mBCD(BDay);
- iEEPROM[0x374] = Sex;
- iEEPROM[0x375] = Blood;
+   iEEPROM[0x370] = (bcd_BYear >> 8) & 0xFF;
+   iEEPROM[0x371] = (bcd_BYear >> 0) & 0xFF;
+   iEEPROM[0x372] = mBCD(BMonth);
+   iEEPROM[0x373] = mBCD(BDay);
+   iEEPROM[0x374] = Sex;
+   iEEPROM[0x375] = Blood;
 }
 
 int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only)
 {
- SFORMAT StateRegs[] =
- {
-  SFVAR(iEEPROM_Command),
-  SFVAR(iEEPROM_Address),
-  SFVAR(EEPROM_Command),
-  SFVAR(EEPROM_Address),
-  SFARRAY(iEEPROM, sizeof(iEEPROM)),
-  SFARRAYN(eeprom_size ? wsEEPROM : NULL, eeprom_size, "EEPROM"),
-  SFEND
- };
+   SFORMAT StateRegs[] =
+   {
+      SFVAR(iEEPROM_Command),
+      SFVAR(iEEPROM_Address),
+      SFVAR(EEPROM_Command),
+      SFVAR(EEPROM_Address),
+      SFARRAY(iEEPROM, sizeof(iEEPROM)),
+      SFARRAYN(eeprom_size ? wsEEPROM : NULL, eeprom_size, "EEPROM"),
+      SFEND
+   };
 
- if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "EEPR"))
-  return(0);
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "EEPR"))
+      return(0);
 
- return(1);
-}
-
+   return(1);
 }

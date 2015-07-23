@@ -26,10 +26,6 @@
 
 #include "../include/blip/Blip_Buffer.h"
 
-namespace MDFN_IEN_WSWAN
-{
-
-
 static Blip_Synth<blip_good_quality, 256> WaveSynth;
 static Blip_Synth<blip_med_quality, 256> NoiseSynth;
 static Blip_Synth<blip_good_quality, 256 * 15> VoiceSynth;
@@ -443,6 +439,4 @@ void WSwan_SoundReset(void)
 
  for(int y = 0; y < 2; y++)
   sbuf[y]->clear();
-}
-
 }

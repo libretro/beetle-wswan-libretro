@@ -78,10 +78,6 @@ static void set_basename(const char *path)
 #include "mednafen/wswan/eeprom.h"
 #include "mednafen/wswan/debug.h"
 
-namespace MDFN_IEN_WSWAN
-{
-
-
 int 		wsc = 1;			/*color/mono*/
 uint32		rom_size;
 
@@ -464,10 +460,6 @@ static const FileExtensionSpecStruct KnownExtensions[] =
  { ".wsr", gettext_noop("WonderSwan Music Rip") },
  { NULL, NULL }
 };
-
-}
-
-using namespace MDFN_IEN_WSWAN;
 
 MDFNGI EmulatedWSwan =
 {

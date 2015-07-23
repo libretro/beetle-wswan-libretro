@@ -1,11 +1,6 @@
 #ifndef __WSWAN_INTERRUPT_H
 #define __WSWAN_INTERRUPT_H
 
-namespace MDFN_IEN_WSWAN
-{
-
-
-
 enum
 {
  WSINT_SERIAL_SEND = 0,
@@ -37,7 +32,5 @@ uint32 WSwan_InterruptGetRegister(const unsigned int id, char *special, const ui
 void WSwan_InterruptSetRegister(const unsigned int id, uint32 value);
 
 #endif
-
-}
 
 #endif

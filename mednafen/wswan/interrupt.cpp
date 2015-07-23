@@ -3,10 +3,6 @@
 #include "v30mz.h"
 #include "../include/trio/trio.h"
 
-namespace MDFN_IEN_WSWAN
-{
-
-
 static uint8 IStatus;
 static uint8 IEnable;
 static uint8 IVectorBase;
@@ -91,78 +87,75 @@ static const char *PrettyINames[8] = { "Serial Send", "Key Press", "RTC Alarm", 
 
 uint32 WSwan_InterruptGetRegister(const unsigned int id, char *special, const uint32 special_len)
 {
- uint32 ret = 0;
+   uint32 ret = 0;
 
- switch(id)
- {
-  case INT_GSREG_ISTATUS:
-	ret = IStatus;
-	break;
+   switch(id)
+   {
+      case INT_GSREG_ISTATUS:
+         ret = IStatus;
+         break;
 
-  case INT_GSREG_IENABLE:
-	ret = IEnable;
-	break;
+      case INT_GSREG_IENABLE:
+         ret = IEnable;
+         break;
 
-  case INT_GSREG_IVECTORBASE:
-	ret = IVectorBase;
-	break;
- }
+      case INT_GSREG_IVECTORBASE:
+         ret = IVectorBase;
+         break;
+   }
 
- if(special && (id == INT_GSREG_ISTATUS || id == INT_GSREG_IENABLE))
- {
-  trio_snprintf(special, special_len, "%s: %d, %s: %d, %s: %d, %s: %d, %s: %d, %s: %d, %s: %d, %s: %d",
-		PrettyINames[0], (ret >> 0) & 1,
-	        PrettyINames[1], (ret >> 1) & 1,
-	        PrettyINames[2], (ret >> 2) & 1,
-	        PrettyINames[3], (ret >> 3) & 1,
-	        PrettyINames[4], (ret >> 4) & 1,
-	        PrettyINames[5], (ret >> 5) & 1,
-	        PrettyINames[6], (ret >> 6) & 1,
-	        PrettyINames[7], (ret >> 7) & 1);
- }
+   if(special && (id == INT_GSREG_ISTATUS || id == INT_GSREG_IENABLE))
+   {
+      trio_snprintf(special, special_len, "%s: %d, %s: %d, %s: %d, %s: %d, %s: %d, %s: %d, %s: %d, %s: %d",
+            PrettyINames[0], (ret >> 0) & 1,
+            PrettyINames[1], (ret >> 1) & 1,
+            PrettyINames[2], (ret >> 2) & 1,
+            PrettyINames[3], (ret >> 3) & 1,
+            PrettyINames[4], (ret >> 4) & 1,
+            PrettyINames[5], (ret >> 5) & 1,
+            PrettyINames[6], (ret >> 6) & 1,
+            PrettyINames[7], (ret >> 7) & 1);
+   }
 
- return(ret);
+   return(ret);
 }
 
 void WSwan_InterruptSetRegister(const unsigned int id, uint32 value)
 {
- switch(id)
- {
-  case INT_GSREG_ISTATUS:
-	IStatus = value;
-	break;
+   switch(id)
+   {
+      case INT_GSREG_ISTATUS:
+         IStatus = value;
+         break;
 
-  case INT_GSREG_IENABLE:
-	IEnable = value;
-	break;
+      case INT_GSREG_IENABLE:
+         IEnable = value;
+         break;
 
-  case INT_GSREG_IVECTORBASE:
-	IVectorBase = value;
-	break;
- }
+      case INT_GSREG_IVECTORBASE:
+         IVectorBase = value;
+         break;
+   }
 
- RecalcInterrupt();
+   RecalcInterrupt();
 }
-
 #endif
 
 int WSwan_InterruptStateAction(StateMem *sm, int load, int data_only)
 {
- SFORMAT StateRegs[] =
- {
-  SFVAR(IStatus),
-  SFVAR(IEnable),
-  SFVAR(IVectorBase),
-  SFEND
- };
+   SFORMAT StateRegs[] =
+   {
+      SFVAR(IStatus),
+      SFVAR(IEnable),
+      SFVAR(IVectorBase),
+      SFEND
+   };
 
- if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "INTR"))
-  return(0);
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "INTR"))
+      return(0);
 
- if(load)
-  RecalcInterrupt();
+   if(load)
+      RecalcInterrupt();
 
- return(1);
-}
-
+   return(1);
 }

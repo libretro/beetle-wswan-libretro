@@ -27,9 +27,6 @@
 #include <stdarg.h>
 #include <trio/trio.h>
 
-namespace MDFN_IEN_WSWAN
-{
-
 #define NUMBT 32
 
 static bool BTEnabled;
@@ -467,7 +464,4 @@ void WSwanDBG_Init(void)
 
  MDFNDBG_AddRegGroup(&V30MZRegsGroup);
  MDFNDBG_AddRegGroup(&MiscRegsGroup);
-}
-
-
 }

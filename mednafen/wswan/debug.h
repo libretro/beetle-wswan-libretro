@@ -1,11 +1,6 @@
 #ifndef __WSWAN_DEBUG_H
 #define __WSWAN_DEBUG_H
 
-namespace MDFN_IEN_WSWAN
-{
-
-
-
 #ifdef WANT_DEBUGGER
 
 void WSwanDBG_SetCPUCallback(void (*callb)(uint32 PC, bool bpoint), bool continuous);
@@ -34,7 +29,5 @@ void WSwanDBG_IRQ(int level);
 void WSwanDBG_Init(void);
 
 #endif
-
-}
 
 #endif
