@@ -144,13 +144,9 @@ std::string MDFN_EvalFIP(const std::string &dir_path, const std::string &rel_pat
    slash = '/';
 #endif
 
-   if(!skip_safety_check && !MDFN_IsFIROPSafe(rel_path))
-      throw MDFN_Error(0, _("Referenced path \"%s\" is potentially unsafe.  See \"filesys.untrusted_fip_check\" setting.\n"), rel_path.c_str());
-
    if(IsAbsolutePath(rel_path.c_str()))
       return(rel_path);
-   else
-      return(dir_path + slash + rel_path);
+   return(dir_path + slash + rel_path);
 }
 
 const char * GetFNComponent(const char *str)

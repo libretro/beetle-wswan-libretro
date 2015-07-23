@@ -230,11 +230,7 @@ void MDFN_LoadGameCheats(void *override_ptr)
       std::string fn = MDFN_MakeFName(MDFNMKF_CHEAT,0,0).c_str();
 
       if(!(fp = fopen(fn.c_str(),"rb")))
-      {
-         /* Error opening file. */
-         ErrnoHolder ene(errno);
          return;
-      }
    }
 
    if(SeekToOurSection(fp))
@@ -441,10 +437,7 @@ int MDFNI_AddCheat(const char *name, uint32 addr, uint64 val, uint64 compare, ch
    char *t;
 
    if(!(t = strdup(name)))
-   {
-      /* Error allocating memory for cheat data */
       return(0);
-   }
 
    if(!AddCheatEntry(t, NULL, addr,val,compare,1,type, length, bigendian))
    {
