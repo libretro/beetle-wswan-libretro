@@ -121,8 +121,6 @@ static void Emulate(EmulateSpecStruct *espec)
  espec->DisplayRect.w = 224;
  espec->DisplayRect.h = 144;
 
- if(espec->VideoFormatChanged)
-  WSwan_SetPixelFormat(espec->surface->format);
 
  if(espec->SoundFormatChanged)
   WSwan_SetSoundRate(espec->SoundRate);
@@ -679,6 +677,8 @@ bool retro_load_game(const struct retro_game_info *info)
 
    check_variables();
 
+   WSwan_SetPixelFormat(surf->format);
+
    return game;
 }
 
@@ -731,7 +731,7 @@ static void update_input(void)
 static uint64_t video_frames, audio_frames;
 
 
-void retro_run()
+void retro_run(void)
 {
    MDFNGI *curgame = game;
 
@@ -754,13 +754,6 @@ void retro_run()
    spec.SoundBufSize = 0;
    spec.VideoFormatChanged = false;
    spec.SoundFormatChanged = false;
-
-   if (memcmp(&last_pixel_format, &spec.surface->format, sizeof(MDFN_PixelFormat)))
-   {
-      spec.VideoFormatChanged = TRUE;
-
-      last_pixel_format = spec.surface->format;
-   }
 
    if (spec.SoundRate != last_sound_rate)
    {
