@@ -202,8 +202,8 @@ static int Load(const char *name, MDFNFILE *fp)
 
  if(GET_FSIZE_PTR(fp) < 65536)
  {
-  MDFN_PrintError(_("%s ROM image is too small."), MDFNGameInfo->fullname);
-  return(0);
+    /* ROM image is too small. */
+    return(0);
  }
 
  real_rom_size = (GET_FSIZE_PTR(fp) + 0xFFFF) & ~0xFFFF;
@@ -219,12 +219,12 @@ static int Load(const char *name, MDFNFILE *fp)
 
  memcpy(wsCartROM + (rom_size - real_rom_size), GET_FDATA_PTR(fp), GET_FSIZE_PTR(fp));
 
- MDFN_printf(_("ROM:       %dKiB\n"), real_rom_size / 1024);
+ printf(_("ROM:       %dKiB\n"), real_rom_size / 1024);
  md5_context md5;
  md5.starts();
  md5.update(wsCartROM, rom_size);
  md5.finish(MDFNGameInfo->MD5);
- MDFN_printf(_("ROM MD5:   0x%s\n"), md5_context::asciistr(MDFNGameInfo->MD5, 0).c_str());
+ printf(_("ROM MD5:   0x%s\n"), md5_context::asciistr(MDFNGameInfo->MD5, 0).c_str());
 
  uint8 header[10];
  memcpy(header, wsCartROM + rom_size - 10, 10);
@@ -239,7 +239,7 @@ static int Load(const char *name, MDFNFILE *fp)
     break;
    }
   }
-  MDFN_printf(_("Developer: %s (0x%02x)\n"), developer_name, header[0]);
+  printf(_("Developer: %s (0x%02x)\n"), developer_name, header[0]);
  }
 
  uint32 SRAMSize = 0;
@@ -260,17 +260,17 @@ static int Load(const char *name, MDFNFILE *fp)
  //printf("%02x\n", header[5]);
 
  if(eeprom_size)
-  MDFN_printf(_("EEPROM:  %d bytes\n"), eeprom_size);
+  printf(_("EEPROM:  %d bytes\n"), eeprom_size);
 
  if(SRAMSize)
-  MDFN_printf(_("Battery-backed RAM:  %d bytes\n"), SRAMSize);
+  printf(_("Battery-backed RAM:  %d bytes\n"), SRAMSize);
 
- MDFN_printf(_("Recorded Checksum:  0x%04x\n"), header[8] | (header[9] << 8));
+ printf(_("Recorded Checksum:  0x%04x\n"), header[8] | (header[9] << 8));
  {
   uint16 real_crc = 0;
   for(unsigned int i = 0; i < rom_size - 2; i++)
    real_crc += wsCartROM[i];
-  MDFN_printf(_("Real Checksum:      0x%04x\n"), real_crc);
+  printf(_("Real Checksum:      0x%04x\n"), real_crc);
  }
 
  if((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27)) /* Detective Conan */

@@ -46,10 +46,6 @@ MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
 	std::vector<FileExtensionSpecStruct> valid_iae;
    MDFNGameInfo = &EmulatedWSwan;
 
-	MDFN_printf(_("Loading %s...\n"),name);
-
-	MDFN_indent(1);
-
 	// Construct a NULL-delimited list of known file extensions for MDFN_fopen()
    const FileExtensionSpecStruct *curexts = MDFNGameInfo->FileExtensions;
 
@@ -65,28 +61,15 @@ MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
       return 0;
    }
 
-	MDFN_printf(_("Using module: %s(%s)\n\n"), MDFNGameInfo->shortname, MDFNGameInfo->fullname);
-	MDFN_indent(1);
-
-	//
-	// Load per-game settings
-	//
-	// Maybe we should make a "pgcfg" subdir, and automatically load all files in it?
-	// End load per-game settings
-	//
-
    if(MDFNGameInfo->Load(name, &GameFile) <= 0)
    {
       GameFile.Close();
-      MDFN_indent(-2);
       MDFNGameInfo = NULL;
       return(0);
    }
 
 	MDFN_LoadGameCheats(NULL);
 	MDFNMP_InstallReadPatches();
-
-	MDFN_indent(-2);
 
 	if(!MDFNGameInfo->name)
    {
@@ -134,94 +117,4 @@ bool MDFNI_InitializeModule(void)
 int MDFNI_Initialize(const char *basedir)
 {
 	return(1);
-}
-
-static int curindent = 0;
-
-void MDFN_indent(int indent)
-{
- curindent += indent;
-}
-
-static uint8 lastchar = 0;
-
-void MDFN_printf(const char *format, ...)
-{
-   char *format_temp;
-   char *temp;
-   unsigned int x, newlen;
-
-   va_list ap;
-   va_start(ap,format);
-
-
-   // First, determine how large our format_temp buffer needs to be.
-   uint8 lastchar_backup = lastchar; // Save lastchar!
-   for(newlen=x=0;x<strlen(format);x++)
-   {
-      if(lastchar == '\n' && format[x] != '\n')
-      {
-         int y;
-         for(y=0;y<curindent;y++)
-            newlen++;
-      }
-      newlen++;
-      lastchar = format[x];
-   }
-
-   format_temp = (char *)malloc(newlen + 1); // Length + NULL character, duh
-
-   // Now, construct our format_temp string
-   lastchar = lastchar_backup; // Restore lastchar
-   for(newlen=x=0;x<strlen(format);x++)
-   {
-      if(lastchar == '\n' && format[x] != '\n')
-      {
-         int y;
-         for(y=0;y<curindent;y++)
-            format_temp[newlen++] = ' ';
-      }
-      format_temp[newlen++] = format[x];
-      lastchar = format[x];
-   }
-
-   format_temp[newlen] = 0;
-
-   temp = trio_vaprintf(format_temp, ap);
-   free(format_temp);
-
-   MDFND_Message(temp);
-   free(temp);
-
-   va_end(ap);
-}
-
-void MDFN_PrintError(const char *format, ...)
-{
- char *temp;
-
- va_list ap;
-
- va_start(ap, format);
-
- temp = trio_vaprintf(format, ap);
- MDFND_PrintError(temp);
- free(temp);
-
- va_end(ap);
-}
-
-void MDFN_DebugPrintReal(const char *file, const int line, const char *format, ...)
-{
- char *temp;
-
- va_list ap;
-
- va_start(ap, format);
-
- temp = trio_vaprintf(format, ap);
- fprintf(stderr, "%s:%d  %s\n", file, line, temp);
- free(temp);
-
- va_end(ap);
 }

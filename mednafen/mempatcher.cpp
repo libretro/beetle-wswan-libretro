@@ -165,11 +165,6 @@ void MDFNMP_RemoveReadPatches(void)
   MDFNGameInfo->RemoveReadPatches();
 }
 
-static void CheatMemErr(void)
-{
- MDFN_PrintError(_("Error allocating memory for cheat data."));
-}
-
 /* This function doesn't allocate any memory for "name" */
 static int AddCheatEntry(char *name, char *conditions, uint32 addr, uint64 val, uint64 compare, int status, char type, unsigned int length, bool bigendian)
 {
@@ -209,117 +204,111 @@ static bool SeekToOurSection(void *fp_ptr)
 
 void MDFN_LoadGameCheats(void *override_ptr)
 {
- char linebuf[2048];
- FILE *fp;
- FILE *override = (FILE*)override_ptr;
+   char linebuf[2048];
+   FILE *fp;
+   FILE *override = (FILE*)override_ptr;
 
- unsigned int addr;
- unsigned long long val;
- unsigned int status;
- char type;
- unsigned long long compare;
- unsigned int x;
- unsigned int length;
- unsigned int icount;
- bool bigendian;
+   unsigned int addr;
+   unsigned long long val;
+   unsigned int status;
+   char type;
+   unsigned long long compare;
+   unsigned int x;
+   unsigned int length;
+   unsigned int icount;
+   bool bigendian;
 
- int tc=0;
+   int tc=0;
 
- savecheats=0;
+   savecheats=0;
 
- if(override)
-  fp = override;
- else
- {
-  std::string fn = MDFN_MakeFName(MDFNMKF_CHEAT,0,0).c_str();
-
-  MDFN_printf("\n");
-  MDFN_printf(_("Loading cheats from %s...\n"), fn.c_str());
-  MDFN_indent(1);
-
-  if(!(fp = fopen(fn.c_str(),"rb")))
-  {
-   ErrnoHolder ene(errno);
-
-   MDFN_printf(_("Error opening file: %s\n"), ene.StrError());
-   MDFN_indent(-1);
-   return;
-  }
- }
-
- if(SeekToOurSection(fp))
- {
-  while(fgets(linebuf,2048,fp) > 0)
-  { 
-   char namebuf[2048];
-   char *tbuf=linebuf;
-
-   addr=val=compare=status=type=0;
-   bigendian = 0;
-   icount = 0;
-
-   if(tbuf[0] == '[') // No more cheats for this game, so sad :(
-   {
-    break;
-   }
-
-   if(tbuf[0] == '\n' || tbuf[0] == '\r' || tbuf[0] == '\t' || tbuf[0] == ' ') // Don't parse if the line starts(or is just) white space
-    continue;
-
-   if(tbuf[0] != 'R' && tbuf[0] != 'C' && tbuf[0] != 'S')
-   {
-    MDFN_printf(_("Invalid cheat type: %c\n"), tbuf[0]);
-    break;
-   }
-   type = tbuf[0];
-   namebuf[0] = 0;
-
-   char status_tmp, endian_tmp;
-   if(type == 'C')
-    trio_sscanf(tbuf, "%c %c %d %c %d %08x %16llx %16llx %.2047[^\r\n]", &type, &status_tmp, &length, &endian_tmp, &icount, &addr, &val, &compare, namebuf);
+   if(override)
+      fp = override;
    else
-    trio_sscanf(tbuf, "%c %c %d %c %d %08x %16llx %.2047[^\r\n]", &type, &status_tmp, &length, &endian_tmp, &icount, &addr, &val, namebuf);
-
-   status = (status_tmp == 'A') ? 1 : 0;
-   bigendian = (endian_tmp == 'B') ? 1 : 0;
-
-   for(x=0;x<strlen(namebuf);x++)
    {
-    if(namebuf[x]==10 || namebuf[x]==13)
-    {
-     namebuf[x]=0;
-    break;
-    }
-    else if(namebuf[x]<0x20) namebuf[x]=' ';
+      /* Loading cheats */
+      std::string fn = MDFN_MakeFName(MDFNMKF_CHEAT,0,0).c_str();
+
+      if(!(fp = fopen(fn.c_str(),"rb")))
+      {
+         /* Error opening file. */
+         ErrnoHolder ene(errno);
+         return;
+      }
    }
 
-   // November 9, 2009 return value fix.
-   if(fgets(linebuf, 2048, fp) == NULL)
-    linebuf[0] = 0;
-
-   for(x=0;x<strlen(linebuf);x++)
+   if(SeekToOurSection(fp))
    {
-    if(linebuf[x]==10 || linebuf[x]==13)
-    {
-     linebuf[x]=0;
-     break;
-    }
-    else if(linebuf[x]<0x20) linebuf[x]=' ';
+      while(fgets(linebuf,2048,fp) > 0)
+      { 
+         char namebuf[2048];
+         char *tbuf=linebuf;
+
+         addr=val=compare=status=type=0;
+         bigendian = 0;
+         icount = 0;
+
+         if(tbuf[0] == '[') // No more cheats for this game, so sad :(
+         {
+            break;
+         }
+
+         if(tbuf[0] == '\n' || tbuf[0] == '\r' || tbuf[0] == '\t' || tbuf[0] == ' ') // Don't parse if the line starts(or is just) white space
+            continue;
+
+         if(tbuf[0] != 'R' && tbuf[0] != 'C' && tbuf[0] != 'S')
+         {
+            /* Invalid cheat type */
+            break;
+         }
+         type = tbuf[0];
+         namebuf[0] = 0;
+
+         char status_tmp, endian_tmp;
+         if(type == 'C')
+            trio_sscanf(tbuf, "%c %c %d %c %d %08x %16llx %16llx %.2047[^\r\n]", &type, &status_tmp, &length, &endian_tmp, &icount, &addr, &val, &compare, namebuf);
+         else
+            trio_sscanf(tbuf, "%c %c %d %c %d %08x %16llx %.2047[^\r\n]", &type, &status_tmp, &length, &endian_tmp, &icount, &addr, &val, namebuf);
+
+         status = (status_tmp == 'A') ? 1 : 0;
+         bigendian = (endian_tmp == 'B') ? 1 : 0;
+
+         for(x=0;x<strlen(namebuf);x++)
+         {
+            if(namebuf[x]==10 || namebuf[x]==13)
+            {
+               namebuf[x]=0;
+               break;
+            }
+            else if(namebuf[x]<0x20) namebuf[x]=' ';
+         }
+
+         // November 9, 2009 return value fix.
+         if(fgets(linebuf, 2048, fp) == NULL)
+            linebuf[0] = 0;
+
+         for(x=0;x<strlen(linebuf);x++)
+         {
+            if(linebuf[x]==10 || linebuf[x]==13)
+            {
+               linebuf[x]=0;
+               break;
+            }
+            else if(linebuf[x]<0x20) linebuf[x]=' ';
+         }
+
+         AddCheatEntry(strdup(namebuf), strdup(linebuf), addr, val, compare, status, type, length, bigendian);
+         tc++;
+      }
    }
 
-   AddCheatEntry(strdup(namebuf), strdup(linebuf), addr, val, compare, status, type, length, bigendian);
-   tc++;
-  }
- }
+   RebuildSubCheats();
 
- RebuildSubCheats();
-
- if(!override)
- {
-  MDFN_printf(_("%lu cheats loaded.\n"), (unsigned long)cheats.size());
-  MDFN_indent(-1);
-  fclose(fp);
- }
+   if(!override)
+   {
+      /* Cheats loaded. */
+      fclose(fp);
+   }
 }
 
 static void WriteOurCheats(FILE *tmp_fp, bool needheader)
@@ -449,27 +438,27 @@ void MDFN_FlushGameCheats(int nosave)
 
 int MDFNI_AddCheat(const char *name, uint32 addr, uint64 val, uint64 compare, char type, unsigned int length, bool bigendian)
 {
- char *t;
+   char *t;
 
- if(!(t = strdup(name)))
- {
-  CheatMemErr();
-  return(0);
- }
+   if(!(t = strdup(name)))
+   {
+      /* Error allocating memory for cheat data */
+      return(0);
+   }
 
- if(!AddCheatEntry(t, NULL, addr,val,compare,1,type, length, bigendian))
- {
-  free(t);
-  return(0);
- }
+   if(!AddCheatEntry(t, NULL, addr,val,compare,1,type, length, bigendian))
+   {
+      free(t);
+      return(0);
+   }
 
- savecheats = 1;
+   savecheats = 1;
 
- MDFNMP_RemoveReadPatches();
- RebuildSubCheats();
- MDFNMP_InstallReadPatches();
+   MDFNMP_RemoveReadPatches();
+   RebuildSubCheats();
+   MDFNMP_InstallReadPatches();
 
- return(1);
+   return(1);
 }
 
 int MDFNI_DelCheat(uint32 which)
