@@ -193,7 +193,7 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
 	if(wsLine < 144)
 	{
 	 if(!skip)
-          wsScanline(surface->pixels16 + wsLine * surface->pitchinpix);
+          wsScanline(surface->pixels + wsLine * surface->pitch);
 	}
 
 	WSwan_CheckSoundDMA();
@@ -263,15 +263,16 @@ void WSwan_SetLayerEnableMask(uint64 mask)
  LayerEnabled = mask;
 }
 
-void WSwan_SetPixelFormat(const MDFN_PixelFormat &format)
+void WSwan_SetPixelFormat(void)
 {
- for(int r = 0; r < 16; r++)
-  for(int g = 0; g < 16; g++)
-   for(int b = 0; b < 16; b++)
-      ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR((r * 17), (g * 17), (b * 17), 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
+   unsigned r, g, b, i;
+   for(r = 0; r < 16; r++)
+      for(g = 0; g < 16; g++)
+         for(b = 0; b < 16; b++)
+            ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR((r * 17), (g * 17), (b * 17), 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
 
- for(int i = 0; i < 16; i++)
-  ColorMapG[i] = MAKECOLOR((i * 17), (i * 17), (i * 17), 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
+   for(i = 0; i < 16; i++)
+      ColorMapG[i] = MAKECOLOR((i * 17), (i * 17), (i * 17), 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
 }
 
 void wsScanline(uint16 *target)

@@ -19,7 +19,6 @@ static retro_input_state_t input_state_cb;
 
 static bool overscan;
 static double last_sound_rate;
-static MDFN_PixelFormat last_pixel_format;
 
 static MDFN_Surface *surf;
 
@@ -670,14 +669,26 @@ bool retro_load_game(const struct retro_game_info *info)
 
    game->SetInput(0, "gamepad", &input_buf);
 
-   MDFN_PixelFormat pix_fmt(MDFN_COLORSPACE_RGB, 16, 8, 0, 24);
-   memset(&last_pixel_format, 0, sizeof(MDFN_PixelFormat));
+   surf = (MDFN_Surface*)calloc(1, sizeof(*surf));
    
-   surf = new MDFN_Surface(NULL, FB_WIDTH, FB_HEIGHT, FB_WIDTH, pix_fmt);
+   if (!surf)
+      return false;
+   
+   surf->width  = FB_WIDTH;
+   surf->height = FB_HEIGHT;
+   surf->pitch  = FB_WIDTH;
+
+   surf->pixels = (uint16_t*)calloc(1, FB_WIDTH * FB_HEIGHT * 2);
+
+   if (!surf->pixels)
+   {
+      free(surf);
+      return false;
+   }
 
    check_variables();
 
-   WSwan_SetPixelFormat(surf->format);
+   WSwan_SetPixelFormat();
 
    return game;
 }
@@ -772,8 +783,7 @@ void retro_run(void)
    unsigned width  = spec.DisplayRect.w;
    unsigned height = spec.DisplayRect.h;
 
-   const uint16_t *pix = surf->pixels16;
-   video_cb(pix, width, height, FB_WIDTH << 1);
+   video_cb(surf->pixels, width, height, FB_WIDTH << 1);
 
    video_frames++;
    audio_frames += spec.SoundBufSize;
@@ -809,7 +819,8 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 
 void retro_deinit(void)
 {
-   delete surf;
+   if (surf)
+      free(surf);
    surf = NULL;
 
    if (log_cb)
