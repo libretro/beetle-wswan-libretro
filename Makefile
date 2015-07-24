@@ -245,7 +245,6 @@ ifeq ($(NEED_DEINTERLACER), 1)
 endif
 
 MEDNAFEN_SOURCES := $(MEDNAFEN_DIR)/mednafen.cpp \
-	$(MEDNAFEN_DIR)/math_ops.cpp \
 	$(MEDNAFEN_DIR)/settings.cpp \
 	$(MEDNAFEN_DIR)/general.cpp \
 	$(MEDNAFEN_DIR)/state.cpp \

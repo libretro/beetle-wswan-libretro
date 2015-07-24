@@ -3,7 +3,7 @@
 
 // Source: http://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2
 // Rounds up to the nearest power of 2.
-static INLINE uint64 round_up_pow2(uint64 v)
+static INLINE uint32 round_up_pow2(uint32 v)
 {
  v--;
  v |= v >> 1;
@@ -11,7 +11,6 @@ static INLINE uint64 round_up_pow2(uint64 v)
  v |= v >> 4;
  v |= v >> 8;
  v |= v >> 16;
- v |= v >> 32;
  v++;
 
  v += (v == 0);
