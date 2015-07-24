@@ -3,18 +3,12 @@
 
 #include <string>
 
-extern uint32 MDFN_RoundUpPow2(uint32);
-
 void GetFileBase(const char *f);
 
 // File-inclusion for-read-only path, for PSF and CUE/TOC sheet usage.
 bool MDFN_IsFIROPSafe(const std::string &path);
 
 std::string MDFN_MakeFName(int type, int id1, const char *cd1);
-
-void MDFN_ltrim(char *string);
-void MDFN_rtrim(char *string);
-void MDFN_trim(char *string);
 
 typedef enum
 {
