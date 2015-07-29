@@ -86,24 +86,24 @@ static uint8 WSRCurrentSong;
 
 static void Reset(void)
 {
-	int		u0;
+   int		u0;
 
-	v30mz_reset();				/* Reset CPU */
-	WSwan_MemoryReset();
-        WSwan_GfxReset();
-        WSwan_SoundReset();
-	WSwan_InterruptReset();
-        WSwan_RTCReset();
-	WSwan_EEPROMReset();
+   v30mz_reset();				/* Reset CPU */
+   WSwan_MemoryReset();
+   WSwan_GfxReset();
+   WSwan_SoundReset();
+   WSwan_InterruptReset();
+   WSwan_RTCReset();
+   WSwan_EEPROMReset();
 
-	for(u0=0;u0<0xc9;u0++)
-	{
-	 if(u0 != 0xC4 && u0 != 0xC5 && u0 != 0xBA && u0 != 0xBB)
-	  WSwan_writeport(u0,startio[u0]);
-	}
+   for(u0=0;u0<0xc9;u0++)
+   {
+      if(u0 != 0xC4 && u0 != 0xC5 && u0 != 0xBA && u0 != 0xBB)
+         WSwan_writeport(u0,startio[u0]);
+   }
 
-	v30mz_set_reg(NEC_SS,0);
-	v30mz_set_reg(NEC_SP,0x2000);
+   v30mz_set_reg(NEC_SS,0);
+   v30mz_set_reg(NEC_SP,0x2000);
 }
 
 static uint8 *chee;
@@ -196,119 +196,119 @@ static bool TestMagic(const char *name, MDFNFILE *fp)
 
 static int Load(const char *name, MDFNFILE *fp)
 {
- uint32 real_rom_size;
+   uint32 real_rom_size;
 
- if(GET_FSIZE_PTR(fp) < 65536)
- {
-    /* ROM image is too small. */
-    return(0);
- }
-
- real_rom_size = (GET_FSIZE_PTR(fp) + 0xFFFF) & ~0xFFFF;
- rom_size = round_up_pow2(real_rom_size); //fp->size);
-
- wsCartROM = (uint8 *)calloc(1, rom_size);
-
-
- // This real_rom_size vs rom_size funny business is intended primarily for handling
- // WSR files.
- if(real_rom_size < rom_size)
-  memset(wsCartROM, 0xFF, rom_size - real_rom_size);
-
- memcpy(wsCartROM + (rom_size - real_rom_size), GET_FDATA_PTR(fp), GET_FSIZE_PTR(fp));
-
- printf(_("ROM:       %dKiB\n"), real_rom_size / 1024);
-
- uint8 header[10];
- memcpy(header, wsCartROM + rom_size - 10, 10);
-
- {
-  const char *developer_name = "???";
-  for(unsigned int x = 0; x < sizeof(Developers) / sizeof(DLEntry); x++)
-  {
-   if(Developers[x].id == header[0])
+   if(GET_FSIZE_PTR(fp) < 65536)
    {
-    developer_name = Developers[x].name;
-    break;
+      /* ROM image is too small. */
+      return(0);
    }
-  }
-  printf(_("Developer: %s (0x%02x)\n"), developer_name, header[0]);
- }
 
- uint32 SRAMSize = 0;
- eeprom_size = 0;
+   real_rom_size = (GET_FSIZE_PTR(fp) + 0xFFFF) & ~0xFFFF;
+   rom_size = round_up_pow2(real_rom_size); //fp->size);
 
- switch(header[5])
- {
-  case 0x01: SRAMSize = 8*1024; break;
-  case 0x02: SRAMSize = 32*1024; break;
-  case 0x03: SRAMSize = 16 * 65536; break;
-  case 0x04: SRAMSize = 32 * 65536; break; // Dicing Knight!
+   wsCartROM = (uint8 *)calloc(1, rom_size);
 
-  case 0x10: eeprom_size = 128; break;
-  case 0x20: eeprom_size = 2*1024; break;
-  case 0x50: eeprom_size = 1024; break;
- }
 
- //printf("%02x\n", header[5]);
+   // This real_rom_size vs rom_size funny business is intended primarily for handling
+   // WSR files.
+   if(real_rom_size < rom_size)
+      memset(wsCartROM, 0xFF, rom_size - real_rom_size);
 
- if(eeprom_size)
-  printf(_("EEPROM:  %d bytes\n"), eeprom_size);
+   memcpy(wsCartROM + (rom_size - real_rom_size), GET_FDATA_PTR(fp), GET_FSIZE_PTR(fp));
 
- if(SRAMSize)
-  printf(_("Battery-backed RAM:  %d bytes\n"), SRAMSize);
+   printf(_("ROM:       %dKiB\n"), real_rom_size / 1024);
 
- printf(_("Recorded Checksum:  0x%04x\n"), header[8] | (header[9] << 8));
- {
-  uint16 real_crc = 0;
-  for(unsigned int i = 0; i < rom_size - 2; i++)
-   real_crc += wsCartROM[i];
-  printf(_("Real Checksum:      0x%04x\n"), real_crc);
- }
+   uint8 header[10];
+   memcpy(header, wsCartROM + rom_size - 10, 10);
 
- if((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27)) /* Detective Conan */
- {
-  //puts("HAX");
-  /* WS cpu is using cache/pipeline or there's protected ROM bank where pointing CS */
-  wsCartROM[0xfffe8]=0xea;
-  wsCartROM[0xfffe9]=0x00;
-  wsCartROM[0xfffea]=0x00;
-  wsCartROM[0xfffeb]=0x00;
-  wsCartROM[0xfffec]=0x20;
- }
+   {
+      const char *developer_name = "???";
+      for(unsigned int x = 0; x < sizeof(Developers) / sizeof(DLEntry); x++)
+      {
+         if(Developers[x].id == header[0])
+         {
+            developer_name = Developers[x].name;
+            break;
+         }
+      }
+      printf(_("Developer: %s (0x%02x)\n"), developer_name, header[0]);
+   }
 
- {
-  if(header[6] & 0x1)
-   MDFNGameInfo->rotated = MDFN_ROTATE90;
- }
+   uint32 SRAMSize = 0;
+   eeprom_size = 0;
 
- MDFNMP_Init(16384, (1 << 20) / 1024);
+   switch(header[5])
+   {
+      case 0x01: SRAMSize = 8*1024; break;
+      case 0x02: SRAMSize = 32*1024; break;
+      case 0x03: SRAMSize = 16 * 65536; break;
+      case 0x04: SRAMSize = 32 * 65536; break; // Dicing Knight!
 
- v30mz_init(WSwan_readmem20, WSwan_writemem20, WSwan_readport, WSwan_writeport);
- WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); // EEPROM and SRAM are loaded in this func.
- WSwan_GfxInit();
- MDFNGameInfo->fps = (uint32)((uint64)3072000 * 65536 * 256 / (159*256));
+      case 0x10: eeprom_size = 128; break;
+      case 0x20: eeprom_size = 2*1024; break;
+      case 0x50: eeprom_size = 1024; break;
+   }
 
- WSwan_SoundInit();
+   //printf("%02x\n", header[5]);
 
- wsMakeTiles();
+   if(eeprom_size)
+      printf(_("EEPROM:  %d bytes\n"), eeprom_size);
 
- Reset();
+   if(SRAMSize)
+      printf(_("Battery-backed RAM:  %d bytes\n"), SRAMSize);
 
- return(1);
+   printf(_("Recorded Checksum:  0x%04x\n"), header[8] | (header[9] << 8));
+   {
+      uint16 real_crc = 0;
+      for(unsigned int i = 0; i < rom_size - 2; i++)
+         real_crc += wsCartROM[i];
+      printf(_("Real Checksum:      0x%04x\n"), real_crc);
+   }
+
+   if((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27)) /* Detective Conan */
+   {
+      //puts("HAX");
+      /* WS cpu is using cache/pipeline or there's protected ROM bank where pointing CS */
+      wsCartROM[0xfffe8]=0xea;
+      wsCartROM[0xfffe9]=0x00;
+      wsCartROM[0xfffea]=0x00;
+      wsCartROM[0xfffeb]=0x00;
+      wsCartROM[0xfffec]=0x20;
+   }
+
+   {
+      if(header[6] & 0x1)
+         MDFNGameInfo->rotated = MDFN_ROTATE90;
+   }
+
+   MDFNMP_Init(16384, (1 << 20) / 1024);
+
+   v30mz_init(WSwan_readmem20, WSwan_writemem20, WSwan_readport, WSwan_writeport);
+   WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); // EEPROM and SRAM are loaded in this func.
+   WSwan_GfxInit();
+   MDFNGameInfo->fps = (uint32)((uint64)3072000 * 65536 * 256 / (159*256));
+
+   WSwan_SoundInit();
+
+   wsMakeTiles();
+
+   Reset();
+
+   return(1);
 }
 
 static void CloseGame(void)
 {
- WSwan_MemoryKill(); // saves sram/eeprom
+   WSwan_MemoryKill(); // saves sram/eeprom
 
- WSwan_SoundKill();
+   WSwan_SoundKill();
 
- if(wsCartROM)
- {
-  free(wsCartROM);
-  wsCartROM = NULL;
- }
+   if(wsCartROM)
+   {
+      free(wsCartROM);
+      wsCartROM = NULL;
+   }
 }
 
 static void SetInput(int port, const char *type, void *ptr)
@@ -318,51 +318,52 @@ static void SetInput(int port, const char *type, void *ptr)
 
 static int StateAction(StateMem *sm, int load, int data_only)
 {
- if(!v30mz_StateAction(sm, load, data_only))
-  return(0);
- 
- // Call MemoryStateAction before others StateActions...
- if(!WSwan_MemoryStateAction(sm, load, data_only))
-  return(0);
+   if(!v30mz_StateAction(sm, load, data_only))
+      return(0);
 
- if(!WSwan_GfxStateAction(sm, load, data_only))
-  return(0);
+   // Call MemoryStateAction before others StateActions...
+   if(!WSwan_MemoryStateAction(sm, load, data_only))
+      return(0);
 
- if(!WSwan_RTCStateAction(sm, load, data_only))
-  return(0);
+   if(!WSwan_GfxStateAction(sm, load, data_only))
+      return(0);
 
- if(!WSwan_InterruptStateAction(sm, load, data_only))
-  return(0);
+   if(!WSwan_RTCStateAction(sm, load, data_only))
+      return(0);
 
- if(!WSwan_SoundStateAction(sm, load, data_only))
-  return(0);
+   if(!WSwan_InterruptStateAction(sm, load, data_only))
+      return(0);
 
- if(!WSwan_EEPROMStateAction(sm, load, data_only))
- {
-  puts("Oops");
-  return(0);
- }
+   if(!WSwan_SoundStateAction(sm, load, data_only))
+      return(0);
 
- return(1);
+   if(!WSwan_EEPROMStateAction(sm, load, data_only))
+   {
+      puts("Oops");
+      return(0);
+   }
+
+   return(1);
 }
 
 static void DoSimpleCommand(int cmd)
 {
- switch(cmd)
- {
-  case MDFN_MSC_POWER:
-  case MDFN_MSC_RESET: Reset();
-                        break;
- }
+   switch(cmd)
+   {
+      case MDFN_MSC_POWER:
+      case MDFN_MSC_RESET:
+         Reset();
+         break;
+   }
 }
 
 static const MDFNSetting_EnumList SexList[] =
 {
  { "m", WSWAN_SEX_MALE },
- { "male", WSWAN_SEX_MALE, gettext_noop("Male") },
+ { "male", WSWAN_SEX_MALE, "Male" },
 
  { "f", WSWAN_SEX_FEMALE },
- { "female", WSWAN_SEX_FEMALE, gettext_noop("Female") },
+ { "female", WSWAN_SEX_FEMALE, "Female" },
 
  { "3", 3 },
 
@@ -383,10 +384,10 @@ static const MDFNSetting_EnumList BloodList[] =
 
 static const MDFNSetting_EnumList LanguageList[] =
 {
- { "japanese", 0, gettext_noop("Japanese") },
+ { "japanese", 0, "Japanese" },
  { "0", 0 },
 
- { "english", 1, gettext_noop("English") },
+ { "english", 1, "English" },
  { "1", 1 },
 
  { NULL, 0 },
@@ -394,14 +395,14 @@ static const MDFNSetting_EnumList LanguageList[] =
 
 static const MDFNSetting WSwanSettings[] =
 {
- { "wswan.rotateinput", MDFNSF_NOFLAGS, gettext_noop("Virtually rotate D-pads along with screen."), NULL, MDFNST_BOOL, "0" },
- { "wswan.language", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, gettext_noop("Language games should display text in."), gettext_noop("The only game this setting is known to affect is \"Digimon Tamers - Battle Spirit\"."), MDFNST_ENUM, "english", NULL, NULL, NULL, NULL, LanguageList },
- { "wswan.name", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, gettext_noop("Name"), NULL, MDFNST_STRING, "Mednafen" },
- { "wswan.byear", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, gettext_noop("Birth Year"), NULL, MDFNST_UINT, "1989", "0", "9999" },
- { "wswan.bmonth", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, gettext_noop("Birth Month"), NULL, MDFNST_UINT, "6", "1", "12" },
- { "wswan.bday", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, gettext_noop("Birth Day"), NULL, MDFNST_UINT, "23", "1", "31" },
- { "wswan.sex", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, gettext_noop("Sex"), NULL, MDFNST_ENUM, "F", NULL, NULL, NULL, NULL, SexList },
- { "wswan.blood", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, gettext_noop("Blood Type"), NULL, MDFNST_ENUM, "O", NULL, NULL, NULL, NULL, BloodList },
+ { "wswan.rotateinput", MDFNSF_NOFLAGS, "Virtually rotate D-pads along with screen.", NULL, MDFNST_BOOL, "0" },
+ { "wswan.language", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Language games should display text in.", "The only game this setting is known to affect is \"Digimon Tamers - Battle Spirit\".", MDFNST_ENUM, "english", NULL, NULL, NULL, NULL, LanguageList },
+ { "wswan.name", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Name", NULL, MDFNST_STRING, "Mednafen" },
+ { "wswan.byear", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Birth Year", NULL, MDFNST_UINT, "1989", "0", "9999" },
+ { "wswan.bmonth", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Birth Month", NULL, MDFNST_UINT, "6", "1", "12" },
+ { "wswan.bday", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Birth Day", NULL, MDFNST_UINT, "23", "1", "31" },
+ { "wswan.sex", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Sex", NULL, MDFNST_ENUM, "F", NULL, NULL, NULL, NULL, SexList },
+ { "wswan.blood", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Blood Type", NULL, MDFNST_ENUM, "O", NULL, NULL, NULL, NULL, BloodList },
  { NULL }
 };
 
@@ -447,9 +448,9 @@ static InputInfoStruct InputInfo =
 
 static const FileExtensionSpecStruct KnownExtensions[] =
 {
- { ".ws", gettext_noop("WonderSwan ROM Image") },
- { ".wsc", gettext_noop("WonderSwan Color ROM Image") },
- { ".wsr", gettext_noop("WonderSwan Music Rip") },
+ { ".ws", "WonderSwan ROM Image" },
+ { ".wsc", "WonderSwan Color ROM Image" },
+ { ".wsr", "WonderSwan Music Rip" },
  { NULL, NULL }
 };
 
@@ -860,26 +861,11 @@ static size_t serialize_size;
 
 size_t retro_serialize_size(void)
 {
-   MDFNGI *curgame = (MDFNGI*)game;
-   //if (serialize_size)
-   //   return serialize_size;
-
-   if (!curgame->StateAction)
-   {
-      if (log_cb)
-         log_cb(RETRO_LOG_WARN, "[mednafen]: Module %s doesn't support save states.\n", curgame->shortname);
-      return 0;
-   }
-
    StateMem st;
    memset(&st, 0, sizeof(st));
 
    if (!MDFNSS_SaveSM(&st, 0, 0, NULL, NULL, NULL))
-   {
-      if (log_cb)
-         log_cb(RETRO_LOG_WARN, "[mednafen]: Module %s doesn't support save states.\n", curgame->shortname);
       return 0;
-   }
 
    free(st.data);
    return serialize_size = st.len;
