@@ -369,8 +369,7 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
       }
      }
 
-//#ifdef MSB_FIRST
-#if 1
+#ifdef MSB_FIRST
      if(tmp->flags & MDFNSTATE_RLSB64)
       Endian_A64_Swap(tmp->v, expected_size / sizeof(uint64));
      else if(tmp->flags & MDFNSTATE_RLSB32)
