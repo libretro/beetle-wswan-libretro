@@ -288,7 +288,6 @@ static int Load(const char *name, MDFNFILE *fp)
  WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); // EEPROM and SRAM are loaded in this func.
  WSwan_GfxInit();
  MDFNGameInfo->fps = (uint32)((uint64)3072000 * 65536 * 256 / (159*256));
- MDFNGameInfo->GameSetMD5Valid = FALSE;
 
  WSwan_SoundInit();
 
