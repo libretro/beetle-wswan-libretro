@@ -18,7 +18,7 @@ typedef enum
    IXH,IXL,
    IYH,IYL
 #else
-   AL,AH,
+      AL,AH,
    CL,CH,
    DL,DH,
    BL,BH,
