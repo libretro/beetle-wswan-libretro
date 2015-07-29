@@ -60,204 +60,286 @@ static uint8 VideoMode;
 
 void WSwan_GfxInit(void)
 {
- LayerEnabled = 7; // BG, FG, sprites
+   LayerEnabled = 7; // BG, FG, sprites
 }
 
 void WSwan_GfxWSCPaletteRAMWrite(uint32 ws_offset, uint8 data)
 {
- ws_offset=(ws_offset&0xfffe)-0xfe00;
- wsCols[(ws_offset>>1)>>4][(ws_offset>>1)&15] = wsRAM[ws_offset+0xfe00] | ((wsRAM[ws_offset+0xfe01]&0x0f) << 8);
+   ws_offset=(ws_offset&0xfffe)-0xfe00;
+   wsCols[(ws_offset>>1)>>4][(ws_offset>>1)&15] = wsRAM[ws_offset+0xfe00] | ((wsRAM[ws_offset+0xfe01]&0x0f) << 8);
 }
 
 void WSwan_GfxWrite(uint32 A, uint8 V)
 {
- if(A >= 0x1C && A <= 0x1F)
- {
-  wsColors[(A - 0x1C) * 2 + 0] = 0xF - (V & 0xf);
-  wsColors[(A - 0x1C) * 2 + 1] = 0xF - (V >> 4);
- }
- else if(A >= 0x20 && A <= 0x3F)
- {
-  wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) + 0] = V&7;
-  wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) | 1] = (V>>4)&7;
- }
- else switch(A)
- {
-  case 0x00: DispControl = V; break;
-  case 0x01: BGColor = V; break;
-  case 0x03: LineCompare = V; break;
-  case 0x04: SPRBase = V & 0x3F; break;
-  case 0x05: SpriteStart = V; break;
-  case 0x06: SpriteCount = V; break;
-  case 0x07: FGBGLoc = V; break;
-  case 0x08: FGx0 = V; break;
-  case 0x09: FGy0 = V; break;
-  case 0x0A: FGx1 = V; break;
-  case 0x0B: FGy1 = V; break;
-  case 0x0C: SPRx0 = V; break;
-  case 0x0D: SPRy0 = V; break;
-  case 0x0E: SPRx1 = V; break;
-  case 0x0F: SPRy1 = V; break;
-  case 0x10: BGXScroll = V; break;
-  case 0x11: BGYScroll = V; break;
-  case 0x12: FGXScroll = V; break;
-  case 0x13: FGYScroll = V; break;
+   if(A >= 0x1C && A <= 0x1F)
+   {
+      wsColors[(A - 0x1C) * 2 + 0] = 0xF - (V & 0xf);
+      wsColors[(A - 0x1C) * 2 + 1] = 0xF - (V >> 4);
+   }
+   else if(A >= 0x20 && A <= 0x3F)
+   {
+      wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) + 0] = V&7;
+      wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) | 1] = (V>>4)&7;
+   }
+   else switch(A)
+   {
+      case 0x00:
+         DispControl = V;
+         break;
+      case 0x01:
+         BGColor = V;
+         break;
+      case 0x03:
+         LineCompare = V;
+         break;
+      case 0x04:
+         SPRBase = V & 0x3F;
+         break;
+      case 0x05:
+         SpriteStart = V;
+         break;
+      case 0x06:
+         SpriteCount = V;
+         break;
+      case 0x07:
+         FGBGLoc = V;
+         break;
+      case 0x08:
+         FGx0 = V;
+         break;
+      case 0x09:
+         FGy0 = V;
+         break;
+      case 0x0A:
+         FGx1 = V;
+         break;
+      case 0x0B:
+         FGy1 = V;
+         break;
+      case 0x0C:
+         SPRx0 = V;
+         break;
+      case 0x0D:
+         SPRy0 = V;
+         break;
+      case 0x0E:
+         SPRx1 = V;
+         break;
+      case 0x0F:
+         SPRy1 = V;
+         break;
+      case 0x10:
+         BGXScroll = V;
+         break;
+      case 0x11:
+         BGYScroll = V;
+         break;
+      case 0x12:
+         FGXScroll = V;
+         break;
+      case 0x13:
+         FGYScroll = V;
+         break;
 
-  case 0x14: LCDControl = V; break; //    if((!(wsIO[0x14]&1))&&(data&1)) { wsLine=0; }break; /* LCD off ??*/
-  case 0x15: LCDIcons = V; break;
+      case 0x14:
+         LCDControl = V;
+         break;
+      case 0x15:
+         LCDIcons = V;
+         break;
+      case 0x60:
+         VideoMode = V; 
+         wsSetVideo(V>>5, false); 
+         break;
 
-  case 0x60: VideoMode = V; 
-	     wsSetVideo(V>>5, false); 
-	     //printf("VideoMode: %02x, %02x\n", V, V >> 5);
-	     break;
-
-  case 0xa2: if((V & 0x01) && !(BTimerControl & 0x01))
-	      HBCounter = HBTimerPeriod;
-	     if((V & 0x04) && !(BTimerControl & 0x04))
-	      VBCounter = VBTimerPeriod;
-	     BTimerControl = V; 
-	     //printf("%04x:%02x\n", A, V);
-	     break;
-  case 0xa4: HBTimerPeriod &= 0xFF00; HBTimerPeriod |= (V << 0); /*printf("%04x:%02x, %d\n", A, V, wsLine);*/ break;
-  case 0xa5: HBTimerPeriod &= 0x00FF; HBTimerPeriod |= (V << 8); HBCounter = HBTimerPeriod; /*printf("%04x:%02x, %d\n", A, V, wsLine);*/ break;
-  case 0xa6: VBTimerPeriod &= 0xFF00; VBTimerPeriod |= (V << 0); /*printf("%04x:%02x, %d\n", A, V, wsLine);*/ break;
-  case 0xa7: VBTimerPeriod &= 0x00FF; VBTimerPeriod |= (V << 8); VBCounter = VBTimerPeriod; /*printf("%04x:%02x, %d\n", A, V, wsLine);*/ break;
-  //default: printf("%04x:%02x\n", A, V); break;
- }
+      case 0xa2:
+         if((V & 0x01) && !(BTimerControl & 0x01))
+            HBCounter = HBTimerPeriod;
+         if((V & 0x04) && !(BTimerControl & 0x04))
+            VBCounter = VBTimerPeriod;
+         BTimerControl = V; 
+         break;
+      case 0xa4:
+         HBTimerPeriod &= 0xFF00;
+         HBTimerPeriod |= (V << 0);
+         break;
+      case 0xa5:
+         HBTimerPeriod &= 0x00FF; HBTimerPeriod |= (V << 8);
+         HBCounter = HBTimerPeriod;
+         break;
+      case 0xa6:
+         VBTimerPeriod &= 0xFF00; VBTimerPeriod |= (V << 0);
+         break;
+      case 0xa7:
+         VBTimerPeriod &= 0x00FF; VBTimerPeriod |= (V << 8);
+         VBCounter = VBTimerPeriod;
+         break;
+   }
 }
 
 uint8 WSwan_GfxRead(uint32 A)
 {
- if(A >= 0x1C && A <= 0x1F)
- {
-  uint8 ret = 0;
+   if(A >= 0x1C && A <= 0x1F)
+   {
+      uint8 ret = 0;
 
-  ret |= 0xF - wsColors[(A - 0x1C) * 2 + 0];
-  ret |= (0xF - wsColors[(A - 0x1C) * 2 + 1]) << 4;
+      ret |= 0xF - wsColors[(A - 0x1C) * 2 + 0];
+      ret |= (0xF - wsColors[(A - 0x1C) * 2 + 1]) << 4;
 
-  return(ret);
- }
- else if(A >= 0x20 && A <= 0x3F)
- {
-  uint8 ret = wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) + 0] | (wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) | 1] << 4);
+      return(ret);
+   }
+   else if(A >= 0x20 && A <= 0x3F)
+      return wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) + 0] | (wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) | 1] << 4);
+   else switch(A)
+   {
+      case 0x00:
+         return(DispControl);
+      case 0x01:
+         return(BGColor);
+      case 0x02:
+         return(wsLine);
+      case 0x03:
+         return(LineCompare);
+      case 0x04:
+         return(SPRBase);
+      case 0x05:
+         return(SpriteStart);
+      case 0x06:
+         return(SpriteCount);
+      case 0x07:
+         return(FGBGLoc);
+      case 0x08:
+         return(FGx0);
+      case 0x09:
+         return(FGy0);
+      case 0x0A:
+         return(FGx1);
+      case 0x0B:
+         return(FGy1);
+      case 0x0C:
+         return(SPRx0);
+      case 0x0D:
+         return(SPRy0);
+      case 0x0E:
+         return(SPRx1);
+      case 0x0F:
+         return(SPRy1);
+      case 0x10:
+         return(BGXScroll);
+      case 0x11:
+         return(BGYScroll);
+      case 0x12:
+         return(FGXScroll);
+      case 0x13:
+         return(FGYScroll);
+      case 0x14:
+         return(LCDControl);
+      case 0x15:
+         return(LCDIcons);
+      case 0x60:
+         return(VideoMode);
+      case 0xa0:
+         return(wsc ? 0x87 : 0x86);
+      case 0xa2:
+         return(BTimerControl);
+      case 0xa4:
+         return((HBTimerPeriod >> 0) & 0xFF);
+      case 0xa5:
+         return((HBTimerPeriod >> 8) & 0xFF);
+      case 0xa6:
+         return((VBTimerPeriod >> 0) & 0xFF);
+      case 0xa7:
+         return((VBTimerPeriod >> 8) & 0xFF);
+      case 0xa8:
+         return((HBCounter >> 0) & 0xFF);
+      case 0xa9:
+         return((HBCounter >> 8) & 0xFF);
+      case 0xaa:
+         return((VBCounter >> 0) & 0xFF);
+      case 0xab:
+         return((VBCounter >> 8) & 0xFF);
+      default:
+         break;
+   }
 
-  return(ret);
- }
- else switch(A)
- {
-  case 0x00: return(DispControl);
-  case 0x01: return(BGColor);
-  case 0x02: return(wsLine);
-  case 0x03: return(LineCompare);
-  case 0x04: return(SPRBase);
-  case 0x05: return(SpriteStart);
-  case 0x06: return(SpriteCount);
-  case 0x07: return(FGBGLoc);
-  case 0x08: return(FGx0); break;
-  case 0x09: return(FGy0); break;
-  case 0x0A: return(FGx1); break;
-  case 0x0B: return(FGy1); break;
-  case 0x0C: return(SPRx0); break;
-  case 0x0D: return(SPRy0); break;
-  case 0x0E: return(SPRx1); break;
-  case 0x0F: return(SPRy1); break;
-  case 0x10: return(BGXScroll);
-  case 0x11: return(BGYScroll);
-  case 0x12: return(FGXScroll);
-  case 0x13: return(FGYScroll);
-  case 0x14: return(LCDControl);
-  case 0x15: return(LCDIcons);
-  case 0x60: return(VideoMode);
-  case 0xa0: return(wsc ? 0x87 : 0x86);
-  case 0xa2: return(BTimerControl);
-  case 0xa4: return((HBTimerPeriod >> 0) & 0xFF);
-  case 0xa5: return((HBTimerPeriod >> 8) & 0xFF);
-  case 0xa6: return((VBTimerPeriod >> 0) & 0xFF);
-  case 0xa7: return((VBTimerPeriod >> 8) & 0xFF);
-  case 0xa8: /*printf("%04x\n", A);*/ return((HBCounter >> 0) & 0xFF);
-  case 0xa9: /*printf("%04x\n", A);*/ return((HBCounter >> 8) & 0xFF);
-  case 0xaa: /*printf("%04x\n", A);*/ return((VBCounter >> 0) & 0xFF);
-  case 0xab: /*printf("%04x\n", A);*/ return((VBCounter >> 8) & 0xFF);
-  default: return(0);
-  //default: printf("GfxRead:  %04x\n", A); return(0);
- }
+   return 0;
 }
 
 bool wsExecuteLine(MDFN_Surface *surface, bool skip)
 {
-        bool ret = FALSE;
+   bool ret = FALSE;
 
-	if(wsLine < 144)
-	{
-	 if(!skip)
-          wsScanline(surface->pixels + wsLine * surface->pitch);
-	}
+   if(wsLine < 144)
+   {
+      if(!skip)
+         wsScanline(surface->pixels + wsLine * surface->pitch);
+   }
 
-	WSwan_CheckSoundDMA();
+   WSwan_CheckSoundDMA();
 
-        // Update sprite data table
-        if(wsLine == 142)
-        {
-         SpriteCountCache = SpriteCount;
+   // Update sprite data table
+   if(wsLine == 142)
+   {
+      SpriteCountCache = SpriteCount;
 
-         if(SpriteCountCache > 0x80)
-          SpriteCountCache = 0x80;
+      if(SpriteCountCache > 0x80)
+         SpriteCountCache = 0x80;
 
-         memcpy(SpriteTable, &wsRAM[(SPRBase << 9) + (SpriteStart << 2)], SpriteCountCache << 2);
-        }
+      memcpy(SpriteTable, &wsRAM[(SPRBase << 9) + (SpriteStart << 2)], SpriteCountCache << 2);
+   }
 
-        if(wsLine == 144)
-        {
-                ret = TRUE;
-                WSwan_Interrupt(WSINT_VBLANK);
-                //printf("VBlank: %d\n", wsLine);
-        }
+   if(wsLine == 144)
+   {
+      ret = TRUE;
+      WSwan_Interrupt(WSINT_VBLANK);
+      //printf("VBlank: %d\n", wsLine);
+   }
 
 
-        if(HBCounter && (BTimerControl & 0x01))
-        {
-         HBCounter--;
-         if(!HBCounter)
+   if(HBCounter && (BTimerControl & 0x01))
+   {
+      HBCounter--;
+      if(!HBCounter)
+      {
+         // Loop mode?
+         if(BTimerControl & 0x02)
+            HBCounter = HBTimerPeriod;
+         WSwan_Interrupt(WSINT_HBLANK_TIMER);
+      }
+   }
+
+   v30mz_execute(224);
+   wsLine = (wsLine + 1) % 159;
+   if(wsLine == LineCompare)
+   {
+      WSwan_Interrupt(WSINT_LINE_HIT);
+      //printf("Line hit: %d\n", wsLine);
+   }
+   v30mz_execute(32);
+   WSwan_RTCClock(256);
+
+   if(!wsLine)
+   {
+      if(VBCounter && (BTimerControl & 0x04))
+      {
+         VBCounter--;
+         if(!VBCounter)
          {
-          // Loop mode?
-          if(BTimerControl & 0x02)
-           HBCounter = HBTimerPeriod;
-          WSwan_Interrupt(WSINT_HBLANK_TIMER);
+            if(BTimerControl & 0x08) // Loop mode?
+               VBCounter = VBTimerPeriod;
+
+            WSwan_Interrupt(WSINT_VBLANK_TIMER);
          }
-        }
+      }
+      wsLine = 0;
+   }
 
-        v30mz_execute(224);
-	wsLine = (wsLine + 1) % 159;
-        if(wsLine == LineCompare)
-        {
-         WSwan_Interrupt(WSINT_LINE_HIT);
-         //printf("Line hit: %d\n", wsLine);
-        }
-	v30mz_execute(32);
-	WSwan_RTCClock(256);
-
-        if(!wsLine)
-        {
-                if(VBCounter && (BTimerControl & 0x04))
-                {
-                 VBCounter--;
-                 if(!VBCounter)
-                 {
-                  if(BTimerControl & 0x08) // Loop mode?
-                   VBCounter = VBTimerPeriod;
-
-                  WSwan_Interrupt(WSINT_VBLANK_TIMER);
-                 }
-                }
-		wsLine = 0;
-        }
-	//if(ret) puts("Frame");
-        return(ret);
+   return(ret);
 }
 
 void WSwan_SetLayerEnableMask(uint64 mask)
 {
- LayerEnabled = mask;
+   LayerEnabled = mask;
 }
 
 void WSwan_SetPixelFormat(void)
@@ -274,322 +356,324 @@ void WSwan_SetPixelFormat(void)
 
 void wsScanline(uint16 *target)
 {
-	uint32		start_tile_n,map_a,startindex,adrbuf,b1,b2,j,t,l;
-	char		ys2;
-	uint8		b_bg[256];
-	uint8		b_bg_pal[256];
+   uint32		start_tile_n,map_a,startindex,adrbuf,b1,b2,j,t,l;
+   char		ys2;
+   uint8		b_bg[256];
+   uint8		b_bg_pal[256];
 
-	if(!wsVMode)
-		memset(b_bg, wsColors[BGColor&0xF]&0xF, 256);
-	else
-	{
-		memset(&b_bg[0], BGColor & 0xF, 256);
-		memset(&b_bg_pal[0], (BGColor>>4)  & 0xF, 256);
-	}
-	start_tile_n=(wsLine+BGYScroll)&0xff;/*First line*/
-	map_a=(((uint32)(FGBGLoc&0xF))<<11)+((start_tile_n&0xfff8)<<3);
-	startindex = BGXScroll >> 3; /*First tile in row*/
-	adrbuf = 7-(BGXScroll&7); /*Pixel in tile*/
-	
-	if((DispControl & 0x01) && (LayerEnabled & 0x01)) /*BG layer*/
-        {
-	 for(t=0;t<29;t++)
-	 {
-	  b1=wsRAM[map_a+(startindex<<1)];
-	  b2=wsRAM[map_a+(startindex<<1)+1];
-	  uint32 palette=(b2>>1)&15;
-	  b2=(b2<<8)|b1;
-	  wsGetTile(b2&0x1ff,start_tile_n&7,b2&0x8000,b2&0x4000,b2&0x2000);
+   if(!wsVMode)
+      memset(b_bg, wsColors[BGColor&0xF]&0xF, 256);
+   else
+   {
+      memset(&b_bg[0], BGColor & 0xF, 256);
+      memset(&b_bg_pal[0], (BGColor>>4)  & 0xF, 256);
+   }
+   start_tile_n=(wsLine+BGYScroll)&0xff;/*First line*/
+   map_a=(((uint32)(FGBGLoc&0xF))<<11)+((start_tile_n&0xfff8)<<3);
+   startindex = BGXScroll >> 3; /*First tile in row*/
+   adrbuf = 7-(BGXScroll&7); /*Pixel in tile*/
 
-          if(wsVMode)
-          {
-           if(wsVMode & 0x2)
-	   {
-            for(int x = 0; x < 8; x++)
-             if(wsTileRow[x])
-             {
-              b_bg[adrbuf + x] = wsTileRow[x];
-              b_bg_pal[adrbuf + x] = palette;
-             }
-	   }
-	   else
-	   {
-            for(int x = 0; x < 8; x++)
-             if(wsTileRow[x] || !(palette & 0x4))
-             {
-              b_bg[adrbuf + x] = wsTileRow[x];
-              b_bg_pal[adrbuf + x] = palette;
-             }
-	   }
-          }
-          else
-          {
-           for(int x = 0; x < 8; x++)
-            if(wsTileRow[x] || !(palette & 4))
-            {
-             b_bg[adrbuf + x] = wsColors[wsMonoPal[palette][wsTileRow[x]]];
-            }
-          }
-	  adrbuf += 8;
-	  startindex=(startindex + 1)&31;
-	 } // end for(t = 0 ...
-	} // End BG layer drawing
+   if((DispControl & 0x01) && (LayerEnabled & 0x01)) /*BG layer*/
+   {
+      for(t=0;t<29;t++)
+      {
+         b1=wsRAM[map_a+(startindex<<1)];
+         b2=wsRAM[map_a+(startindex<<1)+1];
+         uint32 palette=(b2>>1)&15;
+         b2=(b2<<8)|b1;
+         wsGetTile(b2&0x1ff,start_tile_n&7,b2&0x8000,b2&0x4000,b2&0x2000);
 
-	if((DispControl & 0x02) && (LayerEnabled & 0x02))/*FG layer*/
-	{
-	 uint8 windowtype = DispControl&0x30;
-         bool in_window[256 + 8*2];
-
-	 if(windowtype)
+         if(wsVMode)
          {
-          memset(in_window, 0, sizeof(in_window));
-
-	  if(windowtype == 0x20) // Display FG only inside window
-	  {
-           if((wsLine >= FGy0) && (wsLine < FGy1))
-            for(j = FGx0; j <= FGx1 && j < 224; j++)
-              in_window[7 + j] = 1;
-	  }
-	  else if(windowtype == 0x30) // Display FG only outside window
-	  {
-	   for(j = 0; j < 224; j++)
-	   {
-	    if(!(j >= FGx0 && j < FGx1) || !((wsLine >= FGy0) && (wsLine < FGy1)))
-	     in_window[7 + j] = 1;
-	   }
- 	  }
-	  else
-	  {
-	   puts("Who knows!");
-	  }
+            if(wsVMode & 0x2)
+            {
+               for(int x = 0; x < 8; x++)
+                  if(wsTileRow[x])
+                  {
+                     b_bg[adrbuf + x] = wsTileRow[x];
+                     b_bg_pal[adrbuf + x] = palette;
+                  }
+            }
+            else
+            {
+               for(int x = 0; x < 8; x++)
+                  if(wsTileRow[x] || !(palette & 0x4))
+                  {
+                     b_bg[adrbuf + x] = wsTileRow[x];
+                     b_bg_pal[adrbuf + x] = palette;
+                  }
+            }
          }
          else
-          memset(in_window, 1, sizeof(in_window));
-
-	 start_tile_n=(wsLine+FGYScroll)&0xff;
-	 map_a=(((uint32)((FGBGLoc>>4)&0xF))<<11)+((start_tile_n>>3)<<6);
-	 startindex = FGXScroll >> 3;
-	 adrbuf = 7-(FGXScroll&7);
-
-         for(t=0; t<29; t++)
          {
-          b1=wsRAM[map_a+(startindex<<1)];
-          b2=wsRAM[map_a+(startindex<<1)+1];
-          uint32 palette=(b2>>1)&15;
-          b2=(b2<<8)|b1;
-          wsGetTile(b2&0x1ff,start_tile_n&7,b2&0x8000,b2&0x4000,b2&0x2000);
+            for(int x = 0; x < 8; x++)
+               if(wsTileRow[x] || !(palette & 4))
+               {
+                  b_bg[adrbuf + x] = wsColors[wsMonoPal[palette][wsTileRow[x]]];
+               }
+         }
+         adrbuf += 8;
+         startindex=(startindex + 1)&31;
+      } // end for(t = 0 ...
+   } // End BG layer drawing
 
-          if(wsVMode)
-          {
-	   if(wsVMode & 0x2)
-            for(int x = 0; x < 8; x++)
-	    {
-             if(wsTileRow[x] && in_window[adrbuf + x])
-             {
-              b_bg[adrbuf + x] = wsTileRow[x] | 0x10;
-              b_bg_pal[adrbuf + x] = palette;
-             }
-	    }
-	   else
-            for(int x = 0; x < 8; x++)
-	    {
-             if((wsTileRow[x] || !(palette & 0x4)) && in_window[adrbuf + x])
-             {
-              b_bg[adrbuf + x] = wsTileRow[x] | 0x10;
-              b_bg_pal[adrbuf + x] = palette;
-             }
-	    }
-          }
-          else
-          {
-           for(int x = 0; x < 8; x++)
-            if((wsTileRow[x] || !(palette & 4)) && in_window[adrbuf + x])
+   if((DispControl & 0x02) && (LayerEnabled & 0x02))/*FG layer*/
+   {
+      uint8 windowtype = DispControl&0x30;
+      bool in_window[256 + 8*2];
+
+      if(windowtype)
+      {
+         memset(in_window, 0, sizeof(in_window));
+
+         if(windowtype == 0x20) // Display FG only inside window
+         {
+            if((wsLine >= FGy0) && (wsLine < FGy1))
+               for(j = FGx0; j <= FGx1 && j < 224; j++)
+                  in_window[7 + j] = 1;
+         }
+         else if(windowtype == 0x30) // Display FG only outside window
+         {
+            for(j = 0; j < 224; j++)
             {
-             b_bg[adrbuf + x] = wsColors[wsMonoPal[palette][wsTileRow[x]]] | 0x10;
+               if(!(j >= FGx0 && j < FGx1) || !((wsLine >= FGy0) && (wsLine < FGy1)))
+                  in_window[7 + j] = 1;
             }
-          }
-          adrbuf += 8;
-          startindex=(startindex + 1)&31;
-         } // end for(t = 0 ...
+         }
+         else
+         {
+            puts("Who knows!");
+         }
+      }
+      else
+         memset(in_window, 1, sizeof(in_window));
 
-	} // end FG drawing
+      start_tile_n=(wsLine+FGYScroll)&0xff;
+      map_a=(((uint32)((FGBGLoc>>4)&0xF))<<11)+((start_tile_n>>3)<<6);
+      startindex = FGXScroll >> 3;
+      adrbuf = 7-(FGXScroll&7);
 
-	if((DispControl & 0x04) && SpriteCountCache && (LayerEnabled & 0x04))/*Sprites*/
-	{
-	  int xs,ts,as,ys,ysx,h;
-	  bool in_window[256 + 8*2];
+      for(t=0; t<29; t++)
+      {
+         b1=wsRAM[map_a+(startindex<<1)];
+         b2=wsRAM[map_a+(startindex<<1)+1];
+         uint32 palette=(b2>>1)&15;
+         b2=(b2<<8)|b1;
+         wsGetTile(b2&0x1ff,start_tile_n&7,b2&0x8000,b2&0x4000,b2&0x2000);
 
-          if(DispControl & 0x08)
-	  {
-	   memset(in_window, 0, sizeof(in_window));
-	   if((wsLine >= SPRy0) && (wsLine < SPRy1))
+         if(wsVMode)
+         {
+            if(wsVMode & 0x2)
+               for(int x = 0; x < 8; x++)
+               {
+                  if(wsTileRow[x] && in_window[adrbuf + x])
+                  {
+                     b_bg[adrbuf + x] = wsTileRow[x] | 0x10;
+                     b_bg_pal[adrbuf + x] = palette;
+                  }
+               }
+            else
+               for(int x = 0; x < 8; x++)
+               {
+                  if((wsTileRow[x] || !(palette & 0x4)) && in_window[adrbuf + x])
+                  {
+                     b_bg[adrbuf + x] = wsTileRow[x] | 0x10;
+                     b_bg_pal[adrbuf + x] = palette;
+                  }
+               }
+         }
+         else
+         {
+            for(int x = 0; x < 8; x++)
+               if((wsTileRow[x] || !(palette & 4)) && in_window[adrbuf + x])
+               {
+                  b_bg[adrbuf + x] = wsColors[wsMonoPal[palette][wsTileRow[x]]] | 0x10;
+               }
+         }
+         adrbuf += 8;
+         startindex=(startindex + 1)&31;
+      } // end for(t = 0 ...
+
+   } // end FG drawing
+
+   if((DispControl & 0x04) && SpriteCountCache && (LayerEnabled & 0x04))/*Sprites*/
+   {
+      int xs,ts,as,ys,ysx,h;
+      bool in_window[256 + 8*2];
+
+      if(DispControl & 0x08)
+      {
+         memset(in_window, 0, sizeof(in_window));
+         if((wsLine >= SPRy0) && (wsLine < SPRy1))
             for(j = SPRx0; j < SPRx1 && j < 256; j++)
-	      in_window[7 + j] = 1;
-	  }
-	  else
-	   memset(in_window, 1, sizeof(in_window));
+               in_window[7 + j] = 1;
+      }
+      else
+         memset(in_window, 1, sizeof(in_window));
 
-		for(h = SpriteCountCache - 1; h >= 0; h--)
-		{
-			ts = SpriteTable[h][0];
-			as = SpriteTable[h][1];
-			ysx = SpriteTable[h][2];
-			ys2 = (int8)SpriteTable[h][2];
-			xs = SpriteTable[h][3];
+      for(h = SpriteCountCache - 1; h >= 0; h--)
+      {
+         ts = SpriteTable[h][0];
+         as = SpriteTable[h][1];
+         ysx = SpriteTable[h][2];
+         ys2 = (int8)SpriteTable[h][2];
+         xs = SpriteTable[h][3];
 
-			if(xs >= 249) xs -= 256;
+         if(xs >= 249) xs -= 256;
 
-			if(ysx > 150) 
-			 ys = ys2;
-			else 
-			 ys = ysx;
+         if(ysx > 150) 
+            ys = ys2;
+         else 
+            ys = ysx;
 
-			ys = wsLine - ys;
+         ys = wsLine - ys;
 
-			if(ys >= 0 && ys < 8 && xs < 224)
-			{
-			 uint32 palette = ((as >> 1) & 0x7);
-			 
-			 ts |= (as&1) << 8;
-			 wsGetTile(ts, ys, as & 0x80, as & 0x40, 0);
+         if(ys >= 0 && ys < 8 && xs < 224)
+         {
+            uint32 palette = ((as >> 1) & 0x7);
 
-			 if(wsVMode)
-			 {
-			  if(wsVMode & 0x2)
-			  {
-			   for(int x = 0; x < 8; x++)
-			    if(wsTileRow[x])
-			    {
-		             if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
-		             {
-			      bool drawthis = 0;
+            ts |= (as&1) << 8;
+            wsGetTile(ts, ys, as & 0x80, as & 0x40, 0);
 
-			      if(!(DispControl & 0x08)) 
-			       drawthis = TRUE;
-			      else if((as & 0x10) && !in_window[7 + xs + x])
-			       drawthis = TRUE;
-			      else if(!(as & 0x10) && in_window[7 + xs + x])
-			       drawthis = TRUE;
+            if(wsVMode)
+            {
+               if(wsVMode & 0x2)
+               {
+                  for(int x = 0; x < 8; x++)
+                     if(wsTileRow[x])
+                     {
+                        if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
+                        {
+                           bool drawthis = 0;
 
-			      if(drawthis)
-		              {
-		               b_bg[xs + x + 7] = wsTileRow[x] | (b_bg[xs + x + 7] & 0x10);
-		               b_bg_pal[xs + x + 7] = 8 + palette;
-		              }
-		             }
-		            }
-			  }
-			  else
-			  {
-                           for(int x = 0; x < 8; x++)
-                            if(wsTileRow[x] || !(palette & 0x4))
-                            {
-                             if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
-                             {
-                              bool drawthis = 0;
+                           if(!(DispControl & 0x08)) 
+                              drawthis = TRUE;
+                           else if((as & 0x10) && !in_window[7 + xs + x])
+                              drawthis = TRUE;
+                           else if(!(as & 0x10) && in_window[7 + xs + x])
+                              drawthis = TRUE;
 
-                              if(!(DispControl & 0x08))
-                               drawthis = TRUE;
-                              else if((as & 0x10) && !in_window[7 + xs + x])
-                               drawthis = TRUE;
-                              else if(!(as & 0x10) && in_window[7 + xs + x])
-                               drawthis = TRUE;
-
-                              if(drawthis)
-                              {
-                               b_bg[xs + x + 7] = wsTileRow[x] | (b_bg[xs + x + 7] & 0x10);
-                               b_bg_pal[xs + x + 7] = 8 + palette;
-                              }
-                             }
-                            }
-
-			  }
-
-			 }
-			 else
-			 {
-                          for(int x = 0; x < 8; x++)
-                           if(wsTileRow[x] || !(palette & 4))
+                           if(drawthis)
                            {
-                            if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
-                            {
-                             bool drawthis = 0;
-
-                             if(!(DispControl & 0x08))
-                              drawthis = TRUE;
-                             else if((as & 0x10) && !in_window[7 + xs + x])
-                              drawthis = TRUE;
-                             else if(!(as & 0x10) && in_window[7 + xs + x])
-                              drawthis = TRUE;
-
-                             if(drawthis)
-                             //if((as & 0x10) || in_window[7 + xs + x])
-                             {
-		              b_bg[xs + x + 7] = wsColors[wsMonoPal[8 + palette][wsTileRow[x]]] | (b_bg[xs + x + 7] & 0x10);
-                             }
-                            }
+                              b_bg[xs + x + 7] = wsTileRow[x] | (b_bg[xs + x + 7] & 0x10);
+                              b_bg_pal[xs + x + 7] = 8 + palette;
                            }
+                        }
+                     }
+               }
+               else
+               {
+                  for(int x = 0; x < 8; x++)
+                     if(wsTileRow[x] || !(palette & 0x4))
+                     {
+                        if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
+                        {
+                           bool drawthis = 0;
 
-			 }
-			}
-		}
+                           if(!(DispControl & 0x08))
+                              drawthis = TRUE;
+                           else if((as & 0x10) && !in_window[7 + xs + x])
+                              drawthis = TRUE;
+                           else if(!(as & 0x10) && in_window[7 + xs + x])
+                              drawthis = TRUE;
 
-	}	// End sprite drawing
+                           if(drawthis)
+                           {
+                              b_bg[xs + x + 7] = wsTileRow[x] | (b_bg[xs + x + 7] & 0x10);
+                              b_bg_pal[xs + x + 7] = 8 + palette;
+                           }
+                        }
+                     }
 
-	if(wsVMode)
-	{
-	 for(l=0;l<224;l++)
-	  target[l] = ColorMap[wsCols[b_bg_pal[l+7]][b_bg[(l+7)]&0xf]];
-	}
-	else
-	{
-	 for(l=0;l<224;l++)
- 	  target[l] = ColorMapG[(b_bg[l+7])&15];
-	}
+               }
+
+            }
+            else
+            {
+               for(int x = 0; x < 8; x++)
+                  if(wsTileRow[x] || !(palette & 4))
+                  {
+                     if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
+                     {
+                        bool drawthis = 0;
+
+                        if(!(DispControl & 0x08))
+                           drawthis = TRUE;
+                        else if((as & 0x10) && !in_window[7 + xs + x])
+                           drawthis = TRUE;
+                        else if(!(as & 0x10) && in_window[7 + xs + x])
+                           drawthis = TRUE;
+
+                        if(drawthis)
+                           //if((as & 0x10) || in_window[7 + xs + x])
+                        {
+                           b_bg[xs + x + 7] = wsColors[wsMonoPal[8 + palette][wsTileRow[x]]] | (b_bg[xs + x + 7] & 0x10);
+                        }
+                     }
+                  }
+
+            }
+         }
+      }
+
+   }	// End sprite drawing
+
+   if(wsVMode)
+   {
+      for(l=0;l<224;l++)
+         target[l] = ColorMap[wsCols[b_bg_pal[l+7]][b_bg[(l+7)]&0xf]];
+   }
+   else
+   {
+      for(l=0;l<224;l++)
+         target[l] = ColorMapG[(b_bg[l+7])&15];
+   }
 }
 
 
 void WSwan_GfxReset(void)
 {
- wsLine=0;
- wsSetVideo(0,TRUE);
+   unsigned u0, u1;
 
- memset(SpriteTable, 0, sizeof(SpriteTable));
- SpriteCountCache = 0;
- DispControl = 0;
- BGColor = 0;
- LineCompare = 0xBB;
- SPRBase = 0;
+   wsLine=0;
+   wsSetVideo(0,TRUE);
 
- SpriteStart = 0;
- SpriteCount = 0;
- FGBGLoc = 0;
+   memset(SpriteTable, 0, sizeof(SpriteTable));
+   SpriteCountCache = 0;
+   DispControl = 0;
+   BGColor = 0;
+   LineCompare = 0xBB;
+   SPRBase = 0;
 
- FGx0 = 0;
- FGy0 = 0;
- FGx1 = 0;
- FGy1 = 0;
- SPRx0 = 0;
- SPRy0 = 0;
- SPRx1 = 0;
- SPRy1 = 0;
+   SpriteStart = 0;
+   SpriteCount = 0;
+   FGBGLoc = 0;
 
- BGXScroll = BGYScroll = 0;
- FGXScroll = FGYScroll = 0;
- LCDControl = 0;
- LCDIcons = 0;
+   FGx0 = 0;
+   FGy0 = 0;
+   FGx1 = 0;
+   FGy1 = 0;
+   SPRx0 = 0;
+   SPRy0 = 0;
+   SPRx1 = 0;
+   SPRy1 = 0;
 
- BTimerControl = 0;
- HBTimerPeriod = 0;
- VBTimerPeriod = 0;
+   BGXScroll = BGYScroll = 0;
+   FGXScroll = FGYScroll = 0;
+   LCDControl = 0;
+   LCDIcons = 0;
 
- HBCounter = 0;
- VBCounter = 0;
+   BTimerControl = 0;
+   HBTimerPeriod = 0;
+   VBTimerPeriod = 0;
+
+   HBCounter = 0;
+   VBCounter = 0;
 
 
- for(int u0=0;u0<16;u0++)
-  for(int u1=0;u1<16;u1++)
-   wsCols[u0][u1]=0;
+   for(u0=0;u0<16;u0++)
+      for(u1=0;u1<16;u1++)
+         wsCols[u0][u1]=0;
 
 }
 

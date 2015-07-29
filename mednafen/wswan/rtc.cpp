@@ -43,32 +43,48 @@ void WSwan_RTCWrite(uint32 A, uint8 V)
 
 uint8 WSwan_RTCRead(uint32 A)
 {
+   time_t long_time;
+   struct tm *newtime;
+
    switch(A)
    {
-      case 0xca : return (Command|0x80);
-      case 0xcb :
-                  if(Command == 0x15)
-                  {
-                     time_t long_time = CurrentTime;
-                     struct tm *newtime = gmtime( &long_time );
+      case 0xca:
+         return (Command|0x80);
+      case 0xcb:
+         if(Command != 0x15)
+            return Data | 0x80;
 
-                     switch(wsCA15)
-                     {
-                        case 0: wsCA15++;return mBCD(newtime->tm_year-100);
-                        case 1: wsCA15++;return mBCD(newtime->tm_mon);
-                        case 2: wsCA15++;return mBCD(newtime->tm_mday);
-                        case 3: wsCA15++;return mBCD(newtime->tm_wday);
-                        case 4: wsCA15++;return mBCD(newtime->tm_hour);
-                        case 5: wsCA15++;return mBCD(newtime->tm_min);
-                        case 6: wsCA15=0;return mBCD(newtime->tm_sec);
-                     }
-                     return 0;
-                  }
-                  else
-                     return Data | 0x80;
+         long_time = CurrentTime;
+         newtime = gmtime( &long_time );
 
+         switch(wsCA15)
+         {
+            case 0:
+               wsCA15++;
+               return mBCD(newtime->tm_year-100);
+            case 1:
+               wsCA15++;
+               return mBCD(newtime->tm_mon);
+            case 2:
+               wsCA15++;
+               return mBCD(newtime->tm_mday);
+            case 3:
+               wsCA15++;
+               return mBCD(newtime->tm_wday);
+            case 4:
+               wsCA15++;
+               return mBCD(newtime->tm_hour);
+            case 5:
+               wsCA15++;
+               return mBCD(newtime->tm_min);
+            case 6:
+               wsCA15=0;
+               return mBCD(newtime->tm_sec);
+         }
+         break;
    }
-   return(0);
+
+   return 0;
 }
 
 void WSwan_RTCReset(void)
