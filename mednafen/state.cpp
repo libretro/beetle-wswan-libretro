@@ -184,6 +184,7 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
   else
    smem_write(st, (uint8 *)sf->v, bytesize);
 
+#ifdef MSB_FIRST
   /* Now restore the original byte order. */
   if(sf->flags & MDFNSTATE_BOOL)
   {
@@ -197,6 +198,7 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
 	  Endian_A16_LE_to_NE(sf->v, bytesize / sizeof(uint16));
   else if(sf->flags & RLSB)
     FlipByteOrder((uint8_t*)sf->v, bytesize);
+#endif
   sf++; 
  }
 
@@ -367,6 +369,8 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
       }
      }
 
+//#ifdef MSB_FIRST
+#if 1
      if(tmp->flags & MDFNSTATE_RLSB64)
       Endian_A64_Swap(tmp->v, expected_size / sizeof(uint64));
      else if(tmp->flags & MDFNSTATE_RLSB32)
@@ -375,6 +379,7 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
       Endian_A16_Swap(tmp->v, expected_size / sizeof(uint16));
      else if(tmp->flags & RLSB)
       FlipByteOrder((uint8_t*)tmp->v, expected_size);
+#endif
     }
    }
    else
