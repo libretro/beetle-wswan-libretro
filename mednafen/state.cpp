@@ -154,7 +154,7 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
    smem_write(st, nameo, 1 + nameo[0]);
    smem_write32le(st, bytesize);
 
-#if 1
+#ifdef MSB_FIRST
    /* Flip the byte order... */
    if(sf->flags & MDFNSTATE_BOOL)
    {
