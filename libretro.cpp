@@ -2,7 +2,6 @@
 #include "mednafen/mempatcher.h"
 #include "mednafen/git.h"
 #include "mednafen/general.h"
-#include "mednafen/md5.h"
 #include "libretro.h"
 
 static MDFNGI *game;
@@ -63,7 +62,6 @@ static void set_basename(const char *path)
  */
 
 #include "mednafen/wswan/wswan.h"
-#include "mednafen/md5.h"
 #include "mednafen/mempatcher.h"
 
 #include <sys/types.h>
@@ -220,11 +218,6 @@ static int Load(const char *name, MDFNFILE *fp)
  memcpy(wsCartROM + (rom_size - real_rom_size), GET_FDATA_PTR(fp), GET_FSIZE_PTR(fp));
 
  printf(_("ROM:       %dKiB\n"), real_rom_size / 1024);
- md5_context md5;
- md5.starts();
- md5.update(wsCartROM, rom_size);
- md5.finish(MDFNGameInfo->MD5);
- printf(_("ROM MD5:   0x%s\n"), md5_context::asciistr(MDFNGameInfo->MD5, 0).c_str());
 
  uint8 header[10];
  memcpy(header, wsCartROM + rom_size - 10, 10);
@@ -953,11 +946,7 @@ std::string MDFN_MakeFName(MakeFName_Type type, int id1, const char *cd1)
    {
       case MDFNMKF_SAV:
          ret = retro_save_directory +slash + retro_base_name +
-            std::string(".") +
-#ifndef _XBOX
-	    md5_context::asciistr(MDFNGameInfo->MD5, 0) + std::string(".") +
-#endif
-            std::string(cd1);
+            std::string(".") + std::string(cd1);
          break;
       case MDFNMKF_FIRMWARE:
          ret = retro_base_directory + slash + std::string(cd1);
