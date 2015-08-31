@@ -197,12 +197,10 @@ static bool TestMagic(const char *name, MDFNFILE *fp)
 static int Load(const char *name, MDFNFILE *fp)
 {
    uint32 real_rom_size;
+   uint8 header[10];
 
    if(GET_FSIZE_PTR(fp) < 65536)
-   {
-      /* ROM image is too small. */
       return(0);
-   }
 
    real_rom_size = (GET_FSIZE_PTR(fp) + 0xFFFF) & ~0xFFFF;
    rom_size = round_up_pow2(real_rom_size); //fp->size);
@@ -217,9 +215,6 @@ static int Load(const char *name, MDFNFILE *fp)
 
    memcpy(wsCartROM + (rom_size - real_rom_size), GET_FDATA_PTR(fp), GET_FSIZE_PTR(fp));
 
-   printf(_("ROM:       %dKiB\n"), real_rom_size / 1024);
-
-   uint8 header[10];
    memcpy(header, wsCartROM + rom_size - 10, 10);
 
    {
@@ -250,15 +245,6 @@ static int Load(const char *name, MDFNFILE *fp)
       case 0x50: eeprom_size = 1024; break;
    }
 
-   //printf("%02x\n", header[5]);
-
-   if(eeprom_size)
-      printf(_("EEPROM:  %d bytes\n"), eeprom_size);
-
-   if(SRAMSize)
-      printf(_("Battery-backed RAM:  %d bytes\n"), SRAMSize);
-
-   printf(_("Recorded Checksum:  0x%04x\n"), header[8] | (header[9] << 8));
    {
       uint16 real_crc = 0;
       for(unsigned int i = 0; i < rom_size - 2; i++)

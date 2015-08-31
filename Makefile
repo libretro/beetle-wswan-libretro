@@ -137,6 +137,8 @@ else ifeq ($(platform), psl1ght)
    ENDIANNESS_DEFINES := -DMSB_FIRST -DBYTE_ORDER=BIG_ENDIAN
    FLAGS += -DHAVE_MKDIR -DBYTE_ORDER=BIG_ENDIAN
    STATIC_LINKING = 1
+
+# PSP
 else ifeq ($(platform), psp1)
    TARGET := $(TARGET_NAME)_psp1.a
    CC = psp-gcc$(EXE_EXT)
@@ -145,6 +147,16 @@ else ifeq ($(platform), psp1)
    FLAGS += -DPSP -G0
    FLAGS += -DHAVE_MKDIR
    STATIC_LINKING = 1
+
+# Vita
+else ifeq ($(platform), vita)
+   TARGET := $(TARGET_NAME)_vita.a
+	CC = arm-vita-eabi-gcc$(EXE_EXT)
+	CXX = arm-vita-eabi-g++$(EXE_EXT)
+	AR = arm-vita-eabi-ar$(EXE_EXT)
+   FLAGS += -DVITA -DHAVE_MKDIR
+   STATIC_LINKING = 1
+
 else ifeq ($(platform), xenon)
    TARGET := $(TARGET_NAME)_xenon360.a
    CC = xenon-gcc$(EXE_EXT)

@@ -20,7 +20,7 @@ enum
 };
 
 /* Public variables */
-extern int v30mz_ICount;
+extern int32 v30mz_ICount;
 extern uint32 v30mz_timestamp;
 
 
