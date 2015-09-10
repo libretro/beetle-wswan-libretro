@@ -157,6 +157,15 @@ else ifeq ($(platform), vita)
    FLAGS += -DVITA -DHAVE_MKDIR
    STATIC_LINKING = 1
 
+# CTR (3DS)
+else ifeq ($(platform), ctr)
+	TARGET := $(TARGET_NAME)_libretro_ctr.a
+	CC = $(DEVKITARM)/bin/arm-none-eabi-gcc$(EXE_EXT)
+	CXX = $(DEVKITARM)/bin/arm-none-eabi-g++$(EXE_EXT)
+	AR = $(DEVKITARM)/bin/arm-none-eabi-ar$(EXE_EXT)
+   FLAGS += -D_3DS
+   STATIC_LINKING = 1
+
 else ifeq ($(platform), xenon)
    TARGET := $(TARGET_NAME)_xenon360.a
    CC = xenon-gcc$(EXE_EXT)
