@@ -54,7 +54,6 @@ class MDFNFILE
 	 return(0);
 	}
 
-	char *fgets(char *s, int size);
    uint8 *f_data;
    int64 f_size;
    char *f_ext;
