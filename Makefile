@@ -89,9 +89,9 @@ endif
    CXX = c++ -arch armv7 -isysroot $(IOSSDK)
 IPHONEMINVER :=
 ifeq ($(platform),ios9)
-   IPHONEMINVER = -miphone-version-min=8.0
+   IPHONEMINVER = -miphoneos-version-min=8.0
 else
-   IPHONEMINVER = -miphone-version-min=5.0
+   IPHONEMINVER = -miphoneos-version-min=5.0
 endif
    LDFLAGS += $(IPHONEMINVER)
    FLAGS += $(IPHONEMINVER)
