@@ -65,7 +65,6 @@ static void set_basename(const char *path)
 #include "mednafen/mempatcher.h"
 
 #include <sys/types.h>
-#include <math.h>
 
 #include "mednafen/wswan/gfx.h"
 #include "mednafen/wswan/wswan-memory.h"
