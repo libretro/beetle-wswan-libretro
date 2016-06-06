@@ -28,7 +28,6 @@
 #include "../mempatcher.h"
 #include <time.h>
 #include <math.h>
-#include "../include/trio/trio.h"
 
 static bool SkipSL; // Skip save and load
 
@@ -417,7 +416,7 @@ uint32 WSwan_MemoryGetRegister(const unsigned int id, char *special, const uint3
 
          if(special)
          {
-            trio_snprintf(special, special_len, "((0x%02x * 0x100000) %% 0x%08x) + 20 bit address = 0x%08x + 20 bit address", BankSelector[0], rom_size, (BankSelector[0] * 0x100000) & (rom_size - 1));
+            snprintf(special, special_len, "((0x%02x * 0x100000) %% 0x%08x) + 20 bit address = 0x%08x + 20 bit address", BankSelector[0], rom_size, (BankSelector[0] * 0x100000) & (rom_size - 1));
          }
          break;
 

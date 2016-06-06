@@ -18,9 +18,6 @@
     <Filter Include="Source Files\mednafen\video">
       <UniqueIdentifier>{82077d1a-8197-4b2f-8098-2818f64b525d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\mednafen\trio">
-      <UniqueIdentifier>{35dd6f7d-5243-42fb-bf3b-66ae5808c1da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\mednafen\wswan">
       <UniqueIdentifier>{67b0fb70-90af-4316-b8fb-60ec05d88029}</UniqueIdentifier>
     </Filter>
@@ -82,12 +79,6 @@
     </ClCompile>
     <ClCompile Include="..\..\mednafen\sound\Blip_Buffer.cpp">
       <Filter>Source Files\mednafen\sound</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\mednafen\trio\trio.c">
-      <Filter>Source Files\mednafen\trio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\mednafen\trio\triostr.c">
-      <Filter>Source Files\mednafen\trio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

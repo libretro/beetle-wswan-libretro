@@ -1,7 +1,6 @@
 #include "wswan.h"
 #include "interrupt.h"
 #include "v30mz.h"
-#include "../include/trio/trio.h"
 
 static uint8 IStatus;
 static uint8 IEnable;

@@ -20,7 +20,6 @@
 #include <string.h>
 #include	<stdarg.h>
 #include	<errno.h>
-#include	"include/trio/trio.h"
 #include	<list>
 #include	<algorithm>
 

@@ -108,6 +108,3 @@ SOURCES_CXX += \
 SOURCES_C += \
 	$(MEDNAFEN_DIR)/mednafen-endian.c
 endif
-
-SOURCES_C += $(MEDNAFEN_DIR)/trio/trio.c \
-				 $(MEDNAFEN_DIR)/trio/triostr.c 
