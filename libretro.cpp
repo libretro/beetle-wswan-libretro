@@ -185,12 +185,12 @@ static const DLEntry Developers[] =
 static bool TestMagic(const char *name, MDFNFILE *fp)
 {
  if(strcasecmp(GET_FEXTS_PTR(fp), "ws") && strcasecmp(GET_FEXTS_PTR(fp), "wsc") && strcasecmp(GET_FEXTS_PTR(fp), "wsr"))
-  return(FALSE);
+  return(false);
 
  if(GET_FSIZE_PTR(fp) < 65536)
-  return(FALSE);
+  return(false);
 
- return(TRUE);
+ return(true);
 }
 
 static int Load(const char *name, MDFNFILE *fp)
@@ -468,7 +468,7 @@ MDFNGI EmulatedWSwan =
  WSwanSettings,
  MDFN_MASTERCLOCK_FIXED(3072000),
  0,
- FALSE, // Multires possible?
+ false, // Multires possible?
 
  224,   // lcm_width
  144,   // lcm_height

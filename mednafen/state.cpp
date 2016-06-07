@@ -200,7 +200,7 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
   sf++; 
  }
 
- return(TRUE);
+ return(true);
 }
 
 static int WriteStateChunk(StateMem *st, const char *sname, SFORMAT *sf)

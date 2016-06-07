@@ -37,17 +37,17 @@ static bool IsAbsolutePath(const char *path)
 #endif
          path[0] == '/'
       )
-         return(TRUE);
+         return(true);
 
  #if defined(WIN32) || defined(DOS)
  if((path[0] >= 'a' && path[0] <= 'z') || (path[0] >= 'A' && path[0] <= 'Z'))
  {
     if(path[1] == ':')
-       return(TRUE);
+       return(true);
  }
  #endif
 
- return(FALSE);
+ return(false);
 }
 
 static bool IsAbsolutePath(const std::string &path)

@@ -34,7 +34,7 @@ bool MDFNFILE::ApplyIPS(void *unused)
 // even if it errors out.
 bool MDFNFILE::MakeMemWrapAndClose(void *fp)
 {
-   bool ret = FALSE;
+   bool ret = false;
 
    location = 0;
 
@@ -46,7 +46,7 @@ bool MDFNFILE::MakeMemWrapAndClose(void *fp)
       goto fail;
    ::fread(f_data, 1, f_size, (FILE *)fp);
 
-   ret = TRUE;
+   ret = true;
 fail:
    fclose((FILE*)fp);
    return ret;
@@ -80,17 +80,17 @@ bool MDFNFILE::Open(const char *path, const void *known_ext, const char *purpose
    (void)known_ext;
 
    if (!(fp = fopen(path, "rb")))
-      return FALSE;
+      return false;
 
    ::fseek(fp, 0, SEEK_SET);
 
    if (!MakeMemWrapAndClose(fp))
-      return FALSE;
+      return false;
 
    const char *ld = (const char*)strrchr(path, '.');
    f_ext = strdup(ld ? ld + 1 : "");
 
-   return(TRUE);
+   return(true);
 }
 
 bool MDFNFILE::Close(void)

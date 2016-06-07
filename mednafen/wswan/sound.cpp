@@ -387,7 +387,7 @@ bool WSwan_SetSoundRate(uint32 rate)
    for(i = 0; i < 2; i++)
       sbuf[i]->set_sample_rate(rate?rate:44100, 60);
 
-   return(TRUE);
+   return(true);
 }
 
 int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)

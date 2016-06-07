@@ -266,7 +266,7 @@ uint8 WSwan_GfxRead(uint32 A)
 
 bool wsExecuteLine(MDFN_Surface *surface, bool skip)
 {
-   bool ret = FALSE;
+   bool ret = false;
 
    if(wsLine < 144)
    {
@@ -289,7 +289,7 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
 
    if(wsLine == 144)
    {
-      ret = TRUE;
+      ret = true;
       WSwan_Interrupt(WSINT_VBLANK);
       //printf("VBlank: %d\n", wsLine);
    }
@@ -546,11 +546,11 @@ void wsScanline(uint16 *target)
                            bool drawthis = 0;
 
                            if(!(DispControl & 0x08)) 
-                              drawthis = TRUE;
+                              drawthis = true;
                            else if((as & 0x10) && !in_window[7 + xs + x])
-                              drawthis = TRUE;
+                              drawthis = true;
                            else if(!(as & 0x10) && in_window[7 + xs + x])
-                              drawthis = TRUE;
+                              drawthis = true;
 
                            if(drawthis)
                            {
@@ -570,11 +570,11 @@ void wsScanline(uint16 *target)
                            bool drawthis = 0;
 
                            if(!(DispControl & 0x08))
-                              drawthis = TRUE;
+                              drawthis = true;
                            else if((as & 0x10) && !in_window[7 + xs + x])
-                              drawthis = TRUE;
+                              drawthis = true;
                            else if(!(as & 0x10) && in_window[7 + xs + x])
-                              drawthis = TRUE;
+                              drawthis = true;
 
                            if(drawthis)
                            {
@@ -597,11 +597,11 @@ void wsScanline(uint16 *target)
                         bool drawthis = 0;
 
                         if(!(DispControl & 0x08))
-                           drawthis = TRUE;
+                           drawthis = true;
                         else if((as & 0x10) && !in_window[7 + xs + x])
-                           drawthis = TRUE;
+                           drawthis = true;
                         else if(!(as & 0x10) && in_window[7 + xs + x])
-                           drawthis = TRUE;
+                           drawthis = true;
 
                         if(drawthis)
                            //if((as & 0x10) || in_window[7 + xs + x])
@@ -635,7 +635,7 @@ void WSwan_GfxReset(void)
    unsigned u0, u1;
 
    wsLine=0;
-   wsSetVideo(0,TRUE);
+   wsSetVideo(0,true);
 
    memset(SpriteTable, 0, sizeof(SpriteTable));
    SpriteCountCache = 0;
@@ -728,7 +728,7 @@ int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
 
    if(load)
    {
-      wsSetVideo(VideoMode >> 5, TRUE);
+      wsSetVideo(VideoMode >> 5, true);
    }
 
    return(1);
