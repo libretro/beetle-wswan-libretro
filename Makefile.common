@@ -91,11 +91,6 @@ endif
    FLAGS += -DNEED_CD
 endif
 
-ifeq ($(NEED_TREMOR), 1)
-   SOURCES_C += $(wildcard $(MEDNAFEN_DIR)/tremor/*.c)
-   FLAGS += -DNEED_TREMOR
-endif
-
 ifneq ($(HAVE_GRIFFIN), 1)
 SOURCES_CXX += \
 	$(MEDNAFEN_DIR)/mednafen.cpp \
