@@ -27,62 +27,6 @@
 #include "general.h"
 #include "state.h"
 
-using namespace std;
-
-void MDFN_GetFilePathComponents(const std::string &file_path, 
-      std::string *dir_path_out, std::string *file_base_out, 
-      std::string *file_ext_out)
-{
- size_t final_ds;		                  // in file_path
- string file_name;
- size_t fn_final_dot;		            // in local var file_name
- string dir_path, file_base, file_ext; // Temporary output
-
-#ifdef _WIN32
- final_ds = file_path.find_last_of('\\');
-
- size_t alt_final_ds = file_path.find_last_of('/');
-
- if(final_ds == string::npos || (alt_final_ds != string::npos && alt_final_ds > final_ds))
-    final_ds = alt_final_ds;
-#else
- final_ds = file_path.find_last_of('/');
-#endif
-
- if(final_ds == string::npos)
- {
-  dir_path = string(".");
-  file_name = file_path;
- }
- else
- {
-  dir_path = file_path.substr(0, final_ds);
-  file_name = file_path.substr(final_ds + 1);
- }
-
- fn_final_dot = file_name.find_last_of('.');
-
- if(fn_final_dot != string::npos)
- {
-  file_base = file_name.substr(0, fn_final_dot);
-  file_ext = file_name.substr(fn_final_dot);
- }
- else
- {
-  file_base = file_name;
-  file_ext = string("");
- }
-
- if(dir_path_out)
-  *dir_path_out = dir_path;
-
- if(file_base_out)
-  *file_base_out = file_base;
-
- if(file_ext_out)
-  *file_ext_out = file_ext;
-}
-
 const char * GetFNComponent(const char *str)
 {
    const char *tp1;
@@ -102,6 +46,5 @@ const char * GetFNComponent(const char *str)
 
    if (tp1)
       return (tp1+1);
-   else
-      return (str);
+   return (str);
 }
