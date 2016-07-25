@@ -4,6 +4,8 @@
 #include "mednafen/general.h"
 #include "libretro.h"
 
+#include <vector>
+
 static MDFNGI *game;
 
 struct retro_perf_callback perf_cb;
@@ -26,6 +28,43 @@ static bool failed_init;
 std::string retro_base_directory;
 std::string retro_base_name;
 std::string retro_save_directory;
+
+static INLINE bool MDFN_DumpToFileReal(const char *filename, int compress, const std::vector<PtrLengthPair> &pearpairs)
+{
+   FILE *fp = fopen(filename, "wb");
+
+   if (!fp)
+      return 0;
+
+   for(unsigned int i = 0; i < pearpairs.size(); i++)
+   {
+      const void *data = pearpairs[i].GetData();
+      const uint64 length = pearpairs[i].GetLength();
+
+      if (fwrite(data, 1, length, fp) != length)
+      {
+         fclose(fp);
+         return 0;
+      }
+   }
+
+   if (fclose(fp) == EOF)
+      return 0;
+
+   return 1;
+}
+
+bool MDFN_DumpToFile(const char *filename, int compress, const std::vector<PtrLengthPair> &pearpairs)
+{
+   return (MDFN_DumpToFileReal(filename, compress, pearpairs));
+}
+
+bool MDFN_DumpToFile(const char *filename, int compress, const void *data, uint64 length)
+{
+   std::vector<PtrLengthPair> tmp_pairs;
+   tmp_pairs.push_back(PtrLengthPair(data, length));
+   return (MDFN_DumpToFileReal(filename, compress, tmp_pairs));
+}
 
 static void set_basename(const char *path)
 {
