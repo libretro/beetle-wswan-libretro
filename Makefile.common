@@ -75,9 +75,9 @@ SOURCES_CXX += \
 	$(MEDNAFEN_DIR)/general.cpp \
 	$(MEDNAFEN_DIR)/state.cpp \
 	$(MEDNAFEN_DIR)/mempatcher.cpp \
-	$(MEDNAFEN_DIR)/file.cpp \
 	$(CORE_DIR)/libretro.cpp
 
 SOURCES_C += \
+	$(MEDNAFEN_DIR)/file.c \
 	$(MEDNAFEN_DIR)/mednafen-endian.c
 endif

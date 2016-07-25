@@ -542,7 +542,7 @@ MDFNGI *MDFNGameInfo = &EmulatedWSwan;
 
 static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
 {
-   MDFNFILE GameFile;
+   MDFNFILE *GameFile = NULL;
 	std::vector<FileExtensionSpecStruct> valid_iae;
    MDFNGameInfo = &EmulatedWSwan;
 
@@ -554,19 +554,14 @@ static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
       valid_iae.push_back(*curexts);
       curexts++;
    }
+   
+   GameFile = file_open(name);
 
-	if(!GameFile.Open(name, &valid_iae[0], _("game")))
-   {
-      MDFNGameInfo = NULL;
-      return 0;
-   }
+	if(!GameFile)
+      goto error;
 
-   if(MDFNGameInfo->Load(name, &GameFile) <= 0)
-   {
-      GameFile.Close();
-      MDFNGameInfo = NULL;
-      return(0);
-   }
+   if(MDFNGameInfo->Load(name, GameFile) <= 0)
+      goto error;
 
 	MDFN_LoadGameCheats(NULL);
 	MDFNMP_InstallReadPatches();
@@ -588,6 +583,12 @@ static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
    }
 
    return(MDFNGameInfo);
+
+error:
+   if (GameFile)
+      file_close(GameFile);
+   MDFNGameInfo = NULL;
+   return NULL;
 }
 
 static void MDFNI_CloseGame(void)
