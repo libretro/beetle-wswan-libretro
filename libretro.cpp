@@ -497,9 +497,77 @@ MDFNGI EmulatedWSwan =
 #define FB_WIDTH 224
 #define FB_HEIGHT 144
 
-
-
 #define FB_MAX_HEIGHT FB_HEIGHT
+
+MDFNGI *MDFNGameInfo = &EmulatedWSwan;
+
+static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
+{
+   MDFNFILE GameFile;
+	std::vector<FileExtensionSpecStruct> valid_iae;
+   MDFNGameInfo = &EmulatedWSwan;
+
+	// Construct a NULL-delimited list of known file extensions for MDFN_fopen()
+   const FileExtensionSpecStruct *curexts = MDFNGameInfo->FileExtensions;
+
+   while(curexts->extension && curexts->description)
+   {
+      valid_iae.push_back(*curexts);
+      curexts++;
+   }
+
+	if(!GameFile.Open(name, &valid_iae[0], _("game")))
+   {
+      MDFNGameInfo = NULL;
+      return 0;
+   }
+
+   if(MDFNGameInfo->Load(name, &GameFile) <= 0)
+   {
+      GameFile.Close();
+      MDFNGameInfo = NULL;
+      return(0);
+   }
+
+	MDFN_LoadGameCheats(NULL);
+	MDFNMP_InstallReadPatches();
+
+	if(!MDFNGameInfo->name)
+   {
+      unsigned int x;
+      char *tmp;
+
+      MDFNGameInfo->name = (uint8_t *)strdup(GetFNComponent(name));
+
+      for(x=0;x<strlen((char *)MDFNGameInfo->name);x++)
+      {
+         if(MDFNGameInfo->name[x] == '_')
+            MDFNGameInfo->name[x] = ' ';
+      }
+      if((tmp = strrchr((char *)MDFNGameInfo->name, '.')))
+         *tmp = 0;
+   }
+
+   return(MDFNGameInfo);
+}
+
+static void MDFNI_CloseGame(void)
+{
+   if(!MDFNGameInfo)
+      return;
+
+   MDFN_FlushGameCheats(0);
+
+   MDFNGameInfo->CloseGame();
+
+   if(MDFNGameInfo->name)
+      free(MDFNGameInfo->name);
+   MDFNGameInfo->name = NULL;
+
+   MDFNMP_Kill();
+
+   MDFNGameInfo = NULL;
+}
 
 static void check_system_specs(void)
 {
