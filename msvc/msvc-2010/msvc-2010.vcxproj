@@ -14,7 +14,7 @@
     <ClCompile Include="..\..\libretro.cpp" />
     <ClCompile Include="..\..\mednafen\endian.cpp" />
     <ClCompile Include="..\..\mednafen\file.c" />
-    <ClCompile Include="..\..\mednafen\general.cpp" />
+    <ClCompile Include="..\..\mednafen\general.c" />
     <ClCompile Include="..\..\mednafen\mempatcher.cpp" />
     <ClCompile Include="..\..\mednafen\settings.cpp" />
     <ClCompile Include="..\..\mednafen\sound\Blip_Buffer.cpp" />
