@@ -35,9 +35,6 @@
     <ClCompile Include="..\..\mednafen\file.c">
       <Filter>Source Files\mednafen</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\mednafen\general.c">
-      <Filter>Source Files\mednafen</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\mednafen\mempatcher.cpp">
       <Filter>Source Files\mednafen</Filter>
     </ClCompile>

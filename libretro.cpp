@@ -340,7 +340,7 @@ static void SetInput(int port, const char *type, void *ptr)
  if(!port) chee = (uint8 *)ptr;
 }
 
-static int StateAction(StateMem *sm, int load, int data_only)
+int StateAction(StateMem *sm, int load, int data_only)
 {
    if(!v30mz_StateAction(sm, load, data_only))
       return(0);
@@ -480,30 +480,6 @@ static const FileExtensionSpecStruct KnownExtensions[] =
 
 MDFNGI EmulatedWSwan =
 {
- "wswan",
- "WonderSwan",
- KnownExtensions,
- MODPRIO_INTERNAL_HIGH,
- NULL,
- &InputInfo,
- Load,
- TestMagic,
- NULL,
- NULL,
- CloseGame,
- WSwan_SetLayerEnableMask,
- "Background\0Foreground\0Sprites\0",
- NULL,
- NULL,
- NULL,
- NULL,
- NULL,
- NULL,
- false,
- StateAction,
- Emulate,
- SetInput,
- DoSimpleCommand,
  WSwanSettings,
  MDFN_MASTERCLOCK_FIXED(3072000),
  0,
@@ -547,7 +523,7 @@ static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
    MDFNGameInfo = &EmulatedWSwan;
 
 	// Construct a NULL-delimited list of known file extensions for MDFN_fopen()
-   const FileExtensionSpecStruct *curexts = MDFNGameInfo->FileExtensions;
+   const FileExtensionSpecStruct *curexts = KnownExtensions; 
 
    while(curexts->extension && curexts->description)
    {
@@ -560,27 +536,11 @@ static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
 	if(!GameFile)
       goto error;
 
-   if(MDFNGameInfo->Load(name, GameFile) <= 0)
+   if(Load(name, GameFile) <= 0)
       goto error;
 
 	MDFN_LoadGameCheats(NULL);
 	MDFNMP_InstallReadPatches();
-
-	if(!MDFNGameInfo->name)
-   {
-      unsigned int x;
-      char *tmp;
-
-      MDFNGameInfo->name = (uint8_t *)strdup(GetFNComponent(name));
-
-      for(x=0;x<strlen((char *)MDFNGameInfo->name);x++)
-      {
-         if(MDFNGameInfo->name[x] == '_')
-            MDFNGameInfo->name[x] = ' ';
-      }
-      if((tmp = strrchr((char *)MDFNGameInfo->name, '.')))
-         *tmp = 0;
-   }
 
    return(MDFNGameInfo);
 
@@ -598,11 +558,7 @@ static void MDFNI_CloseGame(void)
 
    MDFN_FlushGameCheats(0);
 
-   MDFNGameInfo->CloseGame();
-
-   if(MDFNGameInfo->name)
-      free(MDFNGameInfo->name);
-   MDFNGameInfo->name = NULL;
+   CloseGame();
 
    MDFNMP_Kill();
 
@@ -681,7 +637,7 @@ void retro_init(void)
 
 void retro_reset(void)
 {
-   game->DoSimpleCommand(MDFN_MSC_RESET);
+   DoSimpleCommand(MDFN_MSC_RESET);
 }
 
 bool retro_load_game_special(unsigned, const struct retro_game_info *, size_t)
@@ -742,7 +698,7 @@ bool retro_load_game(const struct retro_game_info *info)
    if (!game)
       return false;
 
-   game->SetInput(0, "gamepad", &input_buf);
+   SetInput(0, "gamepad", &input_buf);
 
    surf = (MDFN_Surface*)calloc(1, sizeof(*surf));
    
@@ -765,7 +721,7 @@ bool retro_load_game(const struct retro_game_info *info)
 
    WSwan_SetPixelFormat();
 
-   return game;
+   return true;
 }
 
 void retro_unload_game()
@@ -782,7 +738,6 @@ void retro_unload_game()
 // See mednafen/psx/input/gamepad.cpp
 static void update_input(void)
 {
-   MDFNGI *currgame = (MDFNGI*)game;
    input_buf = 0;
 
    static unsigned map[] = {
@@ -819,8 +774,6 @@ static uint64_t video_frames, audio_frames;
 
 void retro_run(void)
 {
-   MDFNGI *curgame = game;
-
    input_poll_cb();
 
    update_input();
@@ -847,9 +800,9 @@ void retro_run(void)
       last_sound_rate = spec.SoundRate;
    }
 
-   curgame->Emulate(&spec);
+   Emulate(&spec);
 
-   int16 *const SoundBuf = spec.SoundBuf + spec.SoundBufSizeALMS * curgame->soundchan;
+   int16 *const SoundBuf = spec.SoundBuf + spec.SoundBufSizeALMS * 2;
    int32 SoundBufSize = spec.SoundBufSize - spec.SoundBufSizeALMS;
    const int32 SoundBufMaxSize = spec.SoundBufMaxSize - spec.SoundBufSizeALMS;
 
