@@ -54,7 +54,7 @@ ifeq ($(platform), unix)
    endif
    FLAGS += -DHAVE_MKDIR
 else ifeq ($(platform), osx)
-   TARGET := $(TARGET_NAME)_librero.dylib
+   TARGET := $(TARGET_NAME)_libretro.dylib
    fpic := -fPIC
    SHARED := -dynamiclib
    FLAGS += -DHAVE_MKDIR
