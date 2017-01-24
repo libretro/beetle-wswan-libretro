@@ -668,9 +668,6 @@ static uint16_t input_buf;
 
 bool retro_load_game(const struct retro_game_info *info)
 {
-   if (failed_init)
-      return false;
-   
    struct retro_input_descriptor desc[] = {
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT, "X Cursor Left" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP, "X Cursor Up" },
@@ -686,6 +683,9 @@ bool retro_load_game(const struct retro_game_info *info)
 
       { 0 },
    };
+
+   if (!info || failed_init)
+      return false;
 
    environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
 
