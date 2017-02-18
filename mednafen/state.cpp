@@ -95,26 +95,6 @@ void Endian_A16_Swap(void *src, uint32_t nelements)
    }
 }
 
-static inline void Endian_A64_LE_to_NE(void *src, uint32_t nelements)
-{
-   uint32_t i;
-   uint8_t *nsrc = (uint8_t *)src;
-
-   for(i = 0; i < nelements; i++)
-   {
-      unsigned z;
-      uint8_t *base = &nsrc[i * 8];
-
-      for(z = 0; z < 4; z++)
-      {
-         uint8_t tmp = base[z];
-
-         base[z] = base[7 - z];
-         base[7 - z] = tmp;
-      }
-   }
-}
-
 static inline void FlipByteOrder(uint8_t *src, uint32_t count)
 {
    uint8_t *start=src;
@@ -134,58 +114,6 @@ static inline void FlipByteOrder(uint8_t *src, uint32_t count)
       *start=tmp;
       end--;
       start++;
-   }
-}
-
-static inline void Endian_A16_LE_to_NE(void *src, uint32_t nelements)
-{
-   uint32_t i;
-   uint8_t *nsrc = (uint8_t *)src;
-
-   for(i = 0; i < nelements; i++)
-   {
-      uint8_t tmp = nsrc[i * 2];
-
-      nsrc[i * 2] = nsrc[i * 2 + 1];
-      nsrc[i * 2 + 1] = tmp;
-   }
-}
-
-static inline void Endian_A32_LE_to_NE(void *src, uint32_t nelements)
-{
-   uint32_t i;
-   uint8_t *nsrc = (uint8_t *)src;
-
-   for(i = 0; i < nelements; i++)
-   {
-      uint8_t tmp1 = nsrc[i * 4];
-      uint8_t tmp2 = nsrc[i * 4 + 1];
-
-      nsrc[i * 4] = nsrc[i * 4 + 3];
-      nsrc[i * 4 + 1] = nsrc[i * 4 + 2];
-
-      nsrc[i * 4 + 2] = tmp2;
-      nsrc[i * 4 + 3] = tmp1;
-   }
-}
-
-static inline void Endian_A64_LE_to_NE(void *src, uint32_t nelements)
-{
-   uint32_t i;
-   uint8_t *nsrc = (uint8_t *)src;
-
-   for(i = 0; i < nelements; i++)
-   {
-      unsigned z;
-      uint8_t *base = &nsrc[i * 8];
-
-      for(z = 0; z < 4; z++)
-      {
-         uint8_t tmp = base[z];
-
-         base[z] = base[7 - z];
-         base[7 - z] = tmp;
-      }
    }
 }
 #endif
@@ -348,11 +276,11 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
 
       }
       else if(sf->flags & MDFNSTATE_RLSB64)
-         Endian_A64_LE_to_NE(sf->v, bytesize / sizeof(uint64_t));
+         Endian_A64_Swap(sf->v, bytesize / sizeof(uint64_t));
       else if(sf->flags & MDFNSTATE_RLSB32)
-         Endian_A32_LE_to_NE(sf->v, bytesize / sizeof(uint32_t));
+         Endian_A32_Swap(sf->v, bytesize / sizeof(uint32_t));
       else if(sf->flags & MDFNSTATE_RLSB16)
-         Endian_A16_LE_to_NE(sf->v, bytesize / sizeof(uint16_t));
+         Endian_A16_Swap(sf->v, bytesize / sizeof(uint16_t));
       else if(sf->flags & RLSB)
          FlipByteOrder((uint8_t*)sf->v, bytesize);
 #endif
@@ -395,7 +323,8 @@ static int WriteStateChunk(StateMem *st, const char *sname, SFORMAT *sf)
 
 static SFORMAT *FindSF(const char *name, SFORMAT *sf)
 {
-   /* Size can sometimes be zero, so also check for the text name.  These two should both be zero only at the end of a struct. */
+   /* Size can sometimes be zero, so also check for the text name.  
+    * These two should both be zero only at the end of a struct. */
    while(sf->size || sf->name) 
    {
       if(!sf->size || !sf->v)
@@ -404,7 +333,8 @@ static SFORMAT *FindSF(const char *name, SFORMAT *sf)
          continue;
       }
 
-      if (sf->size == (uint32)~0) /* Link to another SFORMAT structure. */
+      /* Link to another SFORMAT structure. */
+      if (sf->size == (uint32)~0) 
       {
          SFORMAT *temp_sf = FindSF(name, (SFORMAT*)sf->v);
          if (temp_sf)
@@ -426,9 +356,14 @@ static SFORMAT *FindSF(const char *name, SFORMAT *sf)
 // Fast raw chunk reader
 static void DOReadChunk(StateMem *st, SFORMAT *sf)
 {
-   while(sf->size || sf->name)       // Size can sometimes be zero, so also check for the text name.  
-      // These two should both be zero only at the end of a struct.
+   /* Size can sometimes be zero, so also check for the text name.  
+    * These two should both be zero only at the end of a struct.
+    */
+
+   while(sf->size || sf->name)       
    {
+      int32_t bytesize;
+
       if(!sf->size || !sf->v)
       {
          sf++;
@@ -442,11 +377,15 @@ static void DOReadChunk(StateMem *st, SFORMAT *sf)
          continue;
       }
 
-      int32_t bytesize = sf->size;
+      bytesize = sf->size;
 
-      // Loading raw data, bool types are stored as they appear in memory, not as single bytes in the full state format.
-      // In the SFORMAT structure, the size member for bool entries is the number of bool elements, not the total in-memory size,
-      // so we adjust it here.
+      /* Loading raw data, bool types are stored as they appear in memory, 
+       * not as single bytes in the full state format.
+       *
+       * In the SFORMAT structure, the size member for bool entries is 
+       * the number of bool elements, not the total in-memory size,
+       * so we adjust it here.
+       */
       if(sf->flags & MDFNSTATE_BOOL)
          bytesize *= sizeof(bool);
 
@@ -461,8 +400,12 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
 
    while (st->loc < (temp + size))
    {
-      uint32_t recorded_size;	// In bytes
-      uint8_t toa[1 + 256];	// Don't change to char unless cast toa[0] to unsigned to smem_read() and other places.
+      /* Don't change to char unless cast 
+       * toa[0] to unsigned to smem_read() 
+       * and other places. */
+      uint8_t toa[1 + 256];	
+      uint32_t recorded_size = 0;	/* In bytes */
+      SFORMAT *tmp           = NULL;
 
       if(smem_read(st, toa, 1) != 1)
       {
@@ -480,15 +423,16 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
 
       smem_read32le(st, &recorded_size);
 
-      SFORMAT *tmp = FindSF((char*)toa + 1, sf);
+      tmp = FindSF((char*)toa + 1, sf);
 
       if(tmp)
       {
-         uint32_t expected_size = tmp->size;	// In bytes
+         uint32_t expected_size = tmp->size;	/* In bytes */
 
          if(recorded_size != expected_size)
          {
-            printf("Variable in save state wrong size: %s.  Need: %d, got: %d\n", toa + 1, expected_size, recorded_size);
+            printf("Variable in save state wrong size: %s.  Need: %d, got: %d\n",
+                  toa + 1, expected_size, recorded_size);
             if(smem_seek(st, recorded_size, SEEK_CUR) < 0)
             {
                puts("Seek error");
@@ -501,19 +445,20 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
 
             if(tmp->flags & MDFNSTATE_BOOL)
             {
-               // Converting downwards is necessary for the case of sizeof(bool) > 1
-               for(int32_t bool_monster = expected_size - 1; bool_monster >= 0; bool_monster--)
-               {
+               int32_t bool_monster;
+               /* Converting downwards is necessary 
+                * for the case of sizeof(bool) > 1 */
+               for(bool_monster = expected_size - 1; bool_monster >= 0; bool_monster--)
                   ((bool *)tmp->v)[bool_monster] = ((uint8_t *)tmp->v)[bool_monster];
-               }
             }
+
 #ifdef MSB_FIRST
             if(tmp->flags & MDFNSTATE_RLSB64)
-               Endian_A64_LE_to_NE(tmp->v, expected_size / sizeof(uint64_t));
+               Endian_A64_Swap(tmp->v, expected_size / sizeof(uint64_t));
             else if(tmp->flags & MDFNSTATE_RLSB32)
-               Endian_A32_LE_to_NE(tmp->v, expected_size / sizeof(uint32_t));
+               Endian_A32_Swap(tmp->v, expected_size / sizeof(uint32_t));
             else if(tmp->flags & MDFNSTATE_RLSB16)
-               Endian_A16_LE_to_NE(tmp->v, expected_size / sizeof(uint16_t));
+               Endian_A16_Swap(tmp->v, expected_size / sizeof(uint16_t));
             else if(tmp->flags & RLSB)
                FlipByteOrder((uint8_t*)tmp->v, expected_size);
 #endif
@@ -528,19 +473,15 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
             return(0);
          }
       }
-   } // while(...)
+   }
 
    assert(st->loc == (temp + size));
    return 1;
 }
 
-static int CurrentState = 0;
-
-/* This function is called by the game driver(NES, GB, GBA) to save a state. */
-static int MDFNSS_StateAction_internal(void *st_p, int load, int data_only,
+static int MDFNSS_StateAction_internal(StateMem *st, int load, int data_only,
       std::vector <SSDescriptor> &sections)
 {
-   StateMem *st = (StateMem*)st_p;
    std::vector<SSDescriptor>::iterator section;
 
    if(load)
@@ -549,9 +490,9 @@ static int MDFNSS_StateAction_internal(void *st_p, int load, int data_only,
 
       for(section = sections.begin(); section != sections.end(); section++)
       {
-         int found = 0;
-         uint32_t tmp_size;
-         uint32_t total = 0;
+         uint32_t tmp_size = 0;
+         int found         = 0;
+         uint32_t total    = 0;
 
          while(smem_read(st, (uint8_t *)sname, 32) == 32)
          {
@@ -580,11 +521,13 @@ static int MDFNSS_StateAction_internal(void *st_p, int load, int data_only,
                }
             }
          }
+
          if(smem_seek(st, -total, SEEK_CUR) < 0)
          {
             puts("Reverse seek error");
             return(0);
          }
+
          if(!found && !section->optional) // Not found.  We are sad!
          {
             printf("Section missing:  %.32s\n", section->name);
