@@ -2,6 +2,7 @@
 #define MDFN_SETTINGS_H
 
 #include <string>
+#include <vector>
 
 bool MDFN_LoadSettings(const char *path, const char *section = NULL, bool override = false);
 bool MDFN_MergeSettings(const void*);
