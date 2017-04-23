@@ -38,7 +38,7 @@ TARGET_NAME := mednafen_wswan
 # GIT HASH
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
 ifneq ($(GIT_VERSION)," unknown")
-   CXXFLAGS += -DGIT_VERSION=\"$(GIT_VERSION)\"
+   FLAGS += -DGIT_VERSION=\"$(GIT_VERSION)\"
 endif
 
 # Unix
