@@ -33,6 +33,11 @@ NEED_BPP = 16
 NEED_BLIP = 1
 NEED_STEREO_SOUND = 1
 
+prefix := /usr
+libdir := $(prefix)/lib
+
+LIBRETRO_DIR := libretro
+
 TARGET_NAME := mednafen_wswan
 
 # GIT HASH
@@ -280,4 +285,10 @@ endif
 clean:
 	rm -f $(TARGET) $(OBJECTS)
 
-.PHONY: clean
+install:
+	install -D -m 755 $(TARGET) $(DESTDIR)$(libdir)/$(LIBRETRO_DIR)/$(TARGET)
+
+uninstall:
+	rm $(DESTDIR)$(libdir)/$(LIBRETRO_DIR)/$(TARGET)
+
+.PHONY: clean install uninstall
