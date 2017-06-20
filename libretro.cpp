@@ -870,7 +870,7 @@ void retro_run(void)
       static uint16_t work_fb[FB_WIDTH * FB_HEIGHT];
       for(uint32_t index_y = 0; index_y < FB_WIDTH; index_y++)
          for(uint32_t index_x = 0; index_x < FB_HEIGHT; index_x++)
-            work_fb[index_y * FB_HEIGHT + index_x] = surf->pixels[(index_x + 1) * FB_WIDTH - index_y];
+            work_fb[index_y * FB_HEIGHT + index_x] = surf->pixels[(index_x + 1) * FB_WIDTH - 1 - index_y];
             video_cb(work_fb, height, width, FB_HEIGHT << 1);
    }
    else
