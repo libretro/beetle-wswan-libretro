@@ -21,7 +21,7 @@ static retro_input_state_t input_state_cb;
 static bool overscan;
 static double last_sound_rate;
 
-static bool rotate_framebuffer;
+static bool rotate_tall;
 static bool select_pressed_last_frame;
 
 static MDFN_Surface *surf;
@@ -720,7 +720,7 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
    
-   rotate_framebuffer = false;
+   rotate_tall = false;
    select_pressed_last_frame = false;
 
    check_variables();
@@ -779,24 +779,28 @@ static void update_input(void)
    
    if(select_button && !select_pressed_last_frame)
    {
-      rotate_framebuffer = !rotate_framebuffer;
-      if(rotate_framebuffer)
+      rotate_tall = !rotate_tall;
+      if(rotate_tall)
       {
          struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
+         const unsigned rot_angle = 1;/*90 degrees*/
          
-         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, &new_geom);
+         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
       }
       else
       {
          struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (14.0 / 9.0)};
+         const unsigned rot_angle = 0;/*0 degrees*/
          
-         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, &new_geom);
+         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
       }
    }
    
    select_pressed_last_frame = select_button;
 
-   if(rotate_framebuffer)
+   if(rotate_tall)
    {
       //upright rotation
       for (unsigned i = 0; i < MAX_BUTTONS; i++)
@@ -865,18 +869,7 @@ void retro_run(void)
    unsigned width  = spec.DisplayRect.w;
    unsigned height = spec.DisplayRect.h;
    
-   if(rotate_framebuffer)
-   {
-      static uint16_t work_fb[FB_WIDTH * FB_HEIGHT];
-      for(uint32_t index_y = 0; index_y < FB_WIDTH; index_y++)
-         for(uint32_t index_x = 0; index_x < FB_HEIGHT; index_x++)
-            work_fb[index_y * FB_HEIGHT + index_x] = surf->pixels[(index_x + 1) * FB_WIDTH - 1 - index_y];
-            video_cb(work_fb, height, width, FB_HEIGHT << 1);
-   }
-   else
-   {
-      video_cb(surf->pixels, width, height, FB_WIDTH << 1);
-   }
+   video_cb(surf->pixels, width, height, FB_WIDTH << 1);
 
    video_frames++;
    audio_frames += spec.SoundBufSize;
