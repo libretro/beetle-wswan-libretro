@@ -21,6 +21,9 @@ static retro_input_state_t input_state_cb;
 static bool overscan;
 static double last_sound_rate;
 
+static bool rotate_tall;
+static bool select_pressed_last_frame;
+
 static MDFN_Surface *surf;
 
 static bool failed_init;
@@ -301,9 +304,9 @@ static int Load(const char *name, MDFNFILE *fp)
       wsCartROM[0xfffec]=0x20;
    }
 
+   if(header[6] & 0x1)
    {
-      if(header[6] & 0x1)
-         MDFNGameInfo->rotated = MDFN_ROTATE90;
+      MDFNGameInfo->rotated = MDFN_ROTATE90;
    }
 
    MDFNMP_Init(16384, (1 << 20) / 1024);
@@ -716,6 +719,9 @@ bool retro_load_game(const struct retro_game_info *info)
       free(surf);
       return false;
    }
+   
+   rotate_tall = false;
+   select_pressed_last_frame = false;
 
    check_variables();
 
@@ -740,23 +746,75 @@ static void update_input(void)
 {
    input_buf = 0;
 
-   static unsigned map[] = {
-      RETRO_DEVICE_ID_JOYPAD_UP, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_RIGHT, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_DOWN, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_LEFT, //X Cursor horizontal-layout games
-      RETRO_DEVICE_ID_JOYPAD_R2, //Y Cursor UP vertical-layout games
-      RETRO_DEVICE_ID_JOYPAD_R, //Y Cursor RIGHT vertical-layout games
-      RETRO_DEVICE_ID_JOYPAD_L2, //Y Cursor DOWN vertical-layout games
-      RETRO_DEVICE_ID_JOYPAD_L, //Y Cursor LEFT vertical-layout games
-      RETRO_DEVICE_ID_JOYPAD_START,
-      RETRO_DEVICE_ID_JOYPAD_A,
-      RETRO_DEVICE_ID_JOYPAD_B,
+   static unsigned map[2][11] = {
+      {
+         RETRO_DEVICE_ID_JOYPAD_UP, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_RIGHT, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_DOWN, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_LEFT, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_R2, //Y Cursor UP vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_R, //Y Cursor RIGHT vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_L2, //Y Cursor DOWN vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_L, //Y Cursor LEFT vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_START,
+         RETRO_DEVICE_ID_JOYPAD_A,
+         RETRO_DEVICE_ID_JOYPAD_B,
+      },
+      {
+         RETRO_DEVICE_ID_JOYPAD_Y, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_X, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_A, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_B, //X Cursor horizontal-layout games
+         RETRO_DEVICE_ID_JOYPAD_LEFT, //Y Cursor UP vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_UP, //Y Cursor RIGHT vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_RIGHT, //Y Cursor DOWN vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_DOWN, //Y Cursor LEFT vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_START,
+         RETRO_DEVICE_ID_JOYPAD_L,
+         RETRO_DEVICE_ID_JOYPAD_R,
+      }
    };
+   
+   bool select_button = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT);
+   
+   if(select_button && !select_pressed_last_frame)
+   {
+      rotate_tall = !rotate_tall;
+      if(rotate_tall)
+      {
+         struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
+         const unsigned rot_angle = 1;/*90 degrees*/
+         
+         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
+      }
+      else
+      {
+         struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (14.0 / 9.0)};
+         const unsigned rot_angle = 0;/*0 degrees*/
+         
+         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
+      }
+   }
+   
+   select_pressed_last_frame = select_button;
 
-   for (unsigned i = 0; i < MAX_BUTTONS; i++)
-      input_buf |= map[i] != -1u &&
-         input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[i]) ? (1 << i) : 0;
+   if(rotate_tall)
+   {
+      //upright rotation
+      for (unsigned i = 0; i < MAX_BUTTONS; i++)
+         input_buf |= map[1][i] != -1u &&
+            input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[1][i]) ? (1 << i) : 0;
+   }
+   else
+   {
+      //normal rotation
+      for (unsigned i = 0; i < MAX_BUTTONS; i++)
+         input_buf |= map[0][i] != -1u &&
+            input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[0][i]) ? (1 << i) : 0;
+   }
+
 
 #ifdef MSB_FIRST
    union {
@@ -810,7 +868,7 @@ void retro_run(void)
 
    unsigned width  = spec.DisplayRect.w;
    unsigned height = spec.DisplayRect.h;
-
+   
    video_cb(surf->pixels, width, height, FB_WIDTH << 1);
 
    video_frames++;
