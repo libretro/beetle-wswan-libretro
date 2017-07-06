@@ -283,7 +283,7 @@ int const blip_reader_default_bass = 9;
 #include <assert.h>
 
 template<int quality,int range>
-static INLINE void Blip_Synth<quality,range>::offset_resampled( blip_resampled_time_t time,
+inline void Blip_Synth<quality,range>::offset_resampled( blip_resampled_time_t time,
 		int delta, Blip_Buffer* blip_buf ) const
 {
    blip_long *buf, left, right;
@@ -310,30 +310,30 @@ static INLINE void Blip_Synth<quality,range>::offset_resampled( blip_resampled_t
 }
 
 template<int quality,int range>
-static INLINE void Blip_Synth<quality,range>::offset( blip_time_t t, int delta, Blip_Buffer* buf ) const
+inline void Blip_Synth<quality,range>::offset( blip_time_t t, int delta, Blip_Buffer* buf ) const
 {
 	offset_resampled( t * buf->factor_ + buf->offset_, delta, buf );
 }
 
 template<int quality,int range>
-static INLINE void Blip_Synth<quality,range>::update( blip_time_t t, int amp )
+inline void Blip_Synth<quality,range>::update( blip_time_t t, int amp )
 {
 	int delta = amp - impl.last_amp;
 	impl.last_amp = amp;
 	offset_resampled( t * impl.buf->factor_ + impl.buf->offset_, delta, impl.buf );
 }
 
-static INLINE blip_eq_t::blip_eq_t( double t ) :
+inline blip_eq_t::blip_eq_t( double t ) :
 		treble( t ), rolloff_freq( 0 ), sample_rate( 44100 ), cutoff_freq( 0 ) { }
-static INLINE blip_eq_t::blip_eq_t( double t, long rf, long sr, long cf ) :
+inline blip_eq_t::blip_eq_t( double t, long rf, long sr, long cf ) :
 		treble( t ), rolloff_freq( rf ), sample_rate( sr ), cutoff_freq( cf ) { }
 
-static INLINE int  Blip_Buffer::length() const         { return length_; }
-static INLINE long Blip_Buffer::samples_avail() const  { return (long) (offset_ >> BLIP_BUFFER_ACCURACY); }
-static INLINE long Blip_Buffer::sample_rate() const    { return sample_rate_; }
-static INLINE int  Blip_Buffer::output_latency() const { return blip_widest_impulse_ / 2; }
-static INLINE long Blip_Buffer::clock_rate() const     { return clock_rate_; }
-static INLINE void Blip_Buffer::clock_rate( long cps ) { factor_ = clock_rate_factor( clock_rate_ = cps ); }
+inline int  Blip_Buffer::length() const         { return length_; }
+inline long Blip_Buffer::samples_avail() const  { return (long) (offset_ >> BLIP_BUFFER_ACCURACY); }
+inline long Blip_Buffer::sample_rate() const    { return sample_rate_; }
+inline int  Blip_Buffer::output_latency() const { return blip_widest_impulse_ / 2; }
+inline long Blip_Buffer::clock_rate() const     { return clock_rate_; }
+inline void Blip_Buffer::clock_rate( long cps ) { factor_ = clock_rate_factor( clock_rate_ = cps ); }
 
 int const blip_max_length = 0;
 int const blip_default_length = 250;
