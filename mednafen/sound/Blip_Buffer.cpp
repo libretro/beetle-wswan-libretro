@@ -112,8 +112,10 @@ void Blip_Buffer::bass_freq( int freq )
 	int shift = 31;
 	if ( freq > 0 )
 	{
+      long f;
+
 		shift = 13;
-		long f = (freq << 16) / sample_rate_;
+		f = (freq << 16) / sample_rate_;
 		while ( (f >>= 1) && --shift ) { }
 	}
 	bass_shift_ = shift;
@@ -156,10 +158,11 @@ void Blip_Buffer::remove_samples( long count )
 {
 	if ( count )
 	{
+      long remain;
 		remove_silence( count );
 		
 		// copy remaining samples to beginning and clear old samples
-		long remain = samples_avail() + blip_buffer_extra_;
+		remain = samples_avail() + blip_buffer_extra_;
 		memmove( buffer_, buffer_ + count, remain * sizeof *buffer_ );
 		memset( buffer_ + remain, 0, count * sizeof *buffer_ );
 	}

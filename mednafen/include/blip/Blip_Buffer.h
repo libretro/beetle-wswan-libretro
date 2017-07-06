@@ -1,12 +1,6 @@
 // Band-limited sound synthesis buffer
 // Various changes and hacks for use in Mednafen.
 
-#ifdef __GNUC__
- #define blip_inline inline __attribute__((always_inline))
-#else
- #define blip_inline inline
-#endif
-
 #include <limits.h>
 #include <stdint.h>
 
@@ -289,22 +283,25 @@ int const blip_reader_default_bass = 9;
 #include <assert.h>
 
 template<int quality,int range>
-blip_inline void Blip_Synth<quality,range>::offset_resampled( blip_resampled_time_t time,
+static INLINE void Blip_Synth<quality,range>::offset_resampled( blip_resampled_time_t time,
 		int delta, Blip_Buffer* blip_buf ) const
 {
+   blip_long *buf, left, right;
+   int phase;
+
 	// Fails if time is beyond end of Blip_Buffer, due to a bug in caller code or the
 	// need for a longer buffer as set by set_sample_rate().
 	assert( (blip_long) (time >> BLIP_BUFFER_ACCURACY) < blip_buf->buffer_size_ );
 	delta *= impl.delta_factor;
-	blip_long* BLIP_RESTRICT buf = blip_buf->buffer_ + (time >> BLIP_BUFFER_ACCURACY);
-	int phase = (int) (time >> (BLIP_BUFFER_ACCURACY - BLIP_PHASE_BITS) & (blip_res - 1));
+	buf = blip_buf->buffer_ + (time >> BLIP_BUFFER_ACCURACY);
+	phase = (int) (time >> (BLIP_BUFFER_ACCURACY - BLIP_PHASE_BITS) & (blip_res - 1));
 
-	blip_long left = buf [0] + delta;
+	left = buf [0] + delta;
 	
 	// Kind of crappy, but doing shift after multiply results in overflow.
 	// Alternate way of delaying multiply by delta_factor results in worse
 	// sub-sample resolution.
-	blip_long right = (delta >> BLIP_PHASE_BITS) * phase;
+	right = (delta >> BLIP_PHASE_BITS) * phase;
 	left  -= right;
 	right += buf [1];
 	
@@ -313,30 +310,30 @@ blip_inline void Blip_Synth<quality,range>::offset_resampled( blip_resampled_tim
 }
 
 template<int quality,int range>
-blip_inline void Blip_Synth<quality,range>::offset( blip_time_t t, int delta, Blip_Buffer* buf ) const
+static INLINE void Blip_Synth<quality,range>::offset( blip_time_t t, int delta, Blip_Buffer* buf ) const
 {
 	offset_resampled( t * buf->factor_ + buf->offset_, delta, buf );
 }
 
 template<int quality,int range>
-blip_inline void Blip_Synth<quality,range>::update( blip_time_t t, int amp )
+static INLINE void Blip_Synth<quality,range>::update( blip_time_t t, int amp )
 {
 	int delta = amp - impl.last_amp;
 	impl.last_amp = amp;
 	offset_resampled( t * impl.buf->factor_ + impl.buf->offset_, delta, impl.buf );
 }
 
-blip_inline blip_eq_t::blip_eq_t( double t ) :
+static INLINE blip_eq_t::blip_eq_t( double t ) :
 		treble( t ), rolloff_freq( 0 ), sample_rate( 44100 ), cutoff_freq( 0 ) { }
-blip_inline blip_eq_t::blip_eq_t( double t, long rf, long sr, long cf ) :
+static INLINE blip_eq_t::blip_eq_t( double t, long rf, long sr, long cf ) :
 		treble( t ), rolloff_freq( rf ), sample_rate( sr ), cutoff_freq( cf ) { }
 
-blip_inline int  Blip_Buffer::length() const         { return length_; }
-blip_inline long Blip_Buffer::samples_avail() const  { return (long) (offset_ >> BLIP_BUFFER_ACCURACY); }
-blip_inline long Blip_Buffer::sample_rate() const    { return sample_rate_; }
-blip_inline int  Blip_Buffer::output_latency() const { return blip_widest_impulse_ / 2; }
-blip_inline long Blip_Buffer::clock_rate() const     { return clock_rate_; }
-blip_inline void Blip_Buffer::clock_rate( long cps ) { factor_ = clock_rate_factor( clock_rate_ = cps ); }
+static INLINE int  Blip_Buffer::length() const         { return length_; }
+static INLINE long Blip_Buffer::samples_avail() const  { return (long) (offset_ >> BLIP_BUFFER_ACCURACY); }
+static INLINE long Blip_Buffer::sample_rate() const    { return sample_rate_; }
+static INLINE int  Blip_Buffer::output_latency() const { return blip_widest_impulse_ / 2; }
+static INLINE long Blip_Buffer::clock_rate() const     { return clock_rate_; }
+static INLINE void Blip_Buffer::clock_rate( long cps ) { factor_ = clock_rate_factor( clock_rate_ = cps ); }
 
 int const blip_max_length = 0;
 int const blip_default_length = 250;
