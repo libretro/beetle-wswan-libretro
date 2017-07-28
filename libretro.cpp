@@ -35,7 +35,7 @@ std::string retro_save_directory;
 
 static INLINE bool MDFN_DumpToFileReal(const char *filename, int compress, const std::vector<PtrLengthPair> &pearpairs)
 {
-   FILE *fp = fopen(filename, "wb");
+   RFILE *fp = filestream_open(filename, RFILE_MODE_WRITE, -1);
 
    if (!fp)
       return 0;
@@ -45,14 +45,14 @@ static INLINE bool MDFN_DumpToFileReal(const char *filename, int compress, const
       const void *data = pearpairs[i].GetData();
       const uint64 length = pearpairs[i].GetLength();
 
-      if (fwrite(data, 1, length, fp) != length)
+      if (filestream_write(fp, data, length) != length)
       {
-         fclose(fp);
+         filestream_close(fp);
          return 0;
       }
    }
 
-   if (fclose(fp) == EOF)
+   if (filestream_close(fp) == EOF)
       return 0;
 
    return 1;
