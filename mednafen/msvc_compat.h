@@ -40,8 +40,8 @@ typedef int ssize_t;
 #define strdup _strdup
 #define lseek _lseek
 
-#include <tchar.h>
-#define strlen _tcslen
+//#include <tchar.h>
+//#define strlen _tcslen
 
 # define S_IRUSR  S_IREAD                      /* read, user */
 # define S_IWUSR  S_IWRITE                     /* write, user */
