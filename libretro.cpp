@@ -4,6 +4,7 @@
 #include "mednafen/general.h"
 #include "libretro.h"
 
+#include <streams/file_stream.h>
 #include <vector>
 
 static MDFNGI *game;
