@@ -68,5 +68,7 @@ SOURCES_CXX += \
 	$(MEDNAFEN_DIR)/mempatcher.cpp \
 	$(CORE_DIR)/libretro.cpp
 
-SOURCES_C += $(MEDNAFEN_DIR)/file.c
+SOURCES_C += $(MEDNAFEN_DIR)/file.c \
+	$(LIBRETROCOMM_DIR)/streams/file_stream.c
+	$(LIBRETROCOMM_DIR)/streams/file_stream_transforms.c
 endif
