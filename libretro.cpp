@@ -2,7 +2,7 @@
 #include "mednafen/mempatcher.h"
 #include "mednafen/git.h"
 #include "mednafen/general.h"
-#include "libretro.h"
+#include <libretro.h>
 
 #include <streams/file_stream.h>
 #include <vector>
@@ -35,7 +35,8 @@ std::string retro_save_directory;
 
 static INLINE bool MDFN_DumpToFileReal(const char *filename, int compress, const std::vector<PtrLengthPair> &pearpairs)
 {
-   RFILE *fp = filestream_open(filename, RFILE_MODE_WRITE, -1);
+   RFILE *fp = filestream_open(filename, RETRO_VFS_FILE_ACCESS_WRITE,
+         RETRO_VFS_FILE_ACCESS_HINT_NONE);
 
    if (!fp)
       return 0;
@@ -938,7 +939,13 @@ void retro_set_controller_port_device(unsigned in_port, unsigned device)
 
 void retro_set_environment(retro_environment_t cb)
 {
+   struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
+
+   vfs_iface_info.required_interface_version = 1;
+   vfs_iface_info.iface                      = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
+	   filestream_vfs_init(&vfs_iface_info);
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
