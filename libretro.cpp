@@ -740,10 +740,6 @@ void retro_unload_game()
    MDFNI_CloseGame();
 }
 
-
-
-// Hardcoded for PSX. No reason to parse lots of structures ...
-// See mednafen/psx/input/gamepad.cpp
 static void update_input(void)
 {
    input_buf = 0;
