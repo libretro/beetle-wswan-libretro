@@ -118,7 +118,7 @@ int WSwan_RTCStateAction(StateMem *sm, int load, int data_only)
       SFEND
    };
 
-   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "RTC"))
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "RTC", false))
       return(0);
 
    return(1);

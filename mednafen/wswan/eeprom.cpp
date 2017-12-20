@@ -250,7 +250,7 @@ int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only)
       SFEND
    };
 
-   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "EEPR"))
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "EEPR", false))
       return(0);
 
    return(1);

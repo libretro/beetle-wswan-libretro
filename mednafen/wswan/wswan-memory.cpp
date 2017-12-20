@@ -595,7 +595,7 @@ int WSwan_MemoryStateAction(StateMem *sm, int load, int data_only)
       SFEND
    };
 
-   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "MEMR"))
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "MEMR", false))
       return(0);
 
    if(load)

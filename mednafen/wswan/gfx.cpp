@@ -721,7 +721,7 @@ int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
       SFEND
    };
 
-   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "GFX"))
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "GFX", false))
       return(0);
 
    if(load)

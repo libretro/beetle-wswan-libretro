@@ -412,7 +412,7 @@ int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
   SFEND
  };
 
- if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "PSG"))
+ if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "PSG", false))
   return(0);
 
  return(1);

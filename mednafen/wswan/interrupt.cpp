@@ -138,7 +138,7 @@ int WSwan_InterruptStateAction(StateMem *sm, int load, int data_only)
       SFEND
    };
 
-   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "INTR"))
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "INTR", false))
       return(0);
 
    if(load)

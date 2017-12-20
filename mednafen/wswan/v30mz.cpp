@@ -1160,7 +1160,7 @@ int v30mz_StateAction(StateMem *sm, int load, int data_only)
 
    PSW = CompressFlags();
 
-   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "V30"))
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "V30", false))
       return(0);
 
    if(load)
