@@ -101,8 +101,6 @@ typedef enum
 #define FETCH (cpu_readop_arg((I.sregs[PS]<<4)+I.pc++))
 #define FETCHOP (cpu_readop((I.sregs[PS]<<4)+I.pc++))
 #define FETCHuint16(var) { var=cpu_readop_arg((((I.sregs[PS]<<4)+I.pc)))+(cpu_readop_arg((((I.sregs[PS]<<4)+I.pc+1)))<<8); I.pc+=2; }
-#define PUSH(val) { I.regs.w[SP]-=2; WriteWord((((I.sregs[SS]<<4)+I.regs.w[SP])),val); }
-#define POP(var) { var = ReadWord((((I.sregs[SS]<<4)+I.regs.w[SP]))); I.regs.w[SP]+=2; }
 #define PEEK(addr) ((uint8)cpu_readop_arg(addr))
 #define PEEKOP(addr) ((uint8)cpu_readop(addr))
 

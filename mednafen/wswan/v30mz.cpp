@@ -38,6 +38,18 @@
 
 static uint16 old_CS, old_IP;
 
+#define PUSH(val) \
+{ \
+   I.regs.w[SP] -= 2; \
+   WriteWord((((I.sregs[SS]<<4)+I.regs.w[SP])),val); \
+}
+
+#define POP(var) \
+{ \
+   var = ReadWord((((I.sregs[SS]<<4)+I.regs.w[SP]))); \
+   I.regs.w[SP]+=2; \
+}
+
 #ifdef WANT_DEBUGGER
  #define ADDBRANCHTRACE(x,y) { if(branch_trace_hook) branch_trace_hook(old_CS, old_IP, x, y, false); }
  #define ADDBRANCHTRACE_INT(x,y) { if(branch_trace_hook) branch_trace_hook(old_CS, old_IP, x,y, true); }
@@ -101,7 +113,8 @@ static uint8 parity_table[256];
 
 static INLINE void i_real_pushf(void)
 {
-   PUSH( CompressFlags() ); 
+   uint8 compr = CompressFlags();
+   PUSH(compr); 
    CLK(2);
 }
 
@@ -172,8 +185,9 @@ void v30mz_int(uint32 vector, bool IgnoreIF)
    if(I.IF || IgnoreIF)
    {
       uint32 dest_seg, dest_off;
+      uint8 compr = CompressFlags();
 
-      PUSH( CompressFlags() );
+      PUSH( compr );
       I.TF = I.IF = 0;
       dest_off = ReadWord(vector);
       dest_seg = ReadWord(vector+2);
