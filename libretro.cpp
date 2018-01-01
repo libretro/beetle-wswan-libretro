@@ -2,6 +2,7 @@
 #include "mednafen/mempatcher.h"
 #include "mednafen/git.h"
 #include <libretro.h>
+#include <retro_math.h>
 
 #include <vector>
 
@@ -176,16 +177,18 @@ static uint32 SRAMSize;
 
 static int Load(const uint8_t *data, size_t size)
 {
-   uint32 real_rom_size;
+   uint32 pow_size      = 0;
+   uint32 real_rom_size = 0;
    uint8 header[10];
 
    if(size < 65536)
       return(0);
 
    real_rom_size = (size + 0xFFFF) & ~0xFFFF;
-   rom_size = round_up_pow2(real_rom_size);
+   pow_size      = next_pow2(real_rom_size);
+   rom_size      = pow_size + (pow_size == 0);
 
-   wsCartROM = (uint8 *)calloc(1, rom_size);
+   wsCartROM     = (uint8 *)calloc(1, rom_size);
 
    /* This real_rom_size vs rom_size funny business 
     * is intended primarily for handling
@@ -207,7 +210,7 @@ static int Load(const uint8_t *data, size_t size)
             break;
          }
       }
-      printf(_("Developer: %s (0x%02x)\n"), developer_name, header[0]);
+      printf("Developer: %s (0x%02x)\n", developer_name, header[0]);
    }
 
    SRAMSize = 0;
@@ -230,7 +233,7 @@ static int Load(const uint8_t *data, size_t size)
       uint16 real_crc = 0;
       for(unsigned int i = 0; i < rom_size - 2; i++)
          real_crc += wsCartROM[i];
-      printf(_("Real Checksum:      0x%04x\n"), real_crc);
+      printf("Real Checksum:      0x%04x\n", real_crc);
    }
 
    if((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27)) /* Detective Conan */
