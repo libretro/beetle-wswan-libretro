@@ -206,39 +206,28 @@ static const DLEntry Developers[] =
  { 0x36, "Capcom" },
 };
 
-static bool TestMagic(const char *name, MDFNFILE *fp)
-{
- if(strcasecmp(GET_FEXTS_PTR(fp), "ws") && strcasecmp(GET_FEXTS_PTR(fp), "wsc") && strcasecmp(GET_FEXTS_PTR(fp), "wsr"))
-  return(false);
-
- if(GET_FSIZE_PTR(fp) < 65536)
-  return(false);
-
- return(true);
-}
-
 static uint32 SRAMSize;
 
-static int Load(const char *name, MDFNFILE *fp)
+static int Load(const uint8_t *data, size_t size)
 {
    uint32 real_rom_size;
    uint8 header[10];
 
-   if(GET_FSIZE_PTR(fp) < 65536)
+   if(size < 65536)
       return(0);
 
-   real_rom_size = (GET_FSIZE_PTR(fp) + 0xFFFF) & ~0xFFFF;
-   rom_size = round_up_pow2(real_rom_size); //fp->size);
+   real_rom_size = (size + 0xFFFF) & ~0xFFFF;
+   rom_size = round_up_pow2(real_rom_size);
 
    wsCartROM = (uint8 *)calloc(1, rom_size);
 
-
-   // This real_rom_size vs rom_size funny business is intended primarily for handling
-   // WSR files.
+   /* This real_rom_size vs rom_size funny business 
+    * is intended primarily for handling
+    * WSR files. */
    if(real_rom_size < rom_size)
       memset(wsCartROM, 0xFF, rom_size - real_rom_size);
 
-   memcpy(wsCartROM + (rom_size - real_rom_size), GET_FDATA_PTR(fp), GET_FSIZE_PTR(fp));
+   memcpy(wsCartROM + (rom_size - real_rom_size), data, size);
 
    memcpy(header, wsCartROM + rom_size - 10, 10);
 
@@ -503,27 +492,12 @@ MDFNGI EmulatedWSwan =
 
 MDFNGI *MDFNGameInfo = &EmulatedWSwan;
 
-static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
+static MDFNGI *MDFNI_LoadGame(const char *force_module, const uint8_t *data,
+      size_t size)
 {
-   MDFNFILE *GameFile = NULL;
-	std::vector<FileExtensionSpecStruct> valid_iae;
    MDFNGameInfo = &EmulatedWSwan;
 
-	// Construct a NULL-delimited list of known file extensions for MDFN_fopen()
-   const FileExtensionSpecStruct *curexts = KnownExtensions; 
-
-   while(curexts->extension && curexts->description)
-   {
-      valid_iae.push_back(*curexts);
-      curexts++;
-   }
-   
-   GameFile = file_open(name);
-
-	if(!GameFile)
-      goto error;
-
-   if(Load(name, GameFile) <= 0)
+   if(Load(data, size) <= 0)
       goto error;
 
 	MDFN_LoadGameCheats(NULL);
@@ -532,8 +506,6 @@ static MDFNGI *MDFNI_LoadGame(const char *force_module, const char *name)
    return(MDFNGameInfo);
 
 error:
-   if (GameFile)
-      file_close(GameFile);
    MDFNGameInfo = NULL;
    return NULL;
 }
@@ -639,7 +611,8 @@ bool retro_load_game(const struct retro_game_info *info)
    overscan = false;
    environ_cb(RETRO_ENVIRONMENT_GET_OVERSCAN, &overscan);
 
-   game = MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE, info->path);
+   game = MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE,
+         (const uint8_t*)info->data, info->size);
    if (!game)
       return false;
 
@@ -827,7 +800,7 @@ void retro_get_system_info(struct retro_system_info *info)
 #define GIT_VERSION ""
 #endif
    info->library_version  = MEDNAFEN_CORE_VERSION GIT_VERSION;
-   info->need_fullpath    = true;
+   info->need_fullpath    = false;
    info->valid_extensions = MEDNAFEN_CORE_EXTENSIONS;
    info->block_extract    = false;
 }
