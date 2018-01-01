@@ -1,10 +1,8 @@
 #include "mednafen/mednafen.h"
 #include "mednafen/mempatcher.h"
 #include "mednafen/git.h"
-#include "mednafen/general.h"
 #include <libretro.h>
 
-#include <streams/file_stream.h>
 #include <vector>
 
 static MDFNGI *game;
@@ -810,13 +808,7 @@ void retro_set_controller_port_device(unsigned in_port, unsigned device)
 
 void retro_set_environment(retro_environment_t cb)
 {
-   struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
-
-   vfs_iface_info.required_interface_version = 1;
-   vfs_iface_info.iface                      = NULL;
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
-	   filestream_vfs_init(&vfs_iface_info);
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
@@ -956,27 +948,6 @@ static void sanitize_path(std::string &path)
          path[i] = '\\';
 }
 #endif
-
-// Use a simpler approach to make sure that things go right for libretro.
-std::string MDFN_MakeFName(MakeFName_Type type, int id1, const char *cd1)
-{
-   char slash;
-#ifdef _WIN32
-   slash = '\\';
-#else
-   slash = '/';
-#endif
-   std::string ret;
-   switch (type)
-   {
-      default:	  
-         break;
-   }
-
-   if (log_cb)
-      log_cb(RETRO_LOG_INFO, "MDFN_MakeFName: %s\n", ret.c_str());
-   return ret;
-}
 
 void MDFND_DispMessage(unsigned char *str)
 {

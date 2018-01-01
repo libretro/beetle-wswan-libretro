@@ -22,7 +22,6 @@
 #include <errno.h>
 #include <vector>
 
-#include "general.h"
 #include "mempatcher.h"
 
 #ifdef _WIN32

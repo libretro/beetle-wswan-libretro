@@ -29,10 +29,6 @@
 #include <time.h>
 #include <math.h>
 
-#ifdef __LIBRETRO__
-#include <streams/file_stream_transforms.h>
-#endif
-
 static bool SkipSL; // Skip save and load
 
 uint32 wsRAMSize;

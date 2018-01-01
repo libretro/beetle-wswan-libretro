@@ -15,10 +15,6 @@
 #define strcasecmp _stricmp
 #endif
 
-#ifdef __LIBRETRO__
-#include <streams/file_stream_transforms.h>
-#endif
-
 #define GET_FDATA(fp) (fp.f_data)
 #define GET_FSIZE(fp) (fp.f_size)
 #define GET_FEXTS(fp) (fp.f_ext)

@@ -3,7 +3,6 @@
 
 #include "../mednafen.h"
 #include "../state.h"
-#include "../general.h"
 
 #include "interrupt.h"
 
