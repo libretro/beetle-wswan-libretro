@@ -209,13 +209,14 @@ static int Load(const uint8_t *data, size_t size)
 
    switch(header[5])
    {
-      case 0x01: SRAMSize = 8*1024; break;
-      case 0x02: SRAMSize = 32*1024; break;
-      case 0x03: SRAMSize = 16 * 65536; break;
-      case 0x04: SRAMSize = 32 * 65536; break; // Dicing Knight!
+      case 0x01: SRAMSize =   8 * 1024; break;
+      case 0x02: SRAMSize =  32 * 1024; break;
+      case 0x03: SRAMSize = 128 * 1024; break;
+      case 0x04: SRAMSize = 256 * 1024; break; // Dicing Knight!, Judgement Silver
+      case 0x05: SRAMSize = 512 * 1024; break; // Wonder Gate
 
       case 0x10: eeprom_size = 128; break;
-      case 0x20: eeprom_size = 2*1024; break;
+      case 0x20: eeprom_size = 2 *1024; break;
       case 0x50: eeprom_size = 1024; break;
    }
 
