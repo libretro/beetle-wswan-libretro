@@ -949,16 +949,6 @@ void retro_cheat_reset(void)
 void retro_cheat_set(unsigned, bool, const char *)
 {}
 
-#ifdef _WIN32
-static void sanitize_path(std::string &path)
-{
-   size_t size = path.size();
-   for (size_t i = 0; i < size; i++)
-      if (path[i] == '/')
-         path[i] = '\\';
-}
-#endif
-
 void MDFND_DispMessage(unsigned char *str)
 {
    if (log_cb)

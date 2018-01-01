@@ -494,7 +494,7 @@ void WSwan_MemoryInit(bool lang, bool IsWSC, uint32 ssize, bool SkipSaveLoad)
 #endif
 
    // WSwan_EEPROMInit() will also clear wsEEPROM
-   WSwan_EEPROMInit(MDFN_GetSettingS("wswan.name").c_str(), byear, bmonth, bday, sex, blood);
+   WSwan_EEPROMInit(MDFN_GetSettingS("wswan.name"), byear, bmonth, bday, sex, blood);
 
    if(sram_size)
    {

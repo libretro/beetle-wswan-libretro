@@ -17,7 +17,6 @@
 
 #include "mednafen.h"
 #include <string.h>
-#include <string>
 #include "settings.h"
 
 uint64 MDFN_GetSettingUI(const char *name)
@@ -60,10 +59,9 @@ bool MDFN_GetSettingB(const char *name)
    return 0;
 }
 
-std::string MDFN_GetSettingS(const char *name)
+const char *MDFN_GetSettingS(const char *name)
 {
    if (!strcmp("wswan.name", name))
-      return std::string("Mednafen");
-   /* FILESYS */
-   return 0;
+      return "Mednafen";
+   return "";
 }
