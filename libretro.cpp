@@ -27,12 +27,6 @@ static bool select_pressed_last_frame;
 
 static MDFN_Surface *surf;
 
-static bool failed_init;
-
-std::string retro_base_directory;
-std::string retro_base_name;
-std::string retro_save_directory;
-
 static INLINE bool MDFN_DumpToFileReal(const char *filename, int compress, const std::vector<PtrLengthPair> &pearpairs)
 {
    RFILE *fp = filestream_open(filename, RETRO_VFS_FILE_ACCESS_WRITE,
@@ -69,20 +63,6 @@ bool MDFN_DumpToFile(const char *filename, int compress, const void *data, uint6
    std::vector<PtrLengthPair> tmp_pairs;
    tmp_pairs.push_back(PtrLengthPair(data, length));
    return (MDFN_DumpToFileReal(filename, compress, tmp_pairs));
-}
-
-static void set_basename(const char *path)
-{
-   const char *base = strrchr(path, '/');
-   if (!base)
-      base = strrchr(path, '\\');
-
-   if (base)
-      retro_base_name = base + 1;
-   else
-      retro_base_name = path;
-
-   retro_base_name = retro_base_name.substr(0, retro_base_name.find_last_of('.'));
 }
 
 /* Cygne
@@ -588,46 +568,6 @@ void retro_init(void)
    else 
       log_cb = NULL;
 
-   const char *dir = NULL;
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir)
-   {
-      retro_base_directory = dir;
-      // Make sure that we don't have any lingering slashes, etc, as they break Windows.
-      size_t last = retro_base_directory.find_last_not_of("/\\");
-      if (last != std::string::npos)
-         last++;
-
-      retro_base_directory = retro_base_directory.substr(0, last);
-   }
-   else
-   {
-      /* TODO: Add proper fallback */
-      if (log_cb)
-         log_cb(RETRO_LOG_WARN, "System directory is not defined. Fallback on using same dir as ROM for system directory later ...\n");
-      failed_init = true;
-   }
-   
-   if (environ_cb(RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY, &dir) && dir)
-   {
-	  // If save directory is defined use it, otherwise use system directory
-      // retro_save_directory = *dir ? dir : retro_base_directory;
-	  retro_save_directory = dir;
-      // Make sure that we don't have any lingering slashes, etc, as they break Windows.
-      size_t last = retro_save_directory.find_last_not_of("/\\");
-      if (last != std::string::npos)
-         last++;
-
-      retro_save_directory = retro_save_directory.substr(0, last);      
-   }
-   else
-   {
-      /* TODO: Add proper fallback */
-      if (log_cb)
-         log_cb(RETRO_LOG_WARN, "Save directory is not defined. Fallback on using SYSTEM directory ...\n");
-	  retro_save_directory = retro_base_directory;
-   }      
-
 #if defined(WANT_16BPP) && defined(FRONTEND_SUPPORTS_RGB565)
    enum retro_pixel_format rgb565 = RETRO_PIXEL_FORMAT_RGB565;
    if (environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb565) && log_cb)
@@ -691,15 +631,13 @@ bool retro_load_game(const struct retro_game_info *info)
       { 0 },
    };
 
-   if (!info || failed_init)
+   if (!info)
       return false;
 
    environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
 
    overscan = false;
    environ_cb(RETRO_ENVIRONMENT_GET_OVERSCAN, &overscan);
-
-   set_basename(info->path);
 
    game = MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE, info->path);
    if (!game)
@@ -1096,16 +1034,6 @@ std::string MDFN_MakeFName(MakeFName_Type type, int id1, const char *cd1)
    std::string ret;
    switch (type)
    {
-      case MDFNMKF_SAV:
-         ret = retro_save_directory +slash + retro_base_name +
-            std::string(".") + std::string(cd1);
-         break;
-      case MDFNMKF_FIRMWARE:
-         ret = retro_base_directory + slash + std::string(cd1);
-#ifdef _WIN32
-   sanitize_path(ret); // Because Windows path handling is mongoloid.
-#endif
-         break;
       default:	  
          break;
    }
