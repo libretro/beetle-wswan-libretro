@@ -237,6 +237,8 @@ static bool TestMagic(const char *name, MDFNFILE *fp)
  return(true);
 }
 
+static uint32 SRAMSize;
+
 static int Load(const char *name, MDFNFILE *fp)
 {
    uint32 real_rom_size;
@@ -273,7 +275,7 @@ static int Load(const char *name, MDFNFILE *fp)
       printf(_("Developer: %s (0x%02x)\n"), developer_name, header[0]);
    }
 
-   uint32 SRAMSize = 0;
+   SRAMSize = 0;
    eeprom_size = 0;
 
    switch(header[5])
@@ -329,7 +331,7 @@ static int Load(const char *name, MDFNFILE *fp)
 
 static void CloseGame(void)
 {
-   WSwan_MemoryKill(); // saves sram/eeprom
+   WSwan_MemoryKill();
 
    WSwan_SoundKill();
 
@@ -1026,13 +1028,43 @@ bool retro_unserialize(const void *data, size_t size)
    return MDFNSS_LoadSM(&st, 0, 0);
 }
 
-void *retro_get_memory_data(unsigned)
+void *retro_get_memory_data(unsigned type)
 {
+   switch (type)
+   {
+      case RETRO_MEMORY_SAVE_RAM:
+         if (eeprom_size)
+            return (uint8_t*)wsEEPROM;
+         else if (SRAMSize)
+            return wsSRAM;
+         else
+            return NULL;
+      case RETRO_MEMORY_SYSTEM_RAM:
+         return (uint8_t*)wsRAM;
+      default:
+         break;
+   }
+
    return NULL;
 }
 
-size_t retro_get_memory_size(unsigned)
+size_t retro_get_memory_size(unsigned type)
 {
+   switch (type)
+   {
+      case RETRO_MEMORY_SAVE_RAM:
+         if (eeprom_size)
+            return eeprom_size;
+         else if (SRAMSize)
+            return SRAMSize;
+         else
+            return 0;
+      case RETRO_MEMORY_SYSTEM_RAM:
+         return wsRAMSize;
+      default:
+         break;
+   }
+
    return 0;
 }
 
