@@ -37,7 +37,7 @@ static bool SkipSL; // Skip save and load
 
 uint32 wsRAMSize;
 uint8 wsRAM[65536];
-static uint8 *wsSRAM = NULL;
+uint8 *wsSRAM = NULL;
 
 uint8 *wsCartROM;
 static uint32 sram_size;
@@ -466,19 +466,6 @@ void WSwan_MemorySetRegister(const unsigned int id, uint32 value)
 
 void WSwan_MemoryKill(void)
 {
-   if((sram_size || eeprom_size) && !SkipSL)
-   {
-      std::vector<PtrLengthPair> EvilRams;
-
-      if(eeprom_size)
-         EvilRams.push_back(PtrLengthPair(wsEEPROM, eeprom_size));
-
-      if(sram_size)
-         EvilRams.push_back(PtrLengthPair(wsSRAM, sram_size));
-
-      MDFN_DumpToFile(MDFN_MakeFName(MDFNMKF_SAV, 0, "sav").c_str(), 6, EvilRams);
-   }
-
    if(wsSRAM)
       free(wsSRAM);
    wsSRAM = NULL;
@@ -517,21 +504,6 @@ void WSwan_MemoryInit(bool lang, bool IsWSC, uint32 ssize, bool SkipSaveLoad)
    {
       wsSRAM = (uint8*)malloc(sram_size);
       memset(wsSRAM, 0, sram_size);
-   }
-
-   if((sram_size || eeprom_size) && !SkipSL)
-   {
-      FILE *savegame_fp;
-
-      savegame_fp = gzopen(MDFN_MakeFName(MDFNMKF_SAV, 0, "sav").c_str(), "rb");
-      if(savegame_fp)
-      {
-         if(eeprom_size)
-            gzread(savegame_fp, wsEEPROM, eeprom_size);
-         if(sram_size)
-            gzread(savegame_fp, wsSRAM, sram_size);
-         gzclose(savegame_fp);
-      }
    }
 
    MDFNMP_AddRAM(wsRAMSize, 0x00000, wsRAM);

@@ -13,6 +13,8 @@ extern uint8 wsRAM[65536];
 extern uint8 *wsCartROM;
 extern uint32 eeprom_size;
 extern uint8 wsEEPROM[2048];
+extern uint8 *wsSRAM;
+extern uint32 wsRAMSize;
 
 uint8 WSwan_readmem20(uint32);
 void WSwan_writemem20(uint32 address,uint8 data);
