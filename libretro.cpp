@@ -146,24 +146,30 @@ static const DLEntry Developers[] =
  { 0x12, "Konami" },
  { 0x16, "Kobunsha" },
  { 0x17, "Bottom Up" },
- { 0x18, "Naxat" },	// Mechanic Arms?  Media Entertainment? Argh!
+ { 0x18, "Kaga Tech" },
  { 0x19, "Sunrise" },
- { 0x1A, "Cyberfront" },
- { 0x1B, "Megahouse" },
+ { 0x1A, "Cyber Front" },
+ { 0x1B, "Mega House" },
  { 0x1D, "Interbec" },
- { 0x1E, "NAC" },
- { 0x1F, "Emotion" }, // Bandai Visual??
+ { 0x1E, "Nihon Application" },
+ { 0x1F, "Bandai Visual" },
  { 0x20, "Athena" },
  { 0x21, "KID" },
+ { 0x22, "HAL Corporation" },
+ { 0x23, "Yuki Enterprise" },
  { 0x24, "Omega Micott" },
- { 0x25, "Upstar" },
- { 0x26, "Kadokawa/Megas" },
- { 0x27, "Cocktail Soft" },
+ { 0x25, "Layup" },
+ { 0x26, "Kadokawa Shoten" },
+ { 0x27, "Shall Luck" },
  { 0x28, "Squaresoft" },
- { 0x2B, "TomCreate" },
+ { 0x2B, "Tom Create" },
  { 0x2D, "Namco" },
- { 0x2F, "Gust" },
- { 0x36, "Capcom" },
+ { 0x2E, "Movic" }, // ????
+ { 0x2F, "E3 Staff" }, // ????
+ { 0x31, "Vanguard" },
+ { 0x32, "Megatron" },
+ { 0x33, "Wiz" },
+ { 0x36, "Capcom" }
 };
 
 static uint32 SRAMSize;
@@ -209,13 +215,14 @@ static int Load(const uint8_t *data, size_t size)
 
    switch(header[5])
    {
-      case 0x01: SRAMSize = 8*1024; break;
-      case 0x02: SRAMSize = 32*1024; break;
-      case 0x03: SRAMSize = 16 * 65536; break;
-      case 0x04: SRAMSize = 32 * 65536; break; // Dicing Knight!
+      case 0x01: SRAMSize =   8 * 1024; break;
+      case 0x02: SRAMSize =  32 * 1024; break;
+      case 0x03: SRAMSize = 128 * 1024; break;
+      case 0x04: SRAMSize = 256 * 1024; break; // Dicing Knight!, Judgement Silver
+      case 0x05: SRAMSize = 512 * 1024; break; // Wonder Gate
 
       case 0x10: eeprom_size = 128; break;
-      case 0x20: eeprom_size = 2*1024; break;
+      case 0x20: eeprom_size = 2 *1024; break;
       case 0x50: eeprom_size = 1024; break;
    }
 
