@@ -7,38 +7,6 @@
 
 #include "settings-common.h"
 
-class PtrLengthPair
-{
- public:
-
- inline PtrLengthPair(const void *new_data, const uint64 new_length)
- {
-  data = new_data;
-  length = new_length;
- }
-
- ~PtrLengthPair() 
- { 
-
- } 
-
- INLINE const void *GetData(void) const
- {
-  return(data);
- }
-
- INLINE uint64 GetLength(void) const
- {
-  return(length);
- }
-
- private:
- const void *data;
- uint64 length;
-};
-
-extern std::vector<MDFNGI *>MDFNSystems;
-
 /* Indent stdout newlines +- "indent" amount */
 void MDFN_indent(int indent);
 void MDFN_printf(const char *format, ...);
@@ -72,7 +40,5 @@ uint32 MDFNI_CRC32(uint32 crc, uint8 *buf, uint32 len);
 int MDFNI_DatachSet(const uint8 *rcode);
 
 void MDFNI_DumpModulesDef(const char *fn);
-
-bool MDFN_DumpToFile(const char *filename, int compress, const std::vector<PtrLengthPair> &pearpairs);
 
 #endif
