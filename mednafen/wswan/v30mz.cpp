@@ -113,7 +113,7 @@ static uint8 parity_table[256];
 
 static INLINE void i_real_pushf(void)
 {
-   uint8 compr = CompressFlags();
+   uint16 compr = CompressFlags();
    PUSH(compr); 
    CLK(2);
 }
@@ -185,7 +185,7 @@ void v30mz_int(uint32 vector, bool IgnoreIF)
    if(I.IF || IgnoreIF)
    {
       uint32 dest_seg, dest_off;
-      uint8 compr = CompressFlags();
+      uint16 compr = CompressFlags();
 
       PUSH( compr );
       I.TF = I.IF = 0;
