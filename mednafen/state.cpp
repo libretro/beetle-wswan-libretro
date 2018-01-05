@@ -19,8 +19,6 @@
 
 #include <boolean.h>
 
-#include <vector>
-
 #include <compat/msvc.h>
 
 #include "mednafen.h"
