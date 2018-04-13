@@ -421,6 +421,7 @@ static const FileExtensionSpecStruct KnownExtensions[] =
  { ".ws", "WonderSwan ROM Image" },
  { ".wsc", "WonderSwan Color ROM Image" },
  { ".wsr", "WonderSwan Music Rip" },
+ { ".pc2", "Benesse Pocket Challenge 2" },
  { NULL, NULL }
 };
 
