@@ -313,7 +313,7 @@ else ifneq (,$(findstring windows_msvc2017,$(platform)))
 	ifneq (,$(findstring uwp,$(PlatformSuffix)))
 		LIB := $(shell IFS=$$'\n'; cygpath -w "$(LIB)/store")
 	endif
-      
+
 	export INCLUDE := $(INCLUDE);$(WindowsSDKSharedIncludeDir);$(WindowsSDKUCRTIncludeDir);$(WindowsSDKUMIncludeDir)
 	export LIB := $(LIB);$(WindowsSDKUCRTLibDir);$(WindowsSDKUMLibDir)
 	TARGET := $(TARGET_NAME)_libretro.dll
@@ -486,7 +486,28 @@ LINKOUT  = -o
 ifneq (,$(findstring msvc,$(platform)))
 	OBJOUT = -Fo
 	LINKOUT = -out:
+ifeq ($(STATIC_LINKING),1)
+	LD ?= lib.exe
+	STATIC_LINKING=0
+
+	ifeq ($(DEBUG), 1)
+		CFLAGS += -MTd
+		CXXFLAGS += -MTd
+	else
+		CFLAGS += -MT
+		CXXFLAGS += -MT
+	endif
+else
 	LD = link.exe
+
+	ifeq ($(DEBUG), 1)
+		CFLAGS += -MDd
+		CXXFLAGS += -MDd
+	else
+		CFLAGS += -MD
+		CXXFLAGS += -MD
+	endif
+endif
 else
 	LD = $(CXX)
 endif
@@ -497,7 +518,7 @@ ifeq ($(platform), emscripten)
 else ifeq ($(STATIC_LINKING), 1)
 	$(AR) rcs $@ $(OBJECTS)
 else
-	$(LD) $(LINKOUT)$@ $^ $(LDFLAGS)
+	$(LD) $(LINKOUT)$@ $^ $(LDFLAGS) $(LIBS)
 endif
 
 %.o: %.cpp
