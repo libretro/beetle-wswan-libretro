@@ -21,7 +21,8 @@ static retro_input_state_t input_state_cb;
 static bool overscan;
 static double last_sound_rate;
 
-static bool rotate_tall;
+static bool rotate_screen; // to rotate screen
+static bool rotate_joymap; // to rotate joymap controls
 static bool select_pressed_last_frame;
 
 static MDFN_Surface *surf;
@@ -549,6 +550,13 @@ static void check_variables(void)
 {
    struct retro_variable var = {0};
 
+   var.key = "wswan_rotate_keymap",
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
+      bool newval = (strcmp(var.value, "enabled") == 0);
+      rotate_joymap = newval;
+   }
 }
 
 #define MAX_PLAYERS 1
@@ -570,7 +578,7 @@ bool retro_load_game(const struct retro_game_info *info)
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A, "A" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B, "B" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_START, "Start" },
-      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Rotate screen + active D-Pad" },
+      { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Rotate screen" },
 
       { 0 },
    };
@@ -607,7 +615,8 @@ bool retro_load_game(const struct retro_game_info *info)
       return false;
    }
    
-   rotate_tall = false;
+   rotate_screen = false;
+   rotate_joymap = false;
    select_pressed_last_frame = false;
 
    check_variables();
@@ -662,8 +671,8 @@ static void update_input(void)
    
    if(select_button && !select_pressed_last_frame)
    {
-      rotate_tall = !rotate_tall;
-      if(rotate_tall)
+      rotate_screen = !rotate_screen;
+      if(rotate_screen)
       {
          struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
          const unsigned rot_angle = 1;/*90 degrees*/
@@ -683,7 +692,7 @@ static void update_input(void)
    
    select_pressed_last_frame = select_button;
 
-   if(rotate_tall)
+   if(rotate_joymap)
    {
       //upright rotation
       for (unsigned i = 0; i < MAX_BUTTONS; i++)
@@ -821,6 +830,13 @@ void retro_set_controller_port_device(unsigned in_port, unsigned device)
 void retro_set_environment(retro_environment_t cb)
 {
    environ_cb = cb;
+
+   struct retro_variable variables[] = {
+      { "wswan_rotate_keymap", "Rotate button mappings; disabled|enabled" },
+      { NULL, NULL },
+   };
+
+   cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
