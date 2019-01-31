@@ -24,6 +24,8 @@ static double last_sound_rate;
 static bool rotate_tall;
 static bool select_pressed_last_frame;
 
+static unsigned rotate_joymap;
+
 static MDFN_Surface *surf;
 
 /* Cygne
@@ -549,6 +551,18 @@ static void check_variables(void)
 {
    struct retro_variable var = {0};
 
+   var.key = "wswan_rotate_keymap",
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
+      if (!strcmp(var.value, "disabled"))
+         rotate_joymap = 0;
+      else if (!strcmp(var.value, "enabled"))
+         rotate_joymap = 1;
+      else if (!strcmp(var.value, "auto"))
+         rotate_joymap = 2;
+   }
+
 }
 
 #define MAX_PLAYERS 1
@@ -609,6 +623,7 @@ bool retro_load_game(const struct retro_game_info *info)
    
    rotate_tall = false;
    select_pressed_last_frame = false;
+   rotate_joymap = 0;
 
    check_variables();
 
@@ -683,21 +698,12 @@ static void update_input(void)
    
    select_pressed_last_frame = select_button;
 
-   if(rotate_tall)
-   {
-      //upright rotation
-      for (unsigned i = 0; i < MAX_BUTTONS; i++)
-         input_buf |= map[1][i] != -1u &&
-            input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[1][i]) ? (1 << i) : 0;
-   }
-   else
-   {
-      //normal rotation
-      for (unsigned i = 0; i < MAX_BUTTONS; i++)
-         input_buf |= map[0][i] != -1u &&
-            input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[0][i]) ? (1 << i) : 0;
-   }
+   bool joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
 
+   for (unsigned i = 0; i < MAX_BUTTONS; i++) {
+         input_buf |= map[joymap][i] != -1u &&
+            input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[joymap][i]) ? (1 << i) : 0;
+   }
 
 #ifdef MSB_FIRST
    union {
@@ -821,6 +827,13 @@ void retro_set_controller_port_device(unsigned in_port, unsigned device)
 void retro_set_environment(retro_environment_t cb)
 {
    environ_cb = cb;
+
+   struct retro_variable variables[] = {
+      { "wswan_rotate_keymap", "Rotate button mappings; auto|disabled|enabled" },
+      { NULL, NULL },
+   };
+
+   cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
