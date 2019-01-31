@@ -21,8 +21,8 @@ static retro_input_state_t input_state_cb;
 static bool overscan;
 static double last_sound_rate;
 
+static unsigned rotate_joymap; // to rotate joymap controls
 static bool rotate_screen; // to rotate screen
-static bool rotate_joymap; // to rotate joymap controls
 static bool select_pressed_last_frame;
 
 static MDFN_Surface *surf;
@@ -554,8 +554,12 @@ static void check_variables(void)
    var.value = NULL;
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-      bool newval = (strcmp(var.value, "enabled") == 0);
-      rotate_joymap = newval;
+      if (!strcmp(var.value, "disabled"))
+         rotate_joymap = 0;
+      else if (!strcmp(var.value, "enabled"))
+         rotate_joymap = 1;
+      else if (!strcmp(var.value, "auto"))
+         rotate_joymap = 2;
    }
 }
 
@@ -616,7 +620,7 @@ bool retro_load_game(const struct retro_game_info *info)
    }
    
    rotate_screen = false;
-   rotate_joymap = false;
+   rotate_joymap = 0;
    select_pressed_last_frame = false;
 
    check_variables();
@@ -692,7 +696,11 @@ static void update_input(void)
    
    select_pressed_last_frame = select_button;
 
-   if(rotate_joymap)
+   unsigned joypad_rotate_mode = rotate_joymap;
+   if (rotate_joymap && (rotate_joymap == 2)) // option 2 sets joypad mapping to rotate together with screen rotate
+      joypad_rotate_mode = rotate_screen;
+
+   if (joypad_rotate_mode)
    {
       //upright rotation
       for (unsigned i = 0; i < MAX_BUTTONS; i++)
@@ -832,7 +840,7 @@ void retro_set_environment(retro_environment_t cb)
    environ_cb = cb;
 
    struct retro_variable variables[] = {
-      { "wswan_rotate_keymap", "Rotate button mappings; disabled|enabled" },
+      { "wswan_rotate_keymap", "Rotate button mappings; auto|disabled|enabled" },
       { NULL, NULL },
    };
 
