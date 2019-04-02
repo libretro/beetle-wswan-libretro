@@ -426,7 +426,7 @@ void wsScanline(uint16 *target)
 
          if(windowtype == 0x20) // Display FG only inside window
          {
-            if((wsLine >= FGy0) && (wsLine < FGy1))
+            if((wsLine >= FGy0) && (wsLine <= FGy1))
                for(j = FGx0; j <= FGx1 && j < 224; j++)
                   in_window[7 + j] = 1;
          }
@@ -434,7 +434,7 @@ void wsScanline(uint16 *target)
          {
             for(j = 0; j < 224; j++)
             {
-               if(!(j >= FGx0 && j < FGx1) || !((wsLine >= FGy0) && (wsLine < FGy1)))
+               if(!(j >= FGx0 && j <= FGx1) || !((wsLine >= FGy0) && (wsLine < FGy1)))
                   in_window[7 + j] = 1;
             }
          }
@@ -502,8 +502,8 @@ void wsScanline(uint16 *target)
       if(DispControl & 0x08)
       {
          memset(in_window, 0, sizeof(in_window));
-         if((wsLine >= SPRy0) && (wsLine < SPRy1))
-            for(j = SPRx0; j < SPRx1 && j < 256; j++)
+         if((wsLine >= SPRy0) && (wsLine <= SPRy1))
+            for(j = SPRx0; j <= SPRx1 && j < 256; j++)
                in_window[7 + j] = 1;
       }
       else
