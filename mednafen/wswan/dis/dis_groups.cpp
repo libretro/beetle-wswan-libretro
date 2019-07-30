@@ -4,7 +4,6 @@
 
 #include "disasm.h"
 #include <stdio.h>
-#include <assert.h>
 
 /*
 #if BX_DEBUGGER

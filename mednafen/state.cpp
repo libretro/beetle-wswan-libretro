@@ -339,7 +339,6 @@ static SFORMAT *FindSF(const char *name, SFORMAT *sf)
       }
       else
       {
-         assert(sf->name);
          if (!strcmp(sf->name, name))
             return sf;
       }
@@ -472,7 +471,6 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
       }
    }
 
-   assert(st->loc == (temp + size));
    return 1;
 }
 

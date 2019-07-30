@@ -280,8 +280,6 @@ int const blip_reader_default_bass = 9;
 #define BLIP_READER_END( name, blip_buffer ) \
 	(void) ((blip_buffer).reader_accum_ = name##_reader_accum)
 
-#include <assert.h>
-
 template<int quality,int range>
 inline void Blip_Synth<quality,range>::offset_resampled( blip_resampled_time_t time,
 		int delta, Blip_Buffer* blip_buf ) const
@@ -289,9 +287,6 @@ inline void Blip_Synth<quality,range>::offset_resampled( blip_resampled_time_t t
    blip_long *buf, left, right;
    int phase;
 
-	// Fails if time is beyond end of Blip_Buffer, due to a bug in caller code or the
-	// need for a longer buffer as set by set_sample_rate().
-	assert( (blip_long) (time >> BLIP_BUFFER_ACCURACY) < blip_buf->buffer_size_ );
 	delta *= impl.delta_factor;
 	buf = blip_buf->buffer_ + (time >> BLIP_BUFFER_ACCURACY);
 	phase = (int) (time >> (BLIP_BUFFER_ACCURACY - BLIP_PHASE_BITS) & (blip_res - 1));

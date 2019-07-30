@@ -5,7 +5,6 @@
 #include "disasm.h"
 
 #include <stdio.h>
-#include <assert.h>
 
 void disassembler::decode_modrm(x86_insn *insn)
 {
