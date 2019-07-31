@@ -6,6 +6,8 @@
 
 #include <vector>
 
+#include "libretro_core_options.h"
+
 static MDFNGI *game;
 
 struct retro_perf_callback perf_cb;
@@ -828,12 +830,7 @@ void retro_set_environment(retro_environment_t cb)
 {
    environ_cb = cb;
 
-   struct retro_variable variables[] = {
-      { "wswan_rotate_keymap", "Rotate button mappings; auto|disabled|enabled" },
-      { NULL, NULL },
-   };
-
-   cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
+   libretro_set_core_options(environ_cb);
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
