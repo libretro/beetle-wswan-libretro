@@ -80,6 +80,22 @@ struct retro_core_option_definition option_defs_us[] = {
 
 /* RETRO_LANGUAGE_TURKISH */
 
+struct retro_core_option_definition option_defs_tr[] = {
+   {
+      "wswan_rotate_keymap",
+      "Düğme eşlemelerini döndür",
+      "",
+      {
+         { "auto",  "otomatik" },
+         { "disabled",  "devre dışı bırak" },
+         { "enabled",  "etkinleştir" },
+         { NULL, NULL},
+      },
+      "auto",
+   },
+   { NULL, NULL, NULL, { NULL, NULL }, NULL },
+};
+
 /*
  ********************************
  * Language Mapping
@@ -105,7 +121,7 @@ struct retro_core_option_definition *option_defs_intl[RETRO_LANGUAGE_LAST] = {
    NULL,           /* RETRO_LANGUAGE_VIETNAMESE */
    NULL,           /* RETRO_LANGUAGE_ARABIC */
    NULL,           /* RETRO_LANGUAGE_GREEK */
-   NULL,           /* RETRO_LANGUAGE_TURKISH */
+   option_defs_tr, /* RETRO_LANGUAGE_TURKISH */
 };
 
 /*
