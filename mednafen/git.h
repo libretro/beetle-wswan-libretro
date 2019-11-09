@@ -319,6 +319,6 @@ typedef struct
  double mouse_sensitivity;
 } MDFNGI;
 
-int StateAction(StateMem *sm, int load, int data_only);
+int StateAction(StateMem *sm, const unsigned load, const bool data_only);
 
 #endif

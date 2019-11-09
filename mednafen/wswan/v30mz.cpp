@@ -28,7 +28,7 @@
 */
 
 #include "wswan.h"
-#include "wswan-memory.h"
+#include "memory-wswan.h"
 
 #include <string.h>
 
@@ -37,18 +37,6 @@
 #include "debug.h"
 
 static uint16 old_CS, old_IP;
-
-#define PUSH(val) \
-{ \
-   I.regs.w[SP] -= 2; \
-   WriteWord((((I.sregs[SS]<<4)+I.regs.w[SP])),val); \
-}
-
-#define POP(var) \
-{ \
-   var = ReadWord((((I.sregs[SS]<<4)+I.regs.w[SP]))); \
-   I.regs.w[SP]+=2; \
-}
 
 #ifdef WANT_DEBUGGER
  #define ADDBRANCHTRACE(x,y) { if(branch_trace_hook) branch_trace_hook(old_CS, old_IP, x, y, false); }
@@ -78,10 +66,25 @@ typedef struct
    uint8 TF, IF, DF;
 } v30mz_regs_t;
 
-static void (*cpu_writemem20)(uint32,uint8) = NULL;
-static uint8 (*cpu_readport)(uint32) = NULL;
-static void (*cpu_writeport)(uint32, uint8) = NULL;
-static uint8 (*cpu_readmem20)(uint32) = NULL;
+static void (MDFN_FASTCALL *cpu_writemem20)(uint32,uint8) = NULL;
+static uint8 (MDFN_FASTCALL *cpu_readport)(uint32) = NULL;
+static void (MDFN_FASTCALL *cpu_writeport)(uint32, uint8) = NULL;
+static uint8 (MDFN_FASTCALL *cpu_readmem20)(uint32) = NULL;
+
+static INLINE uint8 PhysRead8(uint32 addr)
+{
+   return cpu_readmem20(addr);
+}
+
+static INLINE uint16 PhysRead16(uint32 addr)
+{
+   uint16 ret;
+
+   ret = cpu_readmem20(addr);
+   ret |= cpu_readmem20(addr + 1) << 8;
+
+   return ret;
+}
 
 /***************************************************************************/
 /* cpu state                                                               */
@@ -94,17 +97,7 @@ static v30mz_regs_t I;
 static bool InHLT;
 
 static uint32 prefix_base;	/* base address of the latest prefix segment */
-static char seg_prefix;		/* prefix segment indicator */
-
-#ifdef WANT_DEBUGGER
-static void (*cpu_hook)(uint32) = NULL;
-static uint8 (*read_hook)(uint32) = NULL;
-static void (*write_hook)(uint32, uint8) = NULL;
-static uint8 (*port_read_hook)(uint32) = NULL;
-static void (*port_write_hook)(uint32, uint8) = NULL;
-static bool hookie_hickey = 0;
-static void (*branch_trace_hook)(uint16 from_CS, uint16 from_IP, uint16 to_CS, uint16 to_IP, bool interrupt) = NULL;
-#endif
+static int8 seg_prefix;		/* prefix segment indicator */
 
 #include "v30mz-ea.inc"
 #include "v30mz-modrm.inc"
@@ -113,8 +106,10 @@ static uint8 parity_table[256];
 
 static INLINE void i_real_pushf(void)
 {
-   uint16 compr = CompressFlags();
-   PUSH(compr); 
+   // fix: MSVC 2003
+   uint16 flags = CompressFlags();
+   PUSH(flags);
+
    CLK(2);
 }
 
@@ -128,7 +123,7 @@ static INLINE void i_real_popf(void)
 
 /***************************************************************************/
 
-void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), uint8 (*readport)(uint32), void (*writeport)(uint32, uint8))
+void v30mz_init(uint8 (MDFN_FASTCALL *readmem20)(uint32), void (MDFN_FASTCALL *writemem20)(uint32,uint8), uint8 (MDFN_FASTCALL *readport)(uint32), void (MDFN_FASTCALL *writeport)(uint32, uint8))
 {
    cpu_readmem20 = readmem20;
    cpu_writemem20 = writemem20;
@@ -139,7 +134,6 @@ void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), ui
 
 void v30mz_reset(void)
 {
-   unsigned i;
    const BREGS reg_name[8] = { AL, CL, DL, BL, AH, CH, DH, BH };
 
    v30mz_ICount = 0;
@@ -149,12 +143,12 @@ void v30mz_reset(void)
 
    I.sregs[PS] = 0xffff;
 
-   for(i = 0; i < 256; i++)
+
+   for(unsigned int i = 0; i < 256; i++)
    {
-      unsigned j;
       unsigned int c = 0;
 
-      for (j = i; j > 0; j >>= 1)
+      for (unsigned int j = i; j > 0; j >>= 1)
          if (j & 1) c++;
 
       parity_table[i] = !(c & 1);
@@ -162,13 +156,13 @@ void v30mz_reset(void)
 
    I.ZeroVal = I.ParityVal = 1;
 
-   for(i = 0; i < 256; i++)
+   for(unsigned int i = 0; i < 256; i++)
    {
       Mod_RM.reg.b[i] = reg_name[(i & 0x38) >> 3];
       Mod_RM.reg.w[i] = (WREGS) ( (i & 0x38) >> 3) ;
    }
 
-   for(i = 0xc0; i < 0x100; i++)
+   for(unsigned int i = 0xc0; i < 0x100; i++)
    {
       Mod_RM.RM.w[i] = (WREGS)( i & 7 );
       Mod_RM.RM.b[i] = (BREGS)reg_name[i & 7];
@@ -185,9 +179,11 @@ void v30mz_int(uint32 vector, bool IgnoreIF)
    if(I.IF || IgnoreIF)
    {
       uint32 dest_seg, dest_off;
-      uint16 compr = CompressFlags();
 
-      PUSH( compr );
+      // fix: MSVC 2003
+      uint16 flags = CompressFlags();
+      PUSH(flags);
+
       I.TF = I.IF = 0;
       dest_off = ReadWord(vector);
       dest_seg = ReadWord(vector+2);
@@ -204,7 +200,7 @@ static void nec_interrupt(unsigned int_num)
 {
    uint32 dest_seg, dest_off;
 
-   if (int_num == -1)
+   if ((int)int_num == -1)
       return;
 
    i_real_pushf();
@@ -235,7 +231,6 @@ static bool CheckInHLT(void)
          return(1);
       }
    }
-
    return(0);
 }
 
@@ -337,7 +332,7 @@ static void DoOP(uint8 opcode)
 {
    //#define OP(num,func_name) static void func_name(void)
 #define OP(num, func_name) case num: 
-#define OP_RANGE(num1, num2, func_name) case num1 ... num2:
+#define OP8(base, func_name) case (base): case (base)+1: case (base)+2: case (base)+3: case (base)+4: case (base)+5: case (base)+6: case (base)+7:
 #define OP_EPILOGUE break
 
    switch(opcode)
@@ -472,7 +467,7 @@ static void DoOP(uint8 opcode)
             POP(I.regs.w[IY]);
             POP(I.regs.w[IX]);
             POP(I.regs.w[BP]);
-            POP(tmp);
+            POP(tmp); (void)tmp;
             POP(I.regs.w[BW]);
             POP(I.regs.w[DW]);
             POP(I.regs.w[CW]);
@@ -802,20 +797,12 @@ static void DoOP(uint8 opcode)
             }
          } OP_EPILOGUE;
 
-         OP( 0xd4, i_aam    ) { uint32 mult=FETCH; mult=0; I.regs.b[AH] = I.regs.b[AL] / 10; I.regs.b[AL] %= 10; SetSZPF_Word(I.regs.w[AW]); CLK(17); } OP_EPILOGUE;
-         OP( 0xd5, i_aad    ) { uint32 mult=FETCH; mult=0; I.regs.b[AL] = I.regs.b[AH] * 10 + I.regs.b[AL]; I.regs.b[AH] = 0; SetSZPF_Byte(I.regs.b[AL]); CLK(6); } OP_EPILOGUE;
+         OP( 0xd4, i_aam    ) { (void)FETCH; I.regs.b[AH] = I.regs.b[AL] / 10; I.regs.b[AL] %= 10; SetSZPF_Word(I.regs.w[AW]); CLK(17); } OP_EPILOGUE;
+         OP( 0xd5, i_aad    ) { (void)FETCH; I.regs.b[AL] = I.regs.b[AH] * 10 + I.regs.b[AL]; I.regs.b[AH] = 0; SetSZPF_Byte(I.regs.b[AL]); CLK(6); } OP_EPILOGUE;
          OP( 0xd6, i_setalc ) { I.regs.b[AL] = (CF)?0xff:0x00; CLK(3);  } OP_EPILOGUE;
          OP( 0xd7, i_trans  ) { uint32 dest = (I.regs.w[BW]+I.regs.b[AL])&0xffff; I.regs.b[AL] = GetMemB(DS0, dest); CLK(5); } OP_EPILOGUE;
 
-      case 0xd8:
-      case 0xd9:
-      case 0xda:
-      case 0xdb:
-      case 0xdc:
-      case 0xdd:
-      case 0xde:
-      case 0xdf:
-         { GetModRM; CLK(1); } OP_EPILOGUE;
+         OP8(0xd8, i_fpo    ) { /*printf("FPO1, Op:%02x\n", opcode);*/ GetModRM; (void)ModRM; CLK(1); } OP_EPILOGUE;
 
          OP( 0xe0, i_loopne ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if (!ZF && I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(6); ADDBRANCHTRACE(I.sregs[PS], I.pc); } else CLK(3); } OP_EPILOGUE;
          OP( 0xe1, i_loope  ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if ( ZF && I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(6); ADDBRANCHTRACE(I.sregs[PS], I.pc); } else CLK(3); } OP_EPILOGUE;
@@ -973,34 +960,20 @@ unsigned v30mz_get_reg(int regnum)
 {
 	switch( regnum )
    {
-      case NEC_PC:
-         return I.pc;
-      case NEC_SP:
-         return I.regs.w[SP];
-      case NEC_FLAGS:
-         return CompressFlags();
-      case NEC_AW:
-         return I.regs.w[AW];
-      case NEC_CW:
-         return I.regs.w[CW];
-      case NEC_DW:
-         return I.regs.w[DW];
-      case NEC_BW:
-         return I.regs.w[BW];
-      case NEC_BP:
-         return I.regs.w[BP];
-      case NEC_IX:
-         return I.regs.w[IX];
-      case NEC_IY:
-         return I.regs.w[IY];
-      case NEC_DS1:
-         return I.sregs[DS1];
-      case NEC_PS:
-         return I.sregs[PS];
-      case NEC_SS:
-         return I.sregs[SS];
-      case NEC_DS0:
-         return I.sregs[DS0];
+      case NEC_PC: return I.pc;
+      case NEC_SP: return I.regs.w[SP];
+      case NEC_FLAGS: return CompressFlags();
+      case NEC_AW: return I.regs.w[AW];
+      case NEC_CW: return I.regs.w[CW];
+      case NEC_DW: return I.regs.w[DW];
+      case NEC_BW: return I.regs.w[BW];
+      case NEC_BP: return I.regs.w[BP];
+      case NEC_IX: return I.regs.w[IX];
+      case NEC_IY: return I.regs.w[IY];
+      case NEC_DS1: return I.sregs[DS1];
+      case NEC_PS: return I.sregs[PS];
+      case NEC_SS: return I.sregs[SS];
+      case NEC_DS0: return I.sregs[DS0];
    }
 	return 0;
 }
@@ -1028,41 +1001,6 @@ void v30mz_set_reg(int regnum, unsigned val)
    }
 }
 
-#ifdef WANT_DEBUGGER
-static void (*save_cpu_writemem20)(uint32,uint8);
-static uint8 (*save_cpu_readport)(uint32);
-static void (*save_cpu_writeport)(uint32, uint8);
-static uint8 (*save_cpu_readmem20)(uint32);
-
-static void test_cpu_writemem20(uint32 A, uint8 V)
-{
-   if(write_hook)
-      write_hook(A, V);
-}
-
-static uint8 test_cpu_readmem20(uint32 A)
-{
-   if(read_hook)
-      return(read_hook(A));
-   else
-      return(save_cpu_readmem20(A));
-}
-
-static void test_cpu_writeport(uint32 A, uint8 V)
-{
-   if(port_write_hook)
-      port_write_hook(A, V);
-}
-
-static uint8 test_cpu_readport(uint32 A)
-{
-   if(port_read_hook)
-      return(port_read_hook(A));
-   else
-      return(save_cpu_readport(A));
-}
-#endif
-
 void v30mz_execute(int cycles)
 {
    v30mz_ICount += cycles;
@@ -1078,10 +1016,6 @@ void v30mz_execute(int cycles)
          if(tmp > 0)
             CLK(tmp);
 
-#ifdef WANT_DEBUGGER
-         if(cpu_hook)
-            cpu_hook(I.pc);
-#endif
          return;
       }
    }
@@ -1092,69 +1026,12 @@ void v30mz_execute(int cycles)
 
       WSwan_InterruptCheck();
 
-#ifdef WANT_DEBUGGER
-      if(hookie_hickey)
-      {
-         uint32 save_timestamp = v30mz_timestamp;
-         int32 save_ICount = v30mz_ICount;
-         v30mz_regs_t save_I = I;
-         uint32 save_prefix_base = prefix_base;
-         char save_seg_prefix = seg_prefix;
-         void (*save_branch_trace_hook)(uint16 from_CS, uint16 from_IP, uint16 to_CS, uint16 to_IP, bool interrupt) = branch_trace_hook;
-
-         branch_trace_hook = NULL;
-
-         save_cpu_writemem20 = cpu_writemem20;
-         save_cpu_readport = cpu_readport;
-         save_cpu_writeport = cpu_writeport;
-         save_cpu_readmem20 = cpu_readmem20;
-
-         cpu_writemem20 = test_cpu_writemem20;
-         cpu_readmem20 = test_cpu_readmem20;
-         cpu_writeport = test_cpu_writeport;
-         cpu_readport = test_cpu_readport;
-
-         DoOP(FETCHOP);
-
-         branch_trace_hook = save_branch_trace_hook;
-         v30mz_timestamp = save_timestamp;
-         v30mz_ICount = save_ICount;
-         I = save_I;
-         prefix_base = save_prefix_base;
-         seg_prefix = save_seg_prefix;
-         cpu_readmem20 = save_cpu_readmem20;
-         cpu_writemem20 = save_cpu_writemem20;
-         cpu_readport = save_cpu_readport;
-         cpu_writeport = save_cpu_writeport;
-         InHLT = false;
-      }
-
-      if(cpu_hook)
-         cpu_hook(I.pc);
-#endif
-
       DoOP(FETCHOP);
    }
 
 }
 
-#ifdef WANT_DEBUGGER
-void v30mz_debug(void (*CPUHook)(uint32), uint8 (*ReadHook)(uint32), void (*WriteHook)(uint32, uint8), uint8 (*PortReadHook)(uint32), 
-      void (*PortWriteHook)(uint32, uint8), void (*BranchTraceHook)(uint16 from_CS, uint16 from_IP, uint16 to_CS, uint16 to_IP, bool interrupt))
-{
-   cpu_hook = CPUHook;
-   read_hook = ReadHook;
-   write_hook = WriteHook;
-   port_read_hook = PortReadHook;
-   port_write_hook = PortWriteHook;
-
-   hookie_hickey = read_hook || write_hook || port_read_hook || port_write_hook;
-
-   branch_trace_hook = BranchTraceHook;
-}
-#endif
-
-int v30mz_StateAction(StateMem *sm, int load, int data_only)
+int v30mz_StateAction(StateMem *sm, const unsigned load, const bool data_only)
 {
    uint16 PSW;
 

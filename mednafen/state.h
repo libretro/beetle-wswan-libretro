@@ -92,12 +92,11 @@ INLINE uint32_t SF_FORCE_D(double *) { return(0); }
 /* State-Section Descriptor */
 struct SSDescriptor
 {
-
    SFORMAT *sf;
    const char *name;
    bool optional;
 };
 
-int MDFNSS_StateAction(void *st, int load, int data_only, SFORMAT *sf, const char *name, bool optional);
+int MDFNSS_StateAction(StateMem *st, int load, int data_only, SFORMAT *sf, const char *name, bool optional);
 
 #endif

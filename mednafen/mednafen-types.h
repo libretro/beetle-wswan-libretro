@@ -2,6 +2,7 @@
 #define __MDFN_TYPES
 
 #include <stdint.h>
+#include <boolean.h>
 
 typedef int8_t int8;
 typedef int16_t int16;

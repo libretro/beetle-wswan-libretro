@@ -15,29 +15,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __WSWAN_INTERRUPT_H
-#define __WSWAN_INTERRUPT_H
+#ifndef __WSWAN_COMM_H
+#define __WSWAN_COMM_H
 
-enum
-{
-   WSINT_SERIAL_SEND = 0,
-   WSINT_KEY_PRESS,
-   WSINT_RTC_ALARM,
-   WSINT_SERIAL_RECV,
-   WSINT_LINE_HIT,
-   WSINT_VBLANK_TIMER,
-   WSINT_VBLANK,
-   WSINT_HBLANK_TIMER
-};
 
-void WSwan_InterruptAssert(unsigned which, bool asserted);
-void WSwan_Interrupt(unsigned);
+void Comm_Init(const char *wfence_path) MDFN_COLD;
+void Comm_Kill(void) MDFN_COLD;
+void Comm_Reset(void);
+int Comm_StateAction(StateMem *sm, const unsigned load, const bool data_only);
 
-void WSwan_InterruptWrite(uint32 A, uint8 V);
-uint8 WSwan_InterruptRead(uint32 A);
-void WSwan_InterruptCheck(void);
-int WSwan_InterruptStateAction(StateMem *sm, const unsigned load, const bool data_only);
-void WSwan_InterruptReset(void);
-void WSwan_InterruptDebugForce(unsigned int level);
+void Comm_Process(void);
+uint8 Comm_Read(uint8 A);
+void Comm_Write(uint8 A, uint8 V);
+
 
 #endif

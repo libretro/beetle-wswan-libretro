@@ -1,31 +1,31 @@
-/* Cygne
- *
- * Copyright notice for this file:
- *  Copyright (C) 2002 Dox dox@space.pl
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+/******************************************************************************/
+/* Mednafen WonderSwan Emulation Module(based on Cygne)                       */
+/******************************************************************************/
+/* eeprom.cpp:
+**  Copyright (C) 2002 Dox dox@space.pl
+**  Copyright (C) 2007-2017 Mednafen Team
+**
+** This program is free software; you can redistribute it and/or
+** modify it under the terms of the GNU General Public License version 2.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software Foundation, Inc.,
+** 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
 
 #include "wswan.h"
 #include "eeprom.h"
-#include "wswan-memory.h"
+#include "memory-wswan.h"
 #include <ctype.h>
 
-uint8_t wsEEPROM[2048];
-static uint8_t iEEPROM[0x400];
-static const uint8_t iEEPROM_Init[0x400] = 
+uint8 wsEEPROM[2048];
+static uint8 iEEPROM[0x400];
+static const uint8 iEEPROM_Init[0x400] = 
 {
    255,255,255,255,255,255,192,255,0,0,0,0,
    0,0,0,0,0,0,0,0,0,0,0,0,
@@ -115,83 +115,53 @@ static const uint8_t iEEPROM_Init[0x400] =
    255,255,255,255
 };
 
-static uint8_t iEEPROM_Command, EEPROM_Command;
-static uint16_t iEEPROM_Address, EEPROM_Address;
+static uint8 iEEPROM_Command, EEPROM_Command;
+static uint16 iEEPROM_Address, EEPROM_Address;
 
-uint8_t WSwan_EEPROMRead(uint32_t A)
+uint8 WSwan_EEPROMRead(uint32 A)
 {
    switch(A)
    {
-      default:
-         break;
-      case 0xBA:
-         return(iEEPROM[(iEEPROM_Address << 1) & 0x3FF]);
-      case 0xBB:
-         return(iEEPROM[((iEEPROM_Address << 1) | 1) & 0x3FF]);
-      case 0xBC:
-         return(iEEPROM_Address >> 0);
-      case 0xBD:
-         return(iEEPROM_Address >> 8);
-      case 0xBE:
-         if(iEEPROM_Command & 0x20)
-            return iEEPROM_Command|2;
-         if(iEEPROM_Command & 0x10)
-            return iEEPROM_Command|1;
-         return iEEPROM_Command | 3;
-      case 0xC4:
-         return(wsEEPROM[(EEPROM_Address << 1) & (eeprom_size - 1)]);
-      case 0xC5:
-         return(wsEEPROM[((EEPROM_Address << 1) | 1) & (eeprom_size - 1)]);
-      case 0xC6:
-         return(EEPROM_Address >> 0);
-      case 0xC7:
-         return(EEPROM_Address >> 8);
-      case 0xC8:
-         if(EEPROM_Command & 0x20)
-            return EEPROM_Command|2;
-         if(EEPROM_Command & 0x10)
-            return EEPROM_Command|1;
-         return EEPROM_Command | 3;
-   }
+      default: printf("Read: %04x\n", A); break;
 
-   return 0;
+      case 0xBA: return(iEEPROM[(iEEPROM_Address << 1) & 0x3FF]);
+      case 0xBB: return(iEEPROM[((iEEPROM_Address << 1) | 1) & 0x3FF]);
+      case 0xBC: return(iEEPROM_Address >> 0);
+      case 0xBD: return(iEEPROM_Address >> 8);
+      case 0xBE:
+         if(iEEPROM_Command & 0x20) return iEEPROM_Command|2;
+         if(iEEPROM_Command & 0x10) return iEEPROM_Command|1;
+         return iEEPROM_Command | 3;
+
+
+      case 0xC4: return(wsEEPROM[(EEPROM_Address << 1) & (eeprom_size - 1)]);
+      case 0xC5: return(wsEEPROM[((EEPROM_Address << 1) | 1) & (eeprom_size - 1)]);
+      case 0xC6: return(EEPROM_Address >> 0);
+      case 0xC7: return(EEPROM_Address >> 8);
+      case 0xC8: if(EEPROM_Command & 0x20) return EEPROM_Command|2;
+                 if(EEPROM_Command & 0x10) return EEPROM_Command|1;
+                 return EEPROM_Command | 3;
+   }
+   return (0);
 }
 
 
-void WSwan_EEPROMWrite(uint32_t A, uint8_t V)
+void WSwan_EEPROMWrite(uint32 A, uint8 V)
 {
    switch(A)
    {
-      case 0xBA:
-         iEEPROM[(iEEPROM_Address << 1) & 0x3FF] = V;
-         break;
-      case 0xBB:
-         iEEPROM[((iEEPROM_Address << 1) | 1) & 0x3FF] = V;
-         break;
-      case 0xBC:
-         iEEPROM_Address &= 0xFF00; iEEPROM_Address |= (V << 0);
-         break;
-      case 0xBD:
-         iEEPROM_Address &= 0x00FF; iEEPROM_Address |= (V << 8);
-         break;
-      case 0xBE:
-         iEEPROM_Command = V;
-         break;
-      case 0xC4:
-         wsEEPROM[(EEPROM_Address << 1) & (eeprom_size - 1)] = V;
-         break;
-      case 0xC5:
-         wsEEPROM[((EEPROM_Address << 1) | 1) & (eeprom_size - 1)] = V;
-         break;
-      case 0xC6:
-         EEPROM_Address &= 0xFF00; EEPROM_Address |= (V << 0);
-         break;
-      case 0xC7:
-         EEPROM_Address &= 0x00FF; EEPROM_Address |= (V << 8);
-         break;
-      case 0xC8:
-         EEPROM_Command = V;
-         break;
+      case 0xBA: iEEPROM[(iEEPROM_Address << 1) & 0x3FF] = V; break;
+      case 0xBB: iEEPROM[((iEEPROM_Address << 1) | 1) & 0x3FF] = V; break;
+      case 0xBC: iEEPROM_Address &= 0xFF00; iEEPROM_Address |= (V << 0); break;
+      case 0xBD: iEEPROM_Address &= 0x00FF; iEEPROM_Address |= (V << 8); break;
+      case 0xBE: iEEPROM_Command = V; break;
+
+      case 0xC4: wsEEPROM[(EEPROM_Address << 1) & (eeprom_size - 1)] = V; break;
+      case 0xC5: wsEEPROM[((EEPROM_Address << 1) | 1) & (eeprom_size - 1)] = V; break;
+
+      case 0xC6: EEPROM_Address &= 0xFF00; EEPROM_Address |= (V << 0); break;
+      case 0xC7: EEPROM_Address &= 0x00FF; EEPROM_Address |= (V << 8); break;
+      case 0xC8: EEPROM_Command = V; break;
    }
 }
 
@@ -201,20 +171,14 @@ void WSwan_EEPROMReset(void)
    iEEPROM_Address = EEPROM_Address = 0;
 }
 
-#define  mBCD16(value) ( (((((value)%100) / 10) <<4)|((value)%10)) | ((((((value / 100)%100) / 10) <<4)|((value / 100)%10))<<8) )
-#define INT16_TO_BCD(A)  ((((((A) % 100) / 10) * 16 + ((A) % 10))) | (((((((A) / 100) % 100) / 10) * 16 + (((A) / 100) % 10))) << 8))
-
-void WSwan_EEPROMInit(const char *Name, const uint16_t BYear, const uint8_t BMonth, const uint8_t BDay, const uint8_t Sex, const uint8_t Blood)
+void WSwan_EEPROMInit(const char *Name, const uint16 BYear, const uint8 BMonth, const uint8 BDay, const uint8 Sex, const uint8 Blood)
 {
-   unsigned x;
-   uint16_t bcd_BYear;
-
    memset(wsEEPROM, 0, 2048);
    memcpy(iEEPROM, iEEPROM_Init, 0x400);
 
-   for(x = 0; x < 16; x++)
+   for(unsigned int x = 0; x < 16; x++)
    {
-      uint8_t zechar = 0;
+      uint8 zechar = 0;
 
       if(x < strlen(Name))
       {
@@ -227,7 +191,10 @@ void WSwan_EEPROMInit(const char *Name, const uint16_t BYear, const uint8_t BMon
       iEEPROM[0x360 + x] = zechar;
    }
 
-   bcd_BYear      = INT16_TO_BCD(BYear);
+   #define mBCD16(value) ( (((((value)%100) / 10) <<4)|((value)%10)) | ((((((value / 100)%100) / 10) <<4)|((value / 100)%10))<<8) )
+   #define INT16_TO_BCD(A)  ((((((A) % 100) / 10) * 16 + ((A) % 10))) | (((((((A) / 100) % 100) / 10) * 16 + (((A) / 100) % 10))) << 8))   // convert INT16 --> BCD
+
+   uint16 bcd_BYear = INT16_TO_BCD(BYear);
 
    iEEPROM[0x370] = (bcd_BYear >> 8) & 0xFF;
    iEEPROM[0x371] = (bcd_BYear >> 0) & 0xFF;
@@ -237,7 +204,7 @@ void WSwan_EEPROMInit(const char *Name, const uint16_t BYear, const uint8_t BMon
    iEEPROM[0x375] = Blood;
 }
 
-int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only)
+int WSwan_EEPROMStateAction(StateMem *sm, const unsigned load, const bool data_only)
 {
    SFORMAT StateRegs[] =
    {
@@ -245,13 +212,17 @@ int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only)
       SFVAR(iEEPROM_Address),
       SFVAR(EEPROM_Command),
       SFVAR(EEPROM_Address),
-      SFARRAY(iEEPROM, sizeof(iEEPROM)),
+      SFVAR(iEEPROM),
       SFARRAYN(eeprom_size ? wsEEPROM : NULL, eeprom_size, "EEPROM"),
       SFEND
    };
 
    if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "EEPR", false))
       return(0);
+
+   if(load)
+   {
+   }
 
    return(1);
 }
