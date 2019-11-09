@@ -66,7 +66,7 @@ static char error_message[1024];
 
 
 #define MEDNAFEN_CORE_NAME_MODULE "wswan"
-#define MEDNAFEN_CORE_NAME "Mednafen WonderSwan"
+#define MEDNAFEN_CORE_NAME "Beetle WonderSwan"
 #define MEDNAFEN_CORE_VERSION "v1.23.0.0"
 #define MEDNAFEN_CORE_EXTENSIONS "ws|wsc|pc2"
 #define MEDNAFEN_CORE_TIMING_FPS 75.47
