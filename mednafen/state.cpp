@@ -26,21 +26,8 @@
 
 #define RLSB 		MDFNSTATE_RLSB	//0x80000000
 
-static inline void MDFN_en32lsb(uint8_t *buf, uint32_t morp)
-{
-   buf[0]=morp;
-   buf[1]=morp>>8;
-   buf[2]=morp>>16;
-   buf[3]=morp>>24;
-}
-
-static inline uint32_t MDFN_de32lsb(const uint8_t *morp)
-{
-   return(morp[0]|(morp[1]<<8)|(morp[2]<<16)|(morp[3]<<24));
-}
-
 #ifdef MSB_FIRST
-static inline void Endian_A64_Swap(void *src, uint32_t nelements)
+INLINE void Endian_A64_Swap(void *src, uint32_t nelements)
 {
    uint32_t i;
    uint8_t *nsrc = (uint8_t *)src;
@@ -60,7 +47,7 @@ static inline void Endian_A64_Swap(void *src, uint32_t nelements)
    }
 }
 
-static inline void Endian_A32_Swap(void *src, uint32_t nelements)
+INLINE void Endian_A32_Swap(void *src, uint32_t nelements)
 {
    uint32_t i;
    uint8_t *nsrc = (uint8_t *)src;
@@ -78,7 +65,7 @@ static inline void Endian_A32_Swap(void *src, uint32_t nelements)
    }
 }
 
-void Endian_A16_Swap(void *src, uint32_t nelements)
+INLINE void Endian_A16_Swap(void *src, uint32_t nelements)
 {
    uint32_t i;
    uint8_t *nsrc = (uint8_t *)src;
@@ -92,7 +79,7 @@ void Endian_A16_Swap(void *src, uint32_t nelements)
    }
 }
 
-static inline void FlipByteOrder(uint8_t *src, uint32_t count)
+INLINE void FlipByteOrder(uint8_t *src, uint32_t count)
 {
    uint8_t *start=src;
    uint8_t *end=src+count-1;
@@ -534,10 +521,9 @@ static int MDFNSS_StateAction_internal(StateMem *st, int load, int data_only,
    return(1);
 }
 
-int MDFNSS_StateAction(void *st_p, int load, int data_only, SFORMAT *sf, const char *name, bool optional)
+int MDFNSS_StateAction(StateMem *st, int load, int data_only, SFORMAT *sf, const char *name, bool optional = false)
 {
    SSDescriptor love;
-   StateMem *st   = (StateMem*)st_p;
 
    love.sf        = sf;
    love.name      = name;

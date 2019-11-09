@@ -1,26 +1,26 @@
-/* Cygne
- *
- * Copyright notice for this file:
- *  Copyright (C) 2002 Dox dox@space.pl
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+/******************************************************************************/
+/* Mednafen WonderSwan Emulation Module(based on Cygne)                       */
+/******************************************************************************/
+/* tcache.cpp:
+**  Copyright (C) 2002 Dox dox@space.pl
+**  Copyright (C) 2007-2017 Mednafen Team
+**
+** This program is free software; you can redistribute it and/or
+** modify it under the terms of the GNU General Public License version 2.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software Foundation, Inc.,
+** 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
 
 #include "wswan.h"
 #include "gfx.h"
-#include "wswan-memory.h"
+#include "memory-wswan.h"
 
 uint8	tiles[256][256][2][8];
 uint8	wsTCache[512*64];			
@@ -101,6 +101,7 @@ void wsGetTile(uint32 number,uint32 line,int flipv,int fliph,int bank)
 
    if((!bank)||(!(wsVMode &0x07)))
    {
+
 #ifdef TCACHE_OFF
       wsTCacheUpdate[number]=false;
 #endif

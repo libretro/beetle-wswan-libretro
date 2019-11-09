@@ -1,15 +1,30 @@
 #ifndef __WSWAN_H
 #define __WSWAN_H
 
-#include "../mednafen.h"
-#include "../state.h"
+#include "mednafen/mednafen.h"
+#include "mednafen/state.h"
 
 #include "interrupt.h"
 
-#define  mBCD(value) (((value)/10)<<4)|((value)%10)
+#ifndef MAX
+   #define MAX(a,b) ((a)>(b)?(a):(b))
+#endif
 
-extern          uint32 rom_size;
-extern          int wsc;
+#ifndef MIN
+   #define MIN(a,b) ((a)<(b)?(a):(b))
+#endif
+
+#define mBCD(value) (((value)/10)<<4)|((value)%10)
+
+static INLINE uint8 U8_to_BCD(uint8 num)	
+{	
+   return( ((num / 10) << 4) + (num % 10) );	
+}
+	 
+extern uint32 WS_InDebug;
+extern uint32 rom_size;
+extern uint32 SRAMSize;
+extern int wsc;
 
 enum
 {
@@ -24,5 +39,7 @@ enum
    WSWAN_BLOOD_O = 3,
    WSWAN_BLOOD_AB = 4
 };
+
+extern int StateAction(StateMem *sm, const unsigned load, const bool data_only);
 
 #endif
