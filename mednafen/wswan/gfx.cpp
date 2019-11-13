@@ -31,8 +31,8 @@ static uint32 wsMonoPal[16][4];
 static uint32 wsColors[8];
 static uint32 wsCols[16][16];
 
-static uint16 ColorMapG[16];
-static uint16 ColorMap[4096];
+static bpp_t ColorMapG[16];
+static bpp_t ColorMap[4096];
 static uint32 LayerEnabled;
 
 static uint8 wsLine;                 /*current scanline*/
@@ -298,7 +298,7 @@ void WSwan_SetPixelFormat(void)
    }
 }
 
-void wsScanline(uint16 *target)
+void wsScanline(bpp_t *target)
 {
    uint32		start_tile_n,map_a,startindex,adrbuf,b1,b2,j,t,l;
    uint8		b_bg[256];
