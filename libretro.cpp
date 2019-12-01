@@ -8,6 +8,8 @@
 #include "libretro_core_options.h"
 
 
+#define SAMPLE_RATE 44100
+
 // ====================================================
 
 
@@ -384,7 +386,7 @@ void retro_run(void)
 
    EmulateSpecStruct spec = {0};
    spec.surface = surf;
-   spec.SoundRate = 44100;
+   spec.SoundRate = SAMPLE_RATE;
    spec.SoundBuf = sound_buf;
    spec.LineWidths = rects;
    spec.SoundBufMaxSize = sizeof(sound_buf) / 2;
@@ -416,7 +418,15 @@ void retro_run(void)
    video_frames++;
    audio_frames += spec.SoundBufSize;
 
-   audio_batch_cb(spec.SoundBuf, spec.SoundBufSize);
+   int audio_left = spec.SoundBufSize;
+   int audio_total = 0;
+
+   while(audio_left > 0) {
+      audio_batch_cb(spec.SoundBuf + audio_total, audio_left < 1024 ? audio_left : 1024);
+
+	  audio_left -= 1024;
+	  audio_total += 1024 * 2;
+   }
 
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
@@ -440,7 +450,7 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 {
    memset(info, 0, sizeof(*info));
    info->timing.fps            = MEDNAFEN_CORE_TIMING_FPS;
-   info->timing.sample_rate    = 44100;
+   info->timing.sample_rate    = SAMPLE_RATE;
    info->geometry.base_width   = MEDNAFEN_CORE_GEOMETRY_BASE_W;
    info->geometry.base_height  = MEDNAFEN_CORE_GEOMETRY_BASE_H;
    info->geometry.max_width    = MEDNAFEN_CORE_GEOMETRY_MAX_W;
@@ -459,7 +469,7 @@ void retro_deinit(void)
       log_cb(RETRO_LOG_INFO, "[%s]: Samples / Frame: %.5f\n",
             MEDNAFEN_CORE_NAME, (double)audio_frames / video_frames);
       log_cb(RETRO_LOG_INFO, "[%s]: Estimated FPS: %.5f\n",
-            MEDNAFEN_CORE_NAME, (double)video_frames * 44100 / audio_frames);
+            MEDNAFEN_CORE_NAME, (double)video_frames * SAMPLE_RATE / audio_frames);
    }
 }
 
