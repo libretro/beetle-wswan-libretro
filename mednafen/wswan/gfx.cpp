@@ -31,8 +31,8 @@ static uint32 wsMonoPal[16][4];
 static uint32 wsColors[8];
 static uint32 wsCols[16][16];
 
-static bpp_t ColorMapG[16];
-static bpp_t ColorMap[4096];
+static uint32 ColorMapG[16];
+static uint32 ColorMap[4096];
 static uint32 LayerEnabled;
 
 static uint8 wsLine;                 /*current scanline*/
@@ -196,7 +196,12 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
    if(wsLine < 144)
    {
       if(!skip)
-         wsScanline(surface->pixels + wsLine * surface->pitch);
+      {
+         if(surface->pix_bytes == 2)
+            wsScanline(surface->pixels16 + wsLine * surface->pitch, surface->pix_bytes);
+         else if(surface->pix_bytes == 4)
+            wsScanline(surface->pixels + wsLine * surface->pitch, surface->pix_bytes);
+      }
    }
 
    Comm_Process();
@@ -271,7 +276,7 @@ void WSwan_SetLayerEnableMask(uint64 mask)
    LayerEnabled = mask;
 }
 
-void WSwan_SetPixelFormat(void)
+void WSwan_SetPixelFormat(int depth)
 {
    for(int r = 0; r < 16; r++)
       for(int g = 0; g < 16; g++)
@@ -283,7 +288,12 @@ void WSwan_SetPixelFormat(void)
             neo_g = g * 17;
             neo_b = b * 17;
 
-            ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR(neo_r, neo_g, neo_b, 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
+            switch(depth)
+            {
+            case 15: ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR_15(neo_r, neo_g, neo_b, 0); break;
+            case 16: ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR_16(neo_r, neo_g, neo_b, 0); break;
+            case 24: ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR_24(neo_r, neo_g, neo_b, 0); break;
+            }
          }
 
    for(int i = 0; i < 16; i++)
@@ -294,11 +304,16 @@ void WSwan_SetPixelFormat(void)
       neo_g = (i) * 17;
       neo_b = (i) * 17;
 
-      ColorMapG[i] = MAKECOLOR(neo_r, neo_g, neo_b, 0); //(neo_r << rs) | (neo_g << gs) | (neo_b << bs);
+      switch(depth)
+      {
+      case 15: ColorMapG[i] = MAKECOLOR_15(neo_r, neo_g, neo_b, 0); break;
+      case 16: ColorMapG[i] = MAKECOLOR_16(neo_r, neo_g, neo_b, 0); break;
+      case 24: ColorMapG[i] = MAKECOLOR_24(neo_r, neo_g, neo_b, 0); break;
+      }
    }
 }
 
-void wsScanline(bpp_t *target)
+void wsScanline(void *target, int pix_bytes)
 {
    uint32		start_tile_n,map_a,startindex,adrbuf,b1,b2,j,t,l;
    uint8		b_bg[256];
@@ -563,13 +578,29 @@ void wsScanline(bpp_t *target)
 
    if(wsVMode)
    {
-      for(l=0;l<224;l++)
-         target[l] = ColorMap[wsCols[b_bg_pal[l+7]][b_bg[(l+7)]&0xf]];
+      if(pix_bytes == 2)
+      {
+         for(l=0;l<224;l++)
+            ((uint16 *)target)[l] = ColorMap[wsCols[b_bg_pal[l+7]][b_bg[(l+7)]&0xf]];
+      }
+      else if(pix_bytes == 4)
+      {
+         for(l=0;l<224;l++)
+            ((uint32 *)target)[l] = ColorMap[wsCols[b_bg_pal[l+7]][b_bg[(l+7)]&0xf]];
+      }
    }
    else
    {
-      for(l=0;l<224;l++)
-         target[l] = ColorMapG[(b_bg[l+7])&15];
+      if(pix_bytes == 2)
+      {
+         for(l=0;l<224;l++)
+            ((uint16 *)target)[l] = ColorMapG[(b_bg[l+7])&15];
+      }
+      else if(pix_bytes == 4)
+      {
+         for(l=0;l<224;l++)
+            ((uint32 *)target)[l] = ColorMapG[(b_bg[l+7])&15];
+      }
    }
 }
 

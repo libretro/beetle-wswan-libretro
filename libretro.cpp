@@ -8,6 +8,14 @@
 #include "libretro_core_options.h"
 
 
+
+// core options
+static int RETRO_SAMPLE_RATE = 44100;
+
+static int RETRO_PIX_BYTES = 2;
+static int RETRO_PIX_DEPTH = 15;
+
+
 // ====================================================
 
 
@@ -22,7 +30,6 @@
 static MDFNGI *game;
 
 static bool overscan;
-static double last_sound_rate;
 
 static bool rotate_tall;
 static bool select_pressed_last_frame;
@@ -51,7 +58,6 @@ struct retro_perf_callback perf_cb;
 retro_get_cpu_features_t perf_get_cpu_features_cb = NULL;
 retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
-static retro_audio_sample_t audio_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
 static retro_input_poll_t input_poll_cb;
@@ -63,6 +69,9 @@ std::string retro_base_name;
 char retro_save_directory[1024];
 
 static char error_message[1024];
+
+static bool update_video, update_audio;
+
 
 
 #define MEDNAFEN_CORE_NAME_MODULE "wswan"
@@ -101,6 +110,78 @@ static void check_system_specs(void)
    // doesn't run at fullspeed on PSP (yet)
    unsigned level = 4;
    environ_cb(RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL, &level);
+}
+
+static void rotate_display(void)
+{
+   if (rotate_tall)
+   {
+      struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
+      const unsigned rot_angle = 1;/*90 degrees*/
+         
+      environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+      environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
+   }
+   else
+   {
+      struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (14.0 / 9.0)};
+      const unsigned rot_angle = 0;/*0 degrees*/
+         
+      environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+      environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
+   }
+}
+
+static void check_variables(void)
+{
+   struct retro_variable var = {0};
+
+   var.key = "wswan_rotate_keymap",
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
+      if (!strcmp(var.value, "disabled"))
+         rotate_joymap = 0;
+      else if (!strcmp(var.value, "enabled"))
+         rotate_joymap = 1;
+      else if (!strcmp(var.value, "auto"))
+         rotate_joymap = 2;
+   }
+
+   var.key = "wswan_sound_sample_rate";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      int old_value = RETRO_SAMPLE_RATE;
+
+      RETRO_SAMPLE_RATE = atoi(var.value);
+
+      if (old_value != RETRO_SAMPLE_RATE)
+         update_audio = true;
+   }
+
+   var.key = "wswan_gfx_colors";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      int old_value = RETRO_PIX_BYTES;
+
+      if (strcmp(var.value, "16bit") == 0)
+      {
+         RETRO_PIX_BYTES = 2;
+         RETRO_PIX_DEPTH = 16;
+      }
+      else if (strcmp(var.value, "24bit") == 0)
+      {
+         RETRO_PIX_BYTES = 4;
+         RETRO_PIX_DEPTH = 24;
+      }
+
+      if (old_value != RETRO_PIX_BYTES)
+         update_video = true;
+   }
 }
 
 void retro_init(void)
@@ -157,19 +238,7 @@ void retro_init(void)
       strcpy(retro_save_directory, retro_base_directory);
    }      
 
-#if defined(WANT_16BPP) && defined(FRONTEND_SUPPORTS_RGB565)
-   enum retro_pixel_format rgb565 = RETRO_PIXEL_FORMAT_RGB565;
-   if (environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb565) && log_cb)
-      log_cb(RETRO_LOG_INFO, "Frontend supports RGB565 - will use that instead of XRGB1555.\n");
-#elif defined(WANT_32BPP)
-   enum retro_pixel_format rgb888 = RETRO_PIXEL_FORMAT_XRGB8888;
-   if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb888))
-   {
-      if (log_cb)
-         log_cb(RETRO_LOG_ERROR, "Pixel format XRGB8888 not supported by platform, cannot use %s.\n", MEDNAFEN_CORE_NAME);
-      return;
-   }
-#endif
+   check_variables();
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_PERF_INTERFACE, &perf_cb))
       perf_get_cpu_features_cb = perf_cb.get_cpu_features;
@@ -197,24 +266,6 @@ static void set_volume (uint32_t *ptr, unsigned number)
          *ptr = number;
          break;
    }
-}
-
-static void check_variables(void)
-{
-   struct retro_variable var = {0};
-
-   var.key = "wswan_rotate_keymap",
-   var.value = NULL;
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
-      if (!strcmp(var.value, "disabled"))
-         rotate_joymap = 0;
-      else if (!strcmp(var.value, "enabled"))
-         rotate_joymap = 1;
-      else if (!strcmp(var.value, "auto"))
-         rotate_joymap = 2;
-   }
-
 }
 
 #define MAX_PLAYERS 1
@@ -265,9 +316,11 @@ bool retro_load_game(const struct retro_game_info *info)
    surf->width  = FB_WIDTH;
    surf->height = FB_HEIGHT;
    surf->pitch  = FB_WIDTH;
+   surf->pix_bytes = RETRO_PIX_BYTES;
+   surf->pix_depth = RETRO_PIX_DEPTH;
 
-   surf->pixels = (bpp_t*)calloc(1, FB_WIDTH * FB_HEIGHT * sizeof(bpp_t));
-
+   surf->pixels = (uint32_t*) calloc(1, FB_WIDTH * FB_HEIGHT * 4);
+   surf->pixels16 = (uint16_t*) surf->pixels;
    if (!surf->pixels)
    {
       free(surf);
@@ -280,7 +333,10 @@ bool retro_load_game(const struct retro_game_info *info)
 
    check_variables();
 
-   WSwan_SetPixelFormat();
+   WSwan_SetPixelFormat(RETRO_PIX_DEPTH);
+
+   update_video = false;
+   update_audio = true;
 
    return true;
 }
@@ -291,6 +347,12 @@ void retro_unload_game()
       return;
 
    MDFNI_CloseGame();
+
+   if (surf)
+   {
+      free(surf->pixels);
+      free(surf);
+   }
 }
 
 static void update_input(void)
@@ -325,30 +387,15 @@ static void update_input(void)
          RETRO_DEVICE_ID_JOYPAD_R,
       }
    };
-   
+
    bool select_button = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT);
-   
-   if(select_button && !select_pressed_last_frame)
+
+   if (select_button && !select_pressed_last_frame)
    {
       rotate_tall = !rotate_tall;
-      if(rotate_tall)
-      {
-         struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
-         const unsigned rot_angle = 1;/*90 degrees*/
-         
-         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
-         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
-      }
-      else
-      {
-         struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (14.0 / 9.0)};
-         const unsigned rot_angle = 0;/*0 degrees*/
-         
-         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
-         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
-      }
+      rotate_display();
    }
-   
+
    select_pressed_last_frame = select_button;
 
    bool joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
@@ -374,49 +421,66 @@ static uint64_t video_frames, audio_frames;
 
 void retro_run(void)
 {
+   static int16_t sound_buf[0x10000];
+
    input_poll_cb();
 
    update_input();
 
-   static int16_t sound_buf[0x10000];
    static MDFN_Rect rects[FB_MAX_HEIGHT];
    rects[0].w = ~0;
 
    EmulateSpecStruct spec = {0};
    spec.surface = surf;
-   spec.SoundRate = 44100;
+   spec.SoundRate = RETRO_SAMPLE_RATE;
    spec.SoundBuf = sound_buf;
    spec.LineWidths = rects;
    spec.SoundBufMaxSize = sizeof(sound_buf) / 2;
    spec.SoundVolume = 1.0;
    spec.soundmultiplier = 1.0;
    spec.SoundBufSize = 0;
-   spec.VideoFormatChanged = false;
-   spec.SoundFormatChanged = false;
+   spec.VideoFormatChanged = update_video;
+   spec.SoundFormatChanged = update_audio;
 
-   if (spec.SoundRate != last_sound_rate)
+   if (update_video || update_audio)
    {
-      spec.SoundFormatChanged = true;
-      last_sound_rate = spec.SoundRate;
+      struct retro_system_av_info system_av_info;
+
+      if (update_video)
+      {
+         memset(&system_av_info, 0, sizeof(system_av_info));
+         environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &system_av_info);
+      }
+
+      retro_get_system_av_info(&system_av_info);
+      environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &system_av_info);
+
+      if (update_video)
+	     rotate_display();
+
+      update_video = false;
+      update_audio = false;
    }
 
    Emulate(&spec);
 
-   int16 *const SoundBuf = spec.SoundBuf + spec.SoundBufSizeALMS * 2;
    int32 SoundBufSize = spec.SoundBufSize - spec.SoundBufSizeALMS;
-   const int32 SoundBufMaxSize = spec.SoundBufMaxSize - spec.SoundBufSizeALMS;
 
    spec.SoundBufSize = spec.SoundBufSizeALMS + SoundBufSize;
 
    unsigned width  = spec.DisplayRect.w;
    unsigned height = spec.DisplayRect.h;
-   
-   video_cb(surf->pixels, width, height, FB_WIDTH * sizeof(bpp_t));
+
+   if (RETRO_PIX_BYTES == 2)
+      video_cb(surf->pixels16, width, height, FB_WIDTH * 2);
+   else if (RETRO_PIX_BYTES == 4)
+      video_cb(surf->pixels, width, height, FB_WIDTH * 4);
 
    video_frames++;
    audio_frames += spec.SoundBufSize;
 
-   audio_batch_cb(spec.SoundBuf, spec.SoundBufSize);
+   for (int total = 0; total < spec.SoundBufSize; )
+      total += audio_batch_cb(spec.SoundBuf + total*2, spec.SoundBufSize - total);
 
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
@@ -440,18 +504,52 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 {
    memset(info, 0, sizeof(*info));
    info->timing.fps            = MEDNAFEN_CORE_TIMING_FPS;
-   info->timing.sample_rate    = 44100;
+   info->timing.sample_rate    = RETRO_SAMPLE_RATE;
    info->geometry.base_width   = MEDNAFEN_CORE_GEOMETRY_BASE_W;
    info->geometry.base_height  = MEDNAFEN_CORE_GEOMETRY_BASE_H;
    info->geometry.max_width    = MEDNAFEN_CORE_GEOMETRY_MAX_W;
    info->geometry.max_height   = MEDNAFEN_CORE_GEOMETRY_MAX_H;
    info->geometry.aspect_ratio = MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO;
+
+   if (RETRO_PIX_DEPTH == 24)
+   {
+      enum retro_pixel_format rgb888 = RETRO_PIXEL_FORMAT_XRGB8888;
+
+      if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb888))
+      {
+         if (log_cb) log_cb(RETRO_LOG_ERROR, "Pixel format XRGB8888 not supported by platform.\n");
+         
+         RETRO_PIX_BYTES = 2;
+         RETRO_PIX_DEPTH = 15;
+      }
+   }
+
+#if defined(FRONTEND_SUPPORTS_RGB565)
+   if (RETRO_PIX_BYTES == 2)
+   {
+      enum retro_pixel_format rgb565 = RETRO_PIXEL_FORMAT_RGB565;
+
+      if (environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb565))
+      {
+         if (log_cb) log_cb(RETRO_LOG_INFO, "Frontend supports RGB565 - will use that instead of XRGB1555.\n");
+
+         RETRO_PIX_DEPTH = 16;
+      }
+   }
+#endif
+
+   surf->pix_bytes = RETRO_PIX_BYTES;
+   surf->pix_depth = RETRO_PIX_DEPTH;
 }
 
 void retro_deinit(void)
 {
    if (surf)
+   {
+      if (surf->pixels)
+         free(surf->pixels);
       free(surf);
+   }
    surf = NULL;
 
    if (log_cb)
@@ -479,14 +577,20 @@ void retro_set_controller_port_device(unsigned in_port, unsigned device)
 
 void retro_set_environment(retro_environment_t cb)
 {
+
+   struct retro_vfs_interface_info vfs_iface_info;
    environ_cb = cb;
 
    libretro_set_core_options(environ_cb);
+
+   vfs_iface_info.required_interface_version = 1;
+   vfs_iface_info.iface                      = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
+	   filestream_vfs_init(&vfs_iface_info);
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
 {
-   audio_cb = cb;
 }
 
 void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb)
