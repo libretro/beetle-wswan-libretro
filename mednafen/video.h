@@ -3,40 +3,36 @@
 
 #include <stdint.h>
 
-#if defined(WANT_32BPP)
-#define RED_SHIFT 16
-#define GREEN_SHIFT 8
-#define BLUE_SHIFT 0
-#define ALPHA_SHIFT 24
-#define MAKECOLOR(r, g, b, a) ((r << RED_SHIFT) | (g << GREEN_SHIFT) | (b << BLUE_SHIFT) | (a << ALPHA_SHIFT))
-typedef uint32_t bpp_t;
-#elif defined(FRONTEND_SUPPORTS_RGB565)
+
+#define RED_SHIFT_24 16
+#define GREEN_SHIFT_24 8
+#define BLUE_SHIFT_24 0
+#define ALPHA_SHIFT_24 24
+#define MAKECOLOR_24(r, g, b, a) ((r << RED_SHIFT_24) | (g << GREEN_SHIFT_24) | (b << BLUE_SHIFT_24) | (a << ALPHA_SHIFT_24))
+
 /* 16bit color - RGB565 */
-#define RED_MASK  0xf800
-#define GREEN_MASK 0x7e0
-#define BLUE_MASK 0x1f
-#define RED_EXPAND 3
-#define GREEN_EXPAND 2
-#define BLUE_EXPAND 3
-#define RED_SHIFT 11
-#define GREEN_SHIFT 5
-#define BLUE_SHIFT 0
-#define MAKECOLOR(r, g, b, a) (((r >> RED_EXPAND) << RED_SHIFT) | ((g >> GREEN_EXPAND) << GREEN_SHIFT) | ((b >> BLUE_EXPAND) << BLUE_SHIFT))
-typedef uint16_t bpp_t;
-#else
+#define RED_MASK_16  0xf800
+#define GREEN_MASK_16 0x7e0
+#define BLUE_MASK_16 0x1f
+#define RED_EXPAND_16 3
+#define GREEN_EXPAND_16 2
+#define BLUE_EXPAND_16 3
+#define RED_SHIFT_16 11
+#define GREEN_SHIFT_16 5
+#define BLUE_SHIFT_16 0
+#define MAKECOLOR_16(r, g, b, a) (((r >> RED_EXPAND_16) << RED_SHIFT_16) | ((g >> GREEN_EXPAND_16) << GREEN_SHIFT_16) | ((b >> BLUE_EXPAND_16) << BLUE_SHIFT_16))
+
 /* 16bit color - RGB555 */
-#define RED_MASK  0x7c00
-#define GREEN_MASK 0x3e0
-#define BLUE_MASK 0x1f
-#define RED_EXPAND 3
-#define GREEN_EXPAND 3
-#define BLUE_EXPAND 3
-#define RED_SHIFT 10
-#define GREEN_SHIFT 5
-#define BLUE_SHIFT 0
-#define MAKECOLOR(r, g, b, a) (((r >> RED_EXPAND) << RED_SHIFT) | ((g >> GREEN_EXPAND) << GREEN_SHIFT) | ((b >> BLUE_EXPAND) << BLUE_SHIFT))
-typedef uint16_t bpp_t;
-#endif
+#define RED_MASK_15  0x7c00
+#define GREEN_MASK_15 0x3e0
+#define BLUE_MASK_15 0x1f
+#define RED_EXPAND_15 3
+#define GREEN_EXPAND_15 3
+#define BLUE_EXPAND_15 3
+#define RED_SHIFT_15 10
+#define GREEN_SHIFT_15 5
+#define BLUE_SHIFT_15 0
+#define MAKECOLOR_15(r, g, b, a) (((r >> RED_EXPAND_15) << RED_SHIFT_15) | ((g >> GREEN_EXPAND_15) << GREEN_SHIFT_15) | ((b >> BLUE_EXPAND_15) << BLUE_SHIFT_15))
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,10 +54,13 @@ typedef struct
 
 typedef struct
 {
-   bpp_t *pixels;
+   uint16_t *pixels16;
+   uint32_t *pixels;
    int32_t width;
    int32_t height;
    int32_t pitch;
+   int32_t pix_bytes;
+   int32_t pix_depth;
 } MDFN_Surface;
 
 #ifdef __cplusplus

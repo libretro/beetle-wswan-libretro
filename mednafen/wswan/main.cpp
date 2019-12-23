@@ -85,7 +85,7 @@ void Emulate(EmulateSpecStruct *espec)
    espec->DisplayRect.h = 144;
 
    if(espec->VideoFormatChanged)
-      WSwan_SetPixelFormat();
+      WSwan_SetPixelFormat(espec->surface->pix_depth);
 
    if(espec->SoundFormatChanged)
       WSwan_SetSoundRate(espec->SoundRate);
@@ -541,7 +541,7 @@ MDFNGI *MDFNI_LoadGame(const char *force_module, const uint8 *data, size_t size)
    if(Load(data, size) <= 0)
       goto error;
 
-   WSwan_SetPixelFormat();
+   WSwan_SetPixelFormat(16);
 
    MDFN_LoadGameCheats(NULL);
    MDFNMP_InstallReadPatches();
