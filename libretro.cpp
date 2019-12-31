@@ -350,9 +350,11 @@ void retro_unload_game()
 
    if (surf)
    {
-      free(surf->pixels);
+      if (surf->pixels)
+         free(surf->pixels);
       free(surf);
    }
+   surf = NULL;
 }
 
 static void update_input(void)
