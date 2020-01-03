@@ -5,28 +5,31 @@
 #include <stdint.h>
 
 #ifdef MSB_FIRST
-#ifndef le32toh
-#define le32toh(l)      ((((l)>>24) & 0xff) | (((l)>>8) & 0xff00) \
-      | (((l)<<8) & 0xff0000) | (((l)<<24) & 0xff000000))
-#endif
-#ifndef le16toh
-#define le16toh(l)      ((((l)>>8) & 0xff) | (((l)<<8) & 0xff00))
-#endif
+   #ifndef le32toh
+      #define le32toh(l)      ((((l)>>24) & 0xff) | (((l)>>8) & 0xff00) \
+                            | (((l)<<8) & 0xff0000) | (((l)<<24) & 0xff000000))
+   #endif
+
+   #ifndef le16toh
+      #define le16toh(l)      ((((l)>>8) & 0xff) | (((l)<<8) & 0xff00))
+   #endif
+
 #else
-#ifndef le32toh
-#define le32toh(l)      (l)
-#endif
-#ifndef le16toh
-#define le16toh(l)      (l)
-#endif
+   #ifndef le32toh
+      #define le32toh(l)      (l)
+   #endif
+
+   #ifndef le16toh
+      #define le16toh(l)      (l)
+   #endif
 #endif
 
 #ifndef htole32
-#define htole32 le32toh
+   #define htole32 le32toh
 #endif
 
 #ifndef htole16
-#define htole16 le16toh
+   #define htole16 le16toh
 #endif
 
 int write16le(uint16 b, FILE *fp);
@@ -49,117 +52,60 @@ void FlipByteOrder(uint8 *src, uint32 count);
 
 static INLINE void MDFN_en16lsb(uint8 *buf, uint16 morp)
 {
-#ifdef MSB_FIRST
-  buf[1]=morp;
-  buf[0]=morp >> 8;
-#else
-  buf[0]=morp;
-  buf[1]=morp >> 8;
-#endif
+  buf[0] = morp >> 0;
+  buf[1] = morp >> 8;
 }
 
 static INLINE void MDFN_en24lsb(uint8 *buf, uint32 morp)
 {
-#ifdef MSB_FIRST
-  buf[2]=morp;
-  buf[1]=morp >> 8;
-  buf[0]=morp >> 16;
-#else
-  buf[0]=morp;
-  buf[1]=morp >> 8;
-  buf[2]=morp >> 16;
-#endif
+  buf[0] = morp >> 0;
+  buf[1] = morp >> 8;
+  buf[2] = morp >> 16;
 }
 
 static INLINE void MDFN_en32lsb(uint8 *buf, uint32 morp)
 {
-#ifdef MSB_FIRST
-  buf[3]=morp;
-  buf[2]=morp >> 8;
-  buf[1]=morp >> 16;
-  buf[0]=morp >> 24;
-#else
-  buf[0]=morp;
-  buf[1]=morp >> 8;
-  buf[2]=morp >> 16;
-  buf[3]=morp >> 24;
-#endif
+  buf[0] = morp >> 0;
+  buf[1] = morp >> 8;
+  buf[2] = morp >> 16;
+  buf[3] = morp >> 24;
 }
 
 static INLINE void MDFN_en64lsb(uint8 *buf, uint64 morp)
 {
-#ifdef MSB_FIRST
-  buf[7]=morp >> 0;
-  buf[6]=morp >> 8;
-  buf[5]=morp >> 16;
-  buf[4]=morp >> 24;
-  buf[3]=morp >> 32;
-  buf[2]=morp >> 40;
-  buf[1]=morp >> 48;
-  buf[0]=morp >> 56;
-#else
-  buf[0]=morp >> 0;
-  buf[1]=morp >> 8;
-  buf[2]=morp >> 16;
-  buf[3]=morp >> 24;
-  buf[4]=morp >> 32;
-  buf[5]=morp >> 40;
-  buf[6]=morp >> 48;
-  buf[7]=morp >> 56;
-#endif
+  buf[0] = morp >> 0;
+  buf[1] = morp >> 8;
+  buf[2] = morp >> 16;
+  buf[3] = morp >> 24;
+  buf[4] = morp >> 32;
+  buf[5] = morp >> 40;
+  buf[6] = morp >> 48;
+  buf[7] = morp >> 56;
 }
 
 static INLINE void MDFN_en16msb(uint8 *buf, uint16 morp)
 {
-#ifdef MSB_FIRST
-  buf[1] = morp >> 8;
-  buf[0] = morp;
-#else
   buf[0] = morp >> 8;
-  buf[1] = morp;
-#endif
+  buf[1] = morp >> 0;
 }
 
 static INLINE void MDFN_en24msb(uint8 *buf, uint32 morp)
 {
-#ifdef MSB_FIRST
-  buf[2] = morp >> 16;
-  buf[1] = morp >> 8;
-  buf[0] = morp;
-#else
   buf[0] = morp >> 16;
   buf[1] = morp >> 8;
-  buf[2] = morp;
-#endif
+  buf[2] = morp >> 0;
 }
 
 static INLINE void MDFN_en32msb(uint8 *buf, uint32 morp)
 {
-#ifdef MSB_FIRST
-  buf[3] = morp >> 24;
-  buf[2] = morp >> 16;
-  buf[1] = morp >> 8;
-  buf[0] = morp;
-#else
   buf[0] = morp >> 24;
   buf[1] = morp >> 16;
   buf[2] = morp >> 8;
-  buf[3] = morp;
-#endif
+  buf[3] = morp >> 0;
 }
 
 static INLINE void MDFN_en64msb(uint8 *buf, uint64 morp)
 {
-#ifdef MSB_FIRST
-  buf[7] = morp >> 56;
-  buf[6] = morp >> 48;
-  buf[5] = morp >> 40;
-  buf[4] = morp >> 32;
-  buf[3] = morp >> 24;
-  buf[2] = morp >> 16;
-  buf[1] = morp >> 8;
-  buf[0] = morp >> 0;
-#else
   buf[0] = morp >> 56;
   buf[1] = morp >> 48;
   buf[2] = morp >> 40;
@@ -167,87 +113,49 @@ static INLINE void MDFN_en64msb(uint8 *buf, uint64 morp)
   buf[4] = morp >> 24;
   buf[5] = morp >> 16;
   buf[6] = morp >> 8;
-  buf[7] = morp >> 0;
-#endif
+  buf[7] = morp;
 }
 
 static INLINE uint16 MDFN_de16lsb(const uint8 *morp)
 {
-#ifdef MSB_FIRST
-  return(morp[1] | (morp[0] << 8));
-#else
   return(morp[0] | (morp[1] << 8));
-#endif
 }
 
 static INLINE uint32 MDFN_de24lsb(const uint8 *morp)
 {
-#ifdef MSB_FIRST
-  return(morp[2]|(morp[1]<<8)|(morp[0]<<16));
-#else
-  return(morp[0]|(morp[1]<<8)|(morp[2]<<16));
-#endif
+  return(morp[0] | (morp[1]<<8) | (morp[2]<<16));
 }
 
 static INLINE uint32 MDFN_de32lsb(const uint8 *morp)
 {
-#ifdef MSB_FIRST
-  return(morp[3]|(morp[2]<<8)|(morp[1]<<16)|(morp[0]<<24));
-#else
-  return(morp[0]|(morp[1]<<8)|(morp[2]<<16)|(morp[3]<<24));
-#endif
+  return(morp[0] | (morp[1]<<8) | (morp[2]<<16) | (morp[3]<<24));
 }
 
 static INLINE uint64 MDFN_de64lsb(const uint8 *morp)
 {
-  uint64 ret = 0;
-#ifdef MSB_FIRST
-  ret |= (uint64)morp[7];
-  ret |= (uint64)morp[6] << 8;
-  ret |= (uint64)morp[5] << 16;
-  ret |= (uint64)morp[4] << 24;
-  ret |= (uint64)morp[3] << 32;
-  ret |= (uint64)morp[2] << 40;
-  ret |= (uint64)morp[1] << 48;
-  ret |= (uint64)morp[0] << 56;
-#else
-  ret |= (uint64)morp[0];
-  ret |= (uint64)morp[1] << 8;
-  ret |= (uint64)morp[2] << 16;
-  ret |= (uint64)morp[3] << 24;
-  ret |= (uint64)morp[4] << 32;
-  ret |= (uint64)morp[5] << 40;
-  ret |= (uint64)morp[6] << 48;
-  ret |= (uint64)morp[7] << 56;
-#endif
-  return(ret);
+  return (((uint64)morp[0]) |
+          ((uint64)morp[1] << 8) |
+          ((uint64)morp[2] << 16) |
+          ((uint64)morp[3] << 24) |
+          ((uint64)morp[4] << 32) |
+          ((uint64)morp[5] << 40) |
+          ((uint64)morp[6] << 48) |
+          ((uint64)morp[7] << 54));
 }
 
 static INLINE uint16 MDFN_de16msb(const uint8 *morp)
 {
-#ifdef MSB_FIRST
-  return(morp[0] | (morp[1] << 8));
-#else
-  return(morp[1] | (morp[0] << 8));
-#endif
+  return(morp[1] | (morp[0]<<8));
 }
 
 static INLINE uint32 MDFN_de24msb(const uint8 *morp)
 {
-#ifdef MSB_FIRST
-  return((morp[0]<<0)|(morp[1]<<8)|(morp[2]<<16));
-#else
-  return((morp[2]<<0)|(morp[1]<<8)|(morp[0]<<16));
-#endif
+  return(morp[2] | (morp[1]<<8) | (morp[0]<<16));
 }
 
 static INLINE uint32 MDFN_de32msb(const uint8 *morp)
 {
-#ifdef MSB_FIRST
-  return(morp[0]|(morp[1]<<8)|(morp[2]<<16)|(morp[3]<<24));
-#else
-  return(morp[3]|(morp[2]<<8)|(morp[1]<<16)|(morp[0]<<24));
-#endif
+  return(morp[3] | (morp[2]<<8) | (morp[1]<<16) | (morp[0]<<24));
 }
 
 
