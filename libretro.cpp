@@ -8,6 +8,9 @@
 
 #include "libretro_core_options.h"
 
+/* core options */
+static int RETRO_SAMPLE_RATE = 44100;
+
 static MDFNGI *game;
 
 struct retro_perf_callback perf_cb;
@@ -449,6 +452,7 @@ MDFNGI EmulatedWSwan =
  2,     // Number of output sound channels
 };
 
+static bool update_video, update_audio;
 
 #define MEDNAFEN_CORE_NAME_MODULE "wswan"
 #define MEDNAFEN_CORE_NAME "Beetle WonderSwan"
@@ -565,6 +569,18 @@ static void check_variables(void)
          rotate_joymap = 2;
    }
 
+   var.key = "wswan_sound_sample_rate";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      int old_value = RETRO_SAMPLE_RATE;
+
+      RETRO_SAMPLE_RATE = atoi(var.value);
+
+      if (old_value != RETRO_SAMPLE_RATE)
+         update_audio = true;
+   }
 }
 
 #define MAX_PLAYERS 1
@@ -631,10 +647,15 @@ bool retro_load_game(const struct retro_game_info *info)
 
    WSwan_SetPixelFormat();
 
+#if 0
+   update_video = false;
+#endif
+   update_audio = true;
+
    return true;
 }
 
-void retro_unload_game()
+void retro_unload_game(void)
 {
    if (!game)
       return;
@@ -731,17 +752,22 @@ static uint64_t video_frames, audio_frames;
 
 void retro_run(void)
 {
+   int total;
+   static int16_t sound_buf[0x10000];
+   bool updated = false;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
+      check_variables();
+
    input_poll_cb();
 
    update_input();
 
-   static int16_t sound_buf[0x10000];
    static MDFN_Rect rects[FB_MAX_HEIGHT];
    rects[0].w = ~0;
 
    EmulateSpecStruct spec = {0};
    spec.surface = surf;
-   spec.SoundRate = 44100;
+   spec.SoundRate = RETRO_SAMPLE_RATE;
    spec.SoundBuf = sound_buf;
    spec.LineWidths = rects;
    spec.SoundBufMaxSize = sizeof(sound_buf) / 2;
@@ -749,19 +775,39 @@ void retro_run(void)
    spec.soundmultiplier = 1.0;
    spec.SoundBufSize = 0;
    spec.VideoFormatChanged = false;
-   spec.SoundFormatChanged = false;
+   spec.SoundFormatChanged = update_audio;
 
-   if (spec.SoundRate != last_sound_rate)
+#if 0
+   if (update_video || update_audio)
+#else
+   if (update_audio)
+#endif
    {
-      spec.SoundFormatChanged = true;
-      last_sound_rate = spec.SoundRate;
+      struct retro_system_av_info system_av_info;
+
+#if 0
+      if (update_video)
+      {
+         memset(&system_av_info, 0, sizeof(system_av_info));
+         environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &system_av_info);
+      }
+#endif
+
+      retro_get_system_av_info(&system_av_info);
+      environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &system_av_info);
+
+#if 0
+      if (update_video)
+	     rotate_display();
+
+      update_video = false;
+#endif
+      update_audio = false;
    }
 
    Emulate(&spec);
 
-   int16 *const SoundBuf = spec.SoundBuf + spec.SoundBufSizeALMS * 2;
    int32 SoundBufSize = spec.SoundBufSize - spec.SoundBufSizeALMS;
-   const int32 SoundBufMaxSize = spec.SoundBufMaxSize - spec.SoundBufSizeALMS;
 
    spec.SoundBufSize = spec.SoundBufSizeALMS + SoundBufSize;
 
@@ -773,11 +819,9 @@ void retro_run(void)
    video_frames++;
    audio_frames += spec.SoundBufSize;
 
-   audio_batch_cb(spec.SoundBuf, spec.SoundBufSize);
+   for (total = 0; total < spec.SoundBufSize; )
+      total += audio_batch_cb(spec.SoundBuf + total*2, spec.SoundBufSize - total);
 
-   bool updated = false;
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
-      check_variables();
 }
 
 void retro_get_system_info(struct retro_system_info *info)
@@ -797,7 +841,7 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 {
    memset(info, 0, sizeof(*info));
    info->timing.fps            = MEDNAFEN_CORE_TIMING_FPS;
-   info->timing.sample_rate    = 44100;
+   info->timing.sample_rate    = RETRO_SAMPLE_RATE;
    info->geometry.base_width   = MEDNAFEN_CORE_GEOMETRY_BASE_W;
    info->geometry.base_height  = MEDNAFEN_CORE_GEOMETRY_BASE_H;
    info->geometry.max_width    = MEDNAFEN_CORE_GEOMETRY_MAX_W;
@@ -847,7 +891,6 @@ void retro_set_environment(retro_environment_t cb)
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
 {
-   audio_cb = cb;
 }
 
 void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb)
