@@ -15,10 +15,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-/*
- Noise emulation is almost certainly wrong wrong wrong.  Testing on a real system is needed to determine LFSR(assuming it uses an LFSR) taps.
-*/
-
 #include "wswan.h"
 #include "sound.h"
 #include "v30mz.h"
@@ -26,9 +22,7 @@
 
 #include "../include/blip/Blip_Buffer.h"
 
-static Blip_Synth<blip_good_quality, 256> WaveSynth;
-static Blip_Synth<blip_med_quality, 256> NoiseSynth;
-static Blip_Synth<blip_good_quality, 256 * 15> VoiceSynth;
+static Blip_Synth<blip_good_quality, 4096> WaveSynth;
 
 static Blip_Buffer *sbuf[2] = { NULL };
 
@@ -50,7 +44,8 @@ static int32 sample_cache[4][2];
 static int32 last_v_val;
 
 static uint8 HyperVoice;
-static int32 last_hv_val;
+static int32 last_hv_val[2];
+static uint8 HVoiceCtrl, HVoiceChanCtrl;
 
 static int32 period_counter[4];
 static int32 last_val[4][2]; // Last outputted value, l&r
@@ -62,7 +57,7 @@ static uint32 last_ts;
 #define MK_SAMPLE_CACHE	\
    {    \
     int sample; \
-    sample = (((wsRAM[((SampleRAMPos << 6) + (sample_pos[ch] >> 1) + (ch << 4)) ] >> ((sample_pos[ch] & 1) ? 4 : 0)) & 0x0F)) - 0x8;    \
+    sample = (((wsRAM[((SampleRAMPos << 6) + (sample_pos[ch] >> 1) + (ch << 4)) ] >> ((sample_pos[ch] & 1) ? 4 : 0)) & 0x0F));    \
     sample_cache[ch][0] = sample * ((volume[ch] >> 4) & 0x0F);        \
     sample_cache[ch][1] = sample * ((volume[ch] >> 0) & 0x0F);        \
    }
@@ -70,11 +65,19 @@ static uint32 last_ts;
 #define MK_SAMPLE_CACHE_NOISE	\
    {    \
     int sample; \
-    sample = ((nreg & 1) ? 0xF : 0x0) - 0x8;	\
+    sample = ((nreg & 1) ? 0xF : 0x0);	\
     sample_cache[ch][0] = sample * ((volume[ch] >> 4) & 0x0F);        \
     sample_cache[ch][1] = sample * ((volume[ch] >> 0) & 0x0F);        \
    }
 
+#define MK_SAMPLE_CACHE_VOICE \
+   {    \
+    int sample, half; \
+    sample = volume[ch]; \
+    half = sample >> 1; \
+    sample_cache[ch][0] = (voice_volume & 4) ? sample : (voice_volume & 8) ? half : 0; \
+    sample_cache[ch][1] = (voice_volume & 1) ? sample : (voice_volume & 2) ? half : 0; \
+   }
 
 #define SYNCSAMPLE(wt)	\
    {	\
@@ -85,14 +88,7 @@ static uint32 last_ts;
     last_val[ch][1] = right;	\
    }
 
-#define SYNCSAMPLE_NOISE(wt)  \
-   {    \
-    int32 left = sample_cache[ch][0], right = sample_cache[ch][1];      \
-    NoiseSynth.offset_inline(wt, left - last_val[ch][0], sbuf[0]);      \
-    NoiseSynth.offset_inline(wt, right - last_val[ch][1], sbuf[1]);     \
-    last_val[ch][0] = left;     \
-    last_val[ch][1] = right;    \
-   }
+#define SYNCSAMPLE_NOISE(wt) SYNCSAMPLE(wt)
 
 void WSwan_SoundUpdate(void)
 {
@@ -110,12 +106,8 @@ void WSwan_SoundUpdate(void)
 
       if(ch == 1 && (control & 0x20)) // Direct D/A mode?
       {
-         int32 neoval = (volume[ch] - 0x80) * voice_volume;
-
-         VoiceSynth.offset(v30mz_timestamp, neoval - last_v_val, sbuf[0]);
-         VoiceSynth.offset(v30mz_timestamp, neoval - last_v_val, sbuf[1]);
-
-         last_v_val = neoval;
+         MK_SAMPLE_CACHE_VOICE;
+         SYNCSAMPLE(v30mz_timestamp);
       }
       else if(ch == 2 && (control & 0x40) && sweep_value) // Sweep
       {
@@ -158,19 +150,17 @@ void WSwan_SoundUpdate(void)
             tmp_run_time -= sub_run_time;
          }
       }
-      else if(ch == 3 && (noise_control & 0x10)) //(control & 0x80)) // Noise
+      else if(ch == 3 && (control & 0x80) && (noise_control & 0x10)) // Noise
       {
          uint32 tmp_pt = 2048 - period[ch];
 
          period_counter[ch] -= run_time;
          while(period_counter[ch] <= 0)
          {
-            // Yay, random numbers, so let's use totally wrong numbers to make them!
-            const int bstab1[8] = { 14, 13, 12, 14, 12, 13, 14, 14 };
-            const int bstab2[8] = { 13, 12,  9, 12,  1,  1,  5, 11 };
-            //const int bstab1[8] = { 14, 13, 12, 14, 10, 9, 8, 13 };
-            //const int bstab2[8] = { 13, 12, 9, 12, 1, 6, 4, 11 };
-            nreg = (~((nreg << 1) | ( ((nreg >> bstab1[noise_control & 0x7]) & 1) ^ ((nreg >> bstab2[noise_control & 0x7]) & 1)))) & 0x7FFF;
+            static const uint8 stab[8] = { 14, 10, 13, 4, 8, 6, 9, 11 };
+
+            nreg = ((nreg << 1) | ((1 ^ (nreg >> 7) ^ (nreg >> stab[noise_control & 0x7])) & 1)) & 0x7FFF;
+
             if(control & 0x80)
             {
                MK_SAMPLE_CACHE_NOISE;
@@ -204,15 +194,28 @@ void WSwan_SoundUpdate(void)
       }
    }
 
+   if(HVoiceCtrl & 0x80)
    {
-      int32 tmphv = HyperVoice;
+      int16 sample = (uint8)HyperVoice;
 
-      if(tmphv - last_hv_val)
+      switch(HVoiceCtrl & 0xC)
       {
-         WaveSynth.offset_inline(v30mz_timestamp, tmphv - last_hv_val, sbuf[0]);
-         WaveSynth.offset_inline(v30mz_timestamp, tmphv - last_hv_val, sbuf[1]);
-         last_hv_val = tmphv;
+         case 0x0: sample = (uint16)sample << (8 - (HVoiceCtrl & 3)); break;
+         case 0x4: sample = (uint16)(sample | -0x100) << (8 - (HVoiceCtrl & 3)); break;
+         case 0x8: sample = (uint16)((int8)sample) << (8 - (HVoiceCtrl & 3)); break;
+         case 0xC: sample = (uint16)sample << 8; break;
       }
+      // bring back to 11bit, keeping signedness
+      sample >>= 5;
+
+      int32 left, right;
+      left  = (HVoiceChanCtrl & 0x40) ? sample : 0;
+      right = (HVoiceChanCtrl & 0x20) ? sample : 0;
+
+      WaveSynth.offset_inline(v30mz_timestamp, left - last_hv_val[0], sbuf[0]);
+      WaveSynth.offset_inline(v30mz_timestamp, right - last_hv_val[1], sbuf[1]);
+      last_hv_val[0] = left;
+      last_hv_val[1] = right;
    }
    last_ts = v30mz_timestamp;
 }
@@ -244,18 +247,22 @@ void WSwan_SoundWrite(uint32 A, uint8 V)
    }
    else if(A == 0x8E)
    {
-      noise_control = V;
-      if(V & 0x8) nreg = 1;
       //printf("NOISECONTROL: %02x\n", V);
+      if(V & 0x8)
+         nreg = 0;
+
+      noise_control = V & 0x17;
    }
    else if(A == 0x90)
    {
       for(int n = 0; n < 4; n++)
+      {
          if(!(control & (1 << n)) && (V & (1 << n)))
          {
-            period_counter[n] = 0;
+            period_counter[n] = 1;
             sample_pos[n] = 0x1F;
          }
+      }
       control = V;
       //printf("Sound Control: %02x\n", V);
    }
@@ -275,6 +282,8 @@ void WSwan_SoundWrite(uint32 A, uint8 V)
    }
    else switch(A)
    {
+      case 0x6A: HVoiceCtrl = V; break;
+      case 0x6B: HVoiceChanCtrl = V & 0x6F; break;
       case 0x8F: SampleRAMPos = V; break;
       case 0x95: HyperVoice = V; break; // Pick a port, any port?!
                  //default: printf("%04x:%02x\n", A, V); break;
@@ -302,6 +311,8 @@ uint8 WSwan_SoundRead(uint32 A)
       default:
          printf("SoundRead: %04x\n", A);
          break;
+      case 0x6A: return(HVoiceCtrl);
+      case 0x6B: return(HVoiceChanCtrl);
       case 0x8C: return(sweep_value);
       case 0x8D: return(sweep_step);
       case 0x8E: return(noise_control);
@@ -346,11 +357,7 @@ void WSwan_SoundCheckRAMWrite(uint32 A)
 
 static void RedoVolume(void)
 {
-   double eff_volume = 1.0 / 4;
-
-   WaveSynth.volume(eff_volume);
-   NoiseSynth.volume(eff_volume);
-   VoiceSynth.volume(eff_volume);
+   WaveSynth.volume(2.5);
 }
 
 void WSwan_SoundInit(void)
@@ -402,6 +409,8 @@ int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
   SFVAR(noise_control),
   SFVAR(control),
   SFVAR(output_control),
+  SFVAR(HVoiceCtrl),
+  SFVAR(HVoiceChanCtrl),
 
   SFVAR(sweep_8192_divider),
   SFVAR(sweep_counter),
@@ -415,12 +424,28 @@ int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
  if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "PSG", false))
   return(0);
 
+ if(load)
+ {
+  if(sweep_8192_divider < 1)
+   sweep_8192_divider = 1;
+
+  for(unsigned ch = 0; ch < 4; ch++)
+  {
+   period[ch] &= 0x7FF;
+
+   if(period_counter[ch] < 1)
+    period_counter[ch] = 1;
+
+   sample_pos[ch] &= 0x1F;
+  }
+ }
+
  return(1);
 }
 
 void WSwan_SoundReset(void)
 {
-   unsigned y;
+   unsigned y,ch;
 
    memset(period, 0, sizeof(period));
    memset(volume, 0, sizeof(volume));
@@ -434,16 +459,21 @@ void WSwan_SoundReset(void)
    sweep_8192_divider = 8192;
    sweep_counter = 0;
    SampleRAMPos = 0;
-   memset(period_counter, 0, sizeof(period_counter));
+
+   for(ch = 0; ch < 4; ch++)
+      period_counter[ch] = 1;
+
    memset(sample_pos, 0, sizeof(sample_pos));
-   nreg = 1;
+   nreg = 0;
 
    memset(sample_cache, 0, sizeof(sample_cache));
    memset(last_val, 0, sizeof(last_val));
    last_v_val = 0;
 
    HyperVoice = 0;
-   last_hv_val = 0;
+   last_hv_val[0] = last_hv_val[1] = 0;
+   HVoiceCtrl = 0;
+   HVoiceChanCtrl = 0;
 
    for(y = 0; y < 2; y++)
       sbuf[y]->clear();

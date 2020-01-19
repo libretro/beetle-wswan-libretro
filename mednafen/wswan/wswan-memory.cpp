@@ -41,13 +41,15 @@ uint32 eeprom_size;
 
 static uint8 ButtonWhich, ButtonReadLatch;
 
-static uint32 DMASource, DMADest;
+static uint32 DMASource;
+static uint16 DMADest;
 static uint16 DMALength;
 static uint8 DMAControl;
 
-static uint32 SoundDMASource;
-static uint16 SoundDMALength;
+static uint32 SoundDMASource, SoundDMASourceSaved;
+static uint32 SoundDMALength, SoundDMALengthSaved;
 static uint8 SoundDMAControl;
+static uint8 SoundDMATimer;
 
 static uint8 BankSelector[4];
 
@@ -113,11 +115,20 @@ static void ws_CheckDMA(void)
       while(DMALength)
       {
          WSwan_writemem20(DMADest, WSwan_readmem20(DMASource));
+         WSwan_writemem20(DMADest+1, WSwan_readmem20(DMASource+1));
 
-         DMASource++; // = ((DMASource + 1) & 0xFFFF) | (DMASource & 0xFF0000);
-         //if(!(DMASource & 0xFFFF)) puts("Warning: DMA source bank crossed.");
-         DMADest = ((DMADest + 1) & 0xFFFF) | (DMADest & 0xFF0000);
-         DMALength--;
+         if(DMAControl & 0x40)
+         {
+            DMASource -= 2;
+            DMADest -= 2;
+         }
+         else
+         {
+            DMASource += 2;
+            DMADest += 2;
+         }
+         DMASource &= 0x000FFFFE;
+         DMALength -= 2;
       }
    }
    DMAControl &= ~0x80;
@@ -125,26 +136,50 @@ static void ws_CheckDMA(void)
 
 void WSwan_CheckSoundDMA(void)
 {
-   if(SoundDMAControl & 0x80)
+   if(!(SoundDMAControl & 0x80))
+      return;
+
+   if(!SoundDMATimer)
    {
-      if(SoundDMALength)
-      {
-         uint8 zebyte = WSwan_readmem20(SoundDMASource);
+      uint8 zebyte = WSwan_readmem20(SoundDMASource);
 
-         if(SoundDMAControl & 0x08)
-            zebyte ^= 0x80;
+      if(SoundDMAControl & 0x10)
+         WSwan_SoundWrite(0x95, zebyte); // Pick a port, any port?!
+      else
+         WSwan_SoundWrite(0x89, zebyte);
 
-         if(SoundDMAControl & 0x10)
-            WSwan_SoundWrite(0x95, zebyte); // Pick a port, any port?!
-         else
-            WSwan_SoundWrite(0x89, zebyte);
+      if(SoundDMAControl & 0x40)
+         SoundDMASource--;
+      else
+         SoundDMASource++;
+      SoundDMASource &= 0x000FFFFF;
 
-         SoundDMASource++; // = ((SoundDMASource + 1) & 0xFFFF) | (SoundDMASource & 0xFF0000);
-         //if(!(SoundDMASource & 0xFFFF)) puts("Warning:  Sound DMA source bank crossed.");
-         SoundDMALength--;
-      }
+      SoundDMALength--;
+      SoundDMALength &= 0x000FFFFF;
       if(!SoundDMALength)
-         SoundDMAControl &= ~0x80;
+      {
+         if(SoundDMAControl & 8)
+         {
+            SoundDMALength = SoundDMALengthSaved;
+            SoundDMASource = SoundDMASourceSaved;
+         }
+         else
+         {
+            SoundDMAControl &= ~0x80;
+         }
+      }
+
+      switch(SoundDMAControl & 3)
+      {
+         case 0: SoundDMATimer = 5; break;
+         case 1: SoundDMATimer = 3; break;
+         case 2: SoundDMATimer = 1; break;
+         case 3: SoundDMATimer = 0; break;
+      }
+   }
+   else
+   {
+      SoundDMATimer--;
    }
 }
 
@@ -152,7 +187,7 @@ uint8 WSwan_readport(uint32 number)
 {
    number &= 0xFF;
 
-   if(number >= 0x80 && number <= 0x9F)
+   if((number >= 0x80 && number <= 0x9F) || (number == 0x6A) || (number == 0x6B))
       return(WSwan_SoundRead(number));
    else if(number <= 0x3F || (number >= 0xA0 && number <= 0xAF) || (number == 0x60))
       return(WSwan_GfxRead(number));
@@ -167,7 +202,6 @@ uint8 WSwan_readport(uint32 number)
       case 0x41: return(DMASource >> 8);
       case 0x42: return(DMASource >> 16);
 
-      case 0x43: return(DMADest >> 16);
       case 0x44: return(DMADest >> 0);
       case 0x45: return(DMADest >> 8);
 
@@ -190,6 +224,7 @@ uint8 WSwan_readport(uint32 number)
       case 0x4c: return(SoundDMASource >> 16);
       case 0x4e: return(SoundDMALength >> 0);
       case 0x4f: return(SoundDMALength >> 8);
+      case 0x50: return(SoundDMALength >> 16);
       case 0x52: return(SoundDMAControl);
 
       case 0xB1: return(CommData);
@@ -220,7 +255,7 @@ void WSwan_writeport(uint32 IOPort, uint8 V)
 {
    IOPort &= 0xFF;
 
-   if(IOPort >= 0x80 && IOPort <= 0x9F)
+   if((IOPort >= 0x80 && IOPort <= 0x9F) || (IOPort == 0x6A) || (IOPort == 0x6B))
       WSwan_SoundWrite(IOPort, V);
    else if((IOPort >= 0x00 && IOPort <= 0x3F) || (IOPort >= 0xA0 && IOPort <= 0xAF) || (IOPort == 0x60))
       WSwan_GfxWrite(IOPort, V);
@@ -232,32 +267,29 @@ void WSwan_writeport(uint32 IOPort, uint8 V)
    {
       //default: printf("%04x %02x\n", IOPort, V); break;
 
-      case 0x40: DMASource &= 0xFFFF00; DMASource |= (V << 0); break;
+      case 0x40: DMASource &= 0xFFFF00; DMASource |= (V << 0) & ~1; break;
       case 0x41: DMASource &= 0xFF00FF; DMASource |= (V << 8); break;
       case 0x42: DMASource &= 0x00FFFF; DMASource |= ((V & 0x0F) << 16); break;
 
-      case 0x43: DMADest &= 0x00FFFF; DMADest |= ((V & 0x0F) << 16); break;
-      case 0x44: DMADest &= 0xFFFF00; DMADest |= (V << 0); break;
-      case 0x45: DMADest &= 0xFF00FF; DMADest |= (V << 8); break;
+      case 0x44: DMADest &= 0xFF00; DMADest |= (V << 0) & ~1; break;
+      case 0x45: DMADest &= 0x00FF; DMADest |= (V << 8); break;
 
-      case 0x46: DMALength &= 0xFF00; DMALength |= (V << 0); break;
+      case 0x46: DMALength &= 0xFF00; DMALength |= (V << 0) & ~1; break;
       case 0x47: DMALength &= 0x00FF; DMALength |= (V << 8); break;
 
-      case 0x48: DMAControl = V;
-                 //if(V&0x80) 
-                 // printf("DMA%02x: %08x %08x %08x\n", V, DMASource, DMADest, DMALength); 
+      case 0x48: DMAControl = V & ~0x3F;
                  ws_CheckDMA(); 
                  break;
 
-      case 0x4a: SoundDMASource &= 0xFFFF00; SoundDMASource |= (V << 0); break;
-      case 0x4b: SoundDMASource &= 0xFF00FF; SoundDMASource |= (V << 8); break;
-      case 0x4c: SoundDMASource &= 0x00FFFF; SoundDMASource |= (V << 16); break;
-                 //case 0x4d: break; // Unused?
-      case 0x4e: SoundDMALength &= 0xFF00; SoundDMALength |= (V << 0); break;
-      case 0x4f: SoundDMALength &= 0x00FF; SoundDMALength |= (V << 8); break;
-                 //case 0x50: break; // Unused?
-                 //case 0x51: break; // Unused?
-      case 0x52: SoundDMAControl = V; 
+      case 0x4a: SoundDMASource &= 0xFFFF00; SoundDMASource |= (V << 0); SoundDMASourceSaved = SoundDMASource; break;
+      case 0x4b: SoundDMASource &= 0xFF00FF; SoundDMASource |= (V << 8); SoundDMASourceSaved = SoundDMASource; break;
+      case 0x4c: SoundDMASource &= 0x00FFFF; SoundDMASource |= ((V & 0xF) << 16); SoundDMASourceSaved = SoundDMASource; break;
+      //case 0x4d: break; // Unused?
+      case 0x4e: SoundDMALength &= 0xFFFF00; SoundDMALength |= (V << 0); SoundDMALengthSaved = SoundDMALength; break;
+      case 0x4f: SoundDMALength &= 0xFF00FF; SoundDMALength |= (V << 8); SoundDMALengthSaved = SoundDMALength; break;
+      case 0x50: SoundDMALength &= 0x00FFFF; SoundDMALength |= ((V & 0xF) << 16); SoundDMALengthSaved = SoundDMALength; break;
+      //case 0x51: break; // Unused?
+      case 0x52: SoundDMAControl = V & ~0x20;
                  //if(V & 0x80) printf("Sound DMA: %02x, %08x %08x\n", V, SoundDMASource, SoundDMALength);
                  break;
 
@@ -529,9 +561,10 @@ void WSwan_MemoryReset(void)
    DMALength = 0;
    DMAControl = 0;
 
-   SoundDMASource = 0;
-   SoundDMALength = 0;
+   SoundDMASource = SoundDMASourceSaved = 0;
+   SoundDMALength = SoundDMALengthSaved = 0;
    SoundDMAControl = 0;
+   SoundDMATimer = 0;
 
    CommControl = 0;
    CommData = 0;
@@ -552,8 +585,11 @@ int WSwan_MemoryStateAction(StateMem *sm, int load, int data_only)
       SFVAR(DMAControl),
 
       SFVAR(SoundDMASource),
+      SFVAR(SoundDMASourceSaved),
       SFVAR(SoundDMALength),
+      SFVAR(SoundDMALengthSaved),
       SFVAR(SoundDMAControl),
+      SFVAR(SoundDMATimer),
 
       SFVAR(CommControl),
       SFVAR(CommData),

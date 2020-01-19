@@ -35,8 +35,9 @@ static uint32 LayerEnabled;
 
 static uint8 wsLine;                 /*current scanline*/
 
-static uint8 SpriteTable[0x80][4];
-static uint32 SpriteCountCache;
+static uint8 SpriteTable[2][0x80][4];
+static uint32 SpriteCountCache[2];
+static bool FrameWhichActive;
 static uint8 DispControl;
 static uint8 BGColor;
 static uint8 LineCompare;
@@ -49,6 +50,7 @@ static uint8 SPRx0, SPRy0, SPRx1, SPRy1;
 static uint8 BGXScroll, BGYScroll;
 static uint8 FGXScroll, FGYScroll;
 static uint8 LCDControl, LCDIcons;
+static uint8 LCDVtotal;
 
 static uint8 BTimerControl;
 static uint16 HBTimerPeriod;
@@ -82,97 +84,36 @@ void WSwan_GfxWrite(uint32 A, uint8 V)
    }
    else switch(A)
    {
-      case 0x00:
-         DispControl = V;
-         break;
-      case 0x01:
-         BGColor = V;
-         break;
-      case 0x03:
-         LineCompare = V;
-         break;
-      case 0x04:
-         SPRBase = V & 0x3F;
-         break;
-      case 0x05:
-         SpriteStart = V;
-         break;
-      case 0x06:
-         SpriteCount = V;
-         break;
-      case 0x07:
-         FGBGLoc = V;
-         break;
-      case 0x08:
-         FGx0 = V;
-         break;
-      case 0x09:
-         FGy0 = V;
-         break;
-      case 0x0A:
-         FGx1 = V;
-         break;
-      case 0x0B:
-         FGy1 = V;
-         break;
-      case 0x0C:
-         SPRx0 = V;
-         break;
-      case 0x0D:
-         SPRy0 = V;
-         break;
-      case 0x0E:
-         SPRx1 = V;
-         break;
-      case 0x0F:
-         SPRy1 = V;
-         break;
-      case 0x10:
-         BGXScroll = V;
-         break;
-      case 0x11:
-         BGYScroll = V;
-         break;
-      case 0x12:
-         FGXScroll = V;
-         break;
-      case 0x13:
-         FGYScroll = V;
-         break;
+      case 0x00: DispControl = V; break;
+      case 0x01: BGColor = V; break;
+      case 0x03: LineCompare = V; break;
+      case 0x04: SPRBase = V & 0x3F; break;
+      case 0x05: SpriteStart = V; break;
+      case 0x06: SpriteCount = V; break;
+      case 0x07: FGBGLoc = V; break;
+      case 0x08: FGx0 = V; break;
+      case 0x09: FGy0 = V; break;
+      case 0x0A: FGx1 = V; break;
+      case 0x0B: FGy1 = V; break;
+      case 0x0C: SPRx0 = V; break;
+      case 0x0D: SPRy0 = V; break;
+      case 0x0E: SPRx1 = V; break;
+      case 0x0F: SPRy1 = V; break;
+      case 0x10: BGXScroll = V; break;
+      case 0x11: BGYScroll = V; break;
+      case 0x12: FGXScroll = V; break;
+      case 0x13: FGYScroll = V; break;
 
-      case 0x14:
-         LCDControl = V;
-         break;
-      case 0x15:
-         LCDIcons = V;
-         break;
-      case 0x60:
-         VideoMode = V; 
-         wsSetVideo(V>>5, false); 
-         break;
+      case 0x14: LCDControl = V; break;
+      case 0x15: LCDIcons = V; break;
+      case 0x16: LCDVtotal = V; break;
+      case 0x60: VideoMode = V; wsSetVideo(V>>5, false);  break;
 
-      case 0xa2:
-         if((V & 0x01) && !(BTimerControl & 0x01))
-            HBCounter = HBTimerPeriod;
-         if((V & 0x04) && !(BTimerControl & 0x04))
-            VBCounter = VBTimerPeriod;
-         BTimerControl = V; 
-         break;
-      case 0xa4:
-         HBTimerPeriod &= 0xFF00;
-         HBTimerPeriod |= (V << 0);
-         break;
-      case 0xa5:
-         HBTimerPeriod &= 0x00FF; HBTimerPeriod |= (V << 8);
-         HBCounter = HBTimerPeriod;
-         break;
-      case 0xa6:
-         VBTimerPeriod &= 0xFF00; VBTimerPeriod |= (V << 0);
-         break;
-      case 0xa7:
-         VBTimerPeriod &= 0x00FF; VBTimerPeriod |= (V << 8);
-         VBCounter = VBTimerPeriod;
-         break;
+      case 0xa2: BTimerControl = V;  break;
+      case 0xa4: HBTimerPeriod &= 0xFF00; HBTimerPeriod |= (V << 0); break;
+      case 0xa5: HBTimerPeriod &= 0x00FF; HBTimerPeriod |= (V << 8); HBCounter = HBTimerPeriod; break;
+      case 0xa6: VBTimerPeriod &= 0xFF00; VBTimerPeriod |= (V << 0); break;
+      case 0xa7: VBTimerPeriod &= 0x00FF; VBTimerPeriod |= (V << 8); VBCounter = VBTimerPeriod; break;
    }
 }
 
@@ -191,74 +132,41 @@ uint8 WSwan_GfxRead(uint32 A)
       return wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) + 0] | (wsMonoPal[(A - 0x20) >> 1][((A & 0x1) << 1) | 1] << 4);
    else switch(A)
    {
-      case 0x00:
-         return(DispControl);
-      case 0x01:
-         return(BGColor);
-      case 0x02:
-         return(wsLine);
-      case 0x03:
-         return(LineCompare);
-      case 0x04:
-         return(SPRBase);
-      case 0x05:
-         return(SpriteStart);
-      case 0x06:
-         return(SpriteCount);
-      case 0x07:
-         return(FGBGLoc);
-      case 0x08:
-         return(FGx0);
-      case 0x09:
-         return(FGy0);
-      case 0x0A:
-         return(FGx1);
-      case 0x0B:
-         return(FGy1);
-      case 0x0C:
-         return(SPRx0);
-      case 0x0D:
-         return(SPRy0);
-      case 0x0E:
-         return(SPRx1);
-      case 0x0F:
-         return(SPRy1);
-      case 0x10:
-         return(BGXScroll);
-      case 0x11:
-         return(BGYScroll);
-      case 0x12:
-         return(FGXScroll);
-      case 0x13:
-         return(FGYScroll);
-      case 0x14:
-         return(LCDControl);
-      case 0x15:
-         return(LCDIcons);
-      case 0x60:
-         return(VideoMode);
-      case 0xa0:
-         return(wsc ? 0x87 : 0x86);
-      case 0xa2:
-         return(BTimerControl);
-      case 0xa4:
-         return((HBTimerPeriod >> 0) & 0xFF);
-      case 0xa5:
-         return((HBTimerPeriod >> 8) & 0xFF);
-      case 0xa6:
-         return((VBTimerPeriod >> 0) & 0xFF);
-      case 0xa7:
-         return((VBTimerPeriod >> 8) & 0xFF);
-      case 0xa8:
-         return((HBCounter >> 0) & 0xFF);
-      case 0xa9:
-         return((HBCounter >> 8) & 0xFF);
-      case 0xaa:
-         return((VBCounter >> 0) & 0xFF);
-      case 0xab:
-         return((VBCounter >> 8) & 0xFF);
-      default:
-         break;
+      case 0x00: return(DispControl);
+      case 0x01: return(BGColor);
+      case 0x02: return(wsLine);
+      case 0x03: return(LineCompare);
+      case 0x04: return(SPRBase);
+      case 0x05: return(SpriteStart);
+      case 0x06: return(SpriteCount);
+      case 0x07: return(FGBGLoc);
+      case 0x08: return(FGx0);
+      case 0x09: return(FGy0);
+      case 0x0A: return(FGx1);
+      case 0x0B: return(FGy1);
+      case 0x0C: return(SPRx0);
+      case 0x0D: return(SPRy0);
+      case 0x0E: return(SPRx1);
+      case 0x0F: return(SPRy1);
+      case 0x10: return(BGXScroll);
+      case 0x11: return(BGYScroll);
+      case 0x12: return(FGXScroll);
+      case 0x13: return(FGYScroll);
+      case 0x14: return(LCDControl);
+      case 0x15: return(LCDIcons);
+      case 0x16: return(LCDVtotal);
+      case 0x60: return(VideoMode);
+      case 0xa0: return(wsc ? 0x87 : 0x86);
+      case 0xa2: return(BTimerControl);
+      case 0xa4: return((HBTimerPeriod >> 0) & 0xFF);
+      case 0xa5: return((HBTimerPeriod >> 8) & 0xFF);
+      case 0xa6: return((VBTimerPeriod >> 0) & 0xFF);
+      case 0xa7: return((VBTimerPeriod >> 8) & 0xFF);
+      case 0xa8: return((HBCounter >> 0) & 0xFF);
+      case 0xa9: return((HBCounter >> 8) & 0xFF);
+      case 0xaa: return((VBCounter >> 0) & 0xFF);
+      case 0xab: return((VBCounter >> 8) & 0xFF);
+      default: break;
    }
 
    return 0;
@@ -277,21 +185,34 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
    WSwan_CheckSoundDMA();
 
    // Update sprite data table
+   // Note: it's at 142 actually but it doesn't "update" until next frame
    if(wsLine == 142)
    {
-      SpriteCountCache = SpriteCount;
+      SpriteCountCache[!FrameWhichActive] = SpriteCount;
 
-      if(SpriteCountCache > 0x80)
-         SpriteCountCache = 0x80;
+      if(SpriteCountCache[!FrameWhichActive] > 0x80)
+         SpriteCountCache[!FrameWhichActive] = 0x80;
 
-      memcpy(SpriteTable, &wsRAM[(SPRBase << 9) + (SpriteStart << 2)], SpriteCountCache << 2);
+      memcpy(SpriteTable[!FrameWhichActive], &wsRAM[(SPRBase << 9) + (SpriteStart << 2)], SpriteCountCache[!FrameWhichActive] << 2);
    }
 
    if(wsLine == 144)
    {
+      FrameWhichActive = !FrameWhichActive;
       ret = true;
       WSwan_Interrupt(WSINT_VBLANK);
       //printf("VBlank: %d\n", wsLine);
+
+      if(VBCounter && (BTimerControl & 0x04))
+      {
+         VBCounter--;
+         if(!VBCounter)
+         {
+            if(BTimerControl & 0x08) // loop
+               VBCounter = VBTimerPeriod;
+            WSwan_Interrupt(WSINT_VBLANK_TIMER);
+         }
+      }
    }
 
 
@@ -307,31 +228,23 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
       }
    }
 
-   v30mz_execute(224);
-   wsLine = (wsLine + 1) % 159;
+   v30mz_execute(128);
+   WSwan_CheckSoundDMA();
+
+
+#define MAX(a,b) ((a < b) ? a : b)
+
+
+   v30mz_execute(96);
+   wsLine = (wsLine + 1) % (MAX(144, LCDVtotal) + 1);
    if(wsLine == LineCompare)
    {
       WSwan_Interrupt(WSINT_LINE_HIT);
       //printf("Line hit: %d\n", wsLine);
    }
+
    v30mz_execute(32);
    WSwan_RTCClock(256);
-
-   if(!wsLine)
-   {
-      if(VBCounter && (BTimerControl & 0x04))
-      {
-         VBCounter--;
-         if(!VBCounter)
-         {
-            if(BTimerControl & 0x08) // Loop mode?
-               VBCounter = VBTimerPeriod;
-
-            WSwan_Interrupt(WSINT_VBLANK_TIMER);
-         }
-      }
-      wsLine = 0;
-   }
 
    return(ret);
 }
@@ -494,7 +407,7 @@ void wsScanline(uint16 *target)
 
    } // end FG drawing
 
-   if((DispControl & 0x04) && SpriteCountCache && (LayerEnabled & 0x04))/*Sprites*/
+   if((DispControl & 0x04) && SpriteCountCache[FrameWhichActive] && (LayerEnabled & 0x04))/*Sprites*/
    {
       int xs,ts,as,ys,ysx,h;
       bool in_window[256 + 8*2];
@@ -509,12 +422,12 @@ void wsScanline(uint16 *target)
       else
          memset(in_window, 1, sizeof(in_window));
 
-      for(h = SpriteCountCache - 1; h >= 0; h--)
+      for(h = SpriteCountCache[FrameWhichActive] - 1; h >= 0; h--)
       {
-         ts = SpriteTable[h][0];
-         as = SpriteTable[h][1];
-         ysx = SpriteTable[h][2];
-         xs = SpriteTable[h][3];
+         ts = SpriteTable[FrameWhichActive][h][0];
+         as = SpriteTable[FrameWhichActive][h][1];
+         ysx = SpriteTable[FrameWhichActive][h][2];
+         xs = SpriteTable[FrameWhichActive][h][3];
 
          if(xs >= 249) xs -= 256;
 
@@ -636,7 +549,8 @@ void WSwan_GfxReset(void)
    wsSetVideo(0,true);
 
    memset(SpriteTable, 0, sizeof(SpriteTable));
-   SpriteCountCache = 0;
+   SpriteCountCache[0] = SpriteCountCache[1] = 0;
+   FrameWhichActive = false;
    DispControl = 0;
    BGColor = 0;
    LineCompare = 0xBB;
@@ -659,6 +573,7 @@ void WSwan_GfxReset(void)
    FGXScroll = FGYScroll = 0;
    LCDControl = 0;
    LCDIcons = 0;
+   LCDVtotal = 158;
 
    BTimerControl = 0;
    HBTimerPeriod = 0;
@@ -683,8 +598,9 @@ int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
 
       SFVAR(wsLine),
 
-      SFARRAYN(&SpriteTable[0][0], 0x80 * 4, "SpriteTable"),
-      SFVAR(SpriteCountCache),
+      SFARRAYN(&SpriteTable[0][0][0], 2 * 0x80 * 4, "SpriteTable"),
+      SFARRAY32N(&SpriteCountCache[0], 2 * 1, "SpriteCountCache"),
+      SFVAR(FrameWhichActive),
       SFVAR(DispControl),
       SFVAR(BGColor),
       SFVAR(LineCompare),
@@ -709,6 +625,7 @@ int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
       SFVAR(FGYScroll),
       SFVAR(LCDControl),
       SFVAR(LCDIcons),
+      SFVAR(LCDVtotal),
 
       SFVAR(BTimerControl),
       SFVAR(HBTimerPeriod),
@@ -726,6 +643,16 @@ int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
 
    if(load)
    {
+      for(unsigned i = 0; i < 2; i++)
+      {
+         if(SpriteCountCache[i] > 0x80)
+            SpriteCountCache[i] = 0x80;
+      }
+
+      for(unsigned i = 0; i < 16; i++)
+         for(unsigned j = 0; j < 4; j++)
+            wsMonoPal[i][j] &= 0x7;
+
       wsSetVideo(VideoMode >> 5, true);
    }
 
