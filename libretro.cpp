@@ -11,6 +11,9 @@
 /* core options */
 static int RETRO_SAMPLE_RATE = 44100;
 
+static int RETRO_PIX_BYTES = 2;
+static int RETRO_PIX_DEPTH = 15;
+
 static MDFNGI *game;
 
 struct retro_perf_callback perf_cb;
@@ -105,6 +108,8 @@ static void Emulate(EmulateSpecStruct *espec)
  espec->DisplayRect.w = 224;
  espec->DisplayRect.h = 144;
 
+ if(espec->VideoFormatChanged)
+  WSwan_SetPixelFormat(espec->surface->depth);
 
  if(espec->SoundFormatChanged)
   WSwan_SetSoundRate(espec->SoundRate);
@@ -511,45 +516,53 @@ static void check_system_specs(void)
    environ_cb(RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL, &level);
 }
 
-void retro_init(void)
+static void check_depth(void)
 {
-   struct retro_log_callback log;
-   if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log))
-      log_cb = log.log;
-   else 
-      log_cb = NULL;
-
-#if defined(WANT_16BPP) && defined(FRONTEND_SUPPORTS_RGB565)
-   enum retro_pixel_format rgb565 = RETRO_PIXEL_FORMAT_RGB565;
-   if (environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb565) && log_cb)
-      log_cb(RETRO_LOG_INFO, "Frontend supports RGB565 - will use that instead of XRGB1555.\n");
-#endif
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_PERF_INTERFACE, &perf_cb))
-      perf_get_cpu_features_cb = perf_cb.get_cpu_features;
-   else
-      perf_get_cpu_features_cb = NULL;
-
-   check_system_specs();
-}
-
-void retro_reset(void)
-{
-   DoSimpleCommand(MDFN_MSC_RESET);
-}
-
-bool retro_load_game_special(unsigned, const struct retro_game_info *, size_t)
-{
-   return false;
-}
-
-static void set_volume (uint32_t *ptr, unsigned number)
-{
-   switch(number)
+   if (RETRO_PIX_DEPTH == 24)
    {
-      default:
-         *ptr = number;
-         break;
+      enum retro_pixel_format rgb888 = RETRO_PIXEL_FORMAT_XRGB8888;
+
+      if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb888))
+      {
+         if (log_cb) log_cb(RETRO_LOG_ERROR, "Pixel format XRGB8888 not supported by platform.\n");
+
+         RETRO_PIX_BYTES = 2;
+         RETRO_PIX_DEPTH = 15;
+      }
+   }
+
+#if defined(FRONTEND_SUPPORTS_RGB565)
+   if (RETRO_PIX_BYTES == 2)
+   {
+      enum retro_pixel_format rgb565 = RETRO_PIXEL_FORMAT_RGB565;
+
+      if (environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &rgb565))
+      {
+         if (log_cb) log_cb(RETRO_LOG_INFO, "Frontend supports RGB565 - will use that instead of XRGB1555.\n");
+
+         RETRO_PIX_DEPTH = 16;
+      }
+   }
+#endif
+}
+
+static void rotate_display(void)
+{
+   if (rotate_tall)
+   {
+      struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
+      const unsigned rot_angle = 1;/*90 degrees*/
+         
+      environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+      environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
+   }
+   else
+   {
+      struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (14.0 / 9.0)};
+      const unsigned rot_angle = 0;/*0 degrees*/
+         
+      environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
+      environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
    }
 }
 
@@ -580,6 +593,66 @@ static void check_variables(void)
 
       if (old_value != RETRO_SAMPLE_RATE)
          update_audio = true;
+   }
+
+   var.key = "wswan_gfx_colors";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      unsigned old_value = RETRO_PIX_BYTES;
+
+      if (strcmp(var.value, "16bit") == 0)
+      {
+         RETRO_PIX_BYTES = 2;
+         RETRO_PIX_DEPTH = 16;
+      }
+      else if (strcmp(var.value, "24bit") == 0)
+      {
+         RETRO_PIX_BYTES = 4;
+         RETRO_PIX_DEPTH = 24;
+      }
+
+      if (old_value != RETRO_PIX_BYTES)
+         update_video = true;
+   }
+}
+
+void retro_init(void)
+{
+   struct retro_log_callback log;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &log))
+      log_cb = log.log;
+   else 
+      log_cb = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_PERF_INTERFACE, &perf_cb))
+      perf_get_cpu_features_cb = perf_cb.get_cpu_features;
+   else
+      perf_get_cpu_features_cb = NULL;
+
+   check_system_specs();
+   check_variables();
+   check_depth();
+}
+
+void retro_reset(void)
+{
+   DoSimpleCommand(MDFN_MSC_RESET);
+}
+
+bool retro_load_game_special(unsigned, const struct retro_game_info *, size_t)
+{
+   return false;
+}
+
+static void set_volume (uint32_t *ptr, unsigned number)
+{
+   switch(number)
+   {
+      default:
+         *ptr = number;
+         break;
    }
 }
 
@@ -630,26 +703,25 @@ bool retro_load_game(const struct retro_game_info *info)
    surf->width  = FB_WIDTH;
    surf->height = FB_HEIGHT;
    surf->pitch  = FB_WIDTH;
+   surf->depth  = RETRO_PIX_DEPTH;
 
-   surf->pixels = (uint16_t*)calloc(1, FB_WIDTH * FB_HEIGHT * 2);
+   surf->pixels = (uint16_t*)calloc(1, FB_WIDTH * FB_HEIGHT * sizeof(uint32_t));
 
    if (!surf->pixels)
    {
       free(surf);
       return false;
    }
-   
+
    rotate_tall = false;
    select_pressed_last_frame = false;
    rotate_joymap = 0;
 
    check_variables();
 
-   WSwan_SetPixelFormat();
+   WSwan_SetPixelFormat(RETRO_PIX_DEPTH);
 
-#if 0
    update_video = false;
-#endif
    update_audio = true;
 
    return true;
@@ -703,30 +775,15 @@ static void update_input(void)
          RETRO_DEVICE_ID_JOYPAD_R,
       }
    };
-   
+
    bool select_button = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT);
-   
+
    if(select_button && !select_pressed_last_frame)
    {
       rotate_tall = !rotate_tall;
-      if(rotate_tall)
-      {
-         struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
-         const unsigned rot_angle = 1;/*90 degrees*/
-         
-         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
-         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
-      }
-      else
-      {
-         struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (14.0 / 9.0)};
-         const unsigned rot_angle = 0;/*0 degrees*/
-         
-         environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
-         environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
-      }
+      rotate_display();
    }
-   
+
    select_pressed_last_frame = select_button;
 
    bool joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
@@ -774,34 +831,28 @@ void retro_run(void)
    spec.SoundVolume = 1.0;
    spec.soundmultiplier = 1.0;
    spec.SoundBufSize = 0;
-   spec.VideoFormatChanged = false;
+   spec.VideoFormatChanged = update_video;
    spec.SoundFormatChanged = update_audio;
 
-#if 0
    if (update_video || update_audio)
-#else
-   if (update_audio)
-#endif
    {
       struct retro_system_av_info system_av_info;
 
-#if 0
       if (update_video)
       {
          memset(&system_av_info, 0, sizeof(system_av_info));
          environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &system_av_info);
       }
-#endif
 
       retro_get_system_av_info(&system_av_info);
       environ_cb(RETRO_ENVIRONMENT_SET_SYSTEM_AV_INFO, &system_av_info);
 
-#if 0
       if (update_video)
 	     rotate_display();
 
+      surf->depth = RETRO_PIX_DEPTH;
+
       update_video = false;
-#endif
       update_audio = false;
    }
 
@@ -813,15 +864,14 @@ void retro_run(void)
 
    unsigned width  = spec.DisplayRect.w;
    unsigned height = spec.DisplayRect.h;
-   
-   video_cb(surf->pixels, width, height, FB_WIDTH << 1);
+
+   video_cb(surf->pixels, width, height, FB_WIDTH * RETRO_PIX_BYTES);
 
    video_frames++;
    audio_frames += spec.SoundBufSize;
 
    for (total = 0; total < spec.SoundBufSize; )
       total += audio_batch_cb(spec.SoundBuf + total*2, spec.SoundBufSize - total);
-
 }
 
 void retro_get_system_info(struct retro_system_info *info)
@@ -847,6 +897,8 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
    info->geometry.max_width    = MEDNAFEN_CORE_GEOMETRY_MAX_W;
    info->geometry.max_height   = MEDNAFEN_CORE_GEOMETRY_MAX_H;
    info->geometry.aspect_ratio = MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO;
+
+   check_depth();
 }
 
 void retro_deinit(void)
