@@ -232,7 +232,7 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
    WSwan_CheckSoundDMA();
 
 
-#define MAX(a,b) ((a < b) ? a : b)
+#define MAX(a,b) ((a >= b) ? a : b)
 
 
    v30mz_execute(96);
