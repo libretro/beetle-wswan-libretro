@@ -18,6 +18,7 @@
 #include <string.h>
 
 #include <boolean.h>
+#include <retro_inline.h>
 
 #include "mednafen.h"
 #include "driver.h"
@@ -26,7 +27,7 @@
 
 #define RLSB 		MDFNSTATE_RLSB	//0x80000000
 
-static inline void MDFN_en32lsb(uint8_t *buf, uint32_t morp)
+static INLINE void MDFN_en32lsb(uint8_t *buf, uint32_t morp)
 {
    buf[0]=morp;
    buf[1]=morp>>8;
@@ -34,13 +35,13 @@ static inline void MDFN_en32lsb(uint8_t *buf, uint32_t morp)
    buf[3]=morp>>24;
 }
 
-static inline uint32_t MDFN_de32lsb(const uint8_t *morp)
+static INLINE uint32_t MDFN_de32lsb(const uint8_t *morp)
 {
    return(morp[0]|(morp[1]<<8)|(morp[2]<<16)|(morp[3]<<24));
 }
 
 #ifdef MSB_FIRST
-static inline void Endian_A64_Swap(void *src, uint32_t nelements)
+static INLINE void Endian_A64_Swap(void *src, uint32_t nelements)
 {
    uint32_t i;
    uint8_t *nsrc = (uint8_t *)src;
@@ -60,7 +61,7 @@ static inline void Endian_A64_Swap(void *src, uint32_t nelements)
    }
 }
 
-static inline void Endian_A32_Swap(void *src, uint32_t nelements)
+static INLINE void Endian_A32_Swap(void *src, uint32_t nelements)
 {
    uint32_t i;
    uint8_t *nsrc = (uint8_t *)src;
@@ -92,7 +93,7 @@ void Endian_A16_Swap(void *src, uint32_t nelements)
    }
 }
 
-static inline void FlipByteOrder(uint8_t *src, uint32_t count)
+static INLINE void FlipByteOrder(uint8_t *src, uint32_t count)
 {
    uint8_t *start=src;
    uint8_t *end=src+count-1;
@@ -158,9 +159,15 @@ int32_t smem_seek(StateMem *st, uint32_t offset, int whence)
 {
    switch(whence)
    {
-      case SEEK_SET: st->loc = offset; break;
-      case SEEK_END: st->loc = st->len - offset; break;
-      case SEEK_CUR: st->loc += offset; break;
+      case SEEK_SET:
+         st->loc = offset;
+         break;
+      case SEEK_END:
+         st->loc = st->len - offset;
+         break;
+      case SEEK_CUR:
+         st->loc += offset;
+         break;
    }
 
    if(st->loc > st->len)
@@ -200,9 +207,11 @@ int smem_read32le(StateMem *st, uint32_t *b)
    return(4);
 }
 
-static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
+static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix)
 {
-   while(sf->size || sf->name)	// Size can sometimes be zero, so also check for the text name.  These two should both be zero only at the end of a struct.
+   /* Size can sometimes be zero, so also check for the text name.
+    * These two should both be zero only at the end of a struct. */
+   while(sf->size || sf->name)	
    {
       if(!sf->size || !sf->v)
       {
@@ -210,7 +219,8 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
          continue;
       }
 
-      if(sf->size == (uint32_t)~0)		/* Link to another struct.	*/
+      /* Link to another struct.	*/
+      if(sf->size == (uint32_t)~0)		
       {
          if(!SubWrite(st, (SFORMAT *)sf->v, name_prefix))
             return(0);
@@ -231,10 +241,7 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
 
 #ifdef MSB_FIRST
       /* Flip the byte order... */
-      if(sf->flags & MDFNSTATE_BOOL)
-      {
-
-      }
+      if(sf->flags & MDFNSTATE_BOOL) { }
       else if(sf->flags & MDFNSTATE_RLSB64)
          Endian_A64_Swap(sf->v, bytesize / sizeof(uint64_t));
       else if(sf->flags & MDFNSTATE_RLSB32)
@@ -245,14 +252,14 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix = NULL)
          FlipByteOrder((uint8_t*)sf->v, bytesize);
 #endif
 
-      // Special case for the evil bool type, to convert bool to 1-byte elements.
-      // Don't do it if we're only saving the raw data.
+      /* Special case for the evil bool type, 
+       * to convert bool to 1-byte elements.
+       * Don't do it if we're only saving the raw data. */
       if(sf->flags & MDFNSTATE_BOOL)
       {
          for(int32_t bool_monster = 0; bool_monster < bytesize; bool_monster++)
          {
             uint8_t tmp_bool = ((bool *)sf->v)[bool_monster];
-            //printf("Bool write: %.31s\n", sf->name);
             smem_write(st, &tmp_bool, 1);
          }
       }
@@ -302,7 +309,7 @@ static int WriteStateChunk(StateMem *st, const char *sname, SFORMAT *sf)
 
    data_start_pos = st->loc;
 
-   if(!SubWrite(st, sf))
+   if(!SubWrite(st, sf, NULL))
       return(0);
 
    end_pos = st->loc;

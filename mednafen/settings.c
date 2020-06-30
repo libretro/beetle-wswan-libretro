@@ -15,11 +15,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "mednafen.h"
+#include <stdint.h>
 #include <string.h>
 #include "settings.h"
 
-uint64 MDFN_GetSettingUI(const char *name)
+uint64_t MDFN_GetSettingUI(const char *name)
 {
    if (!strcmp("wswan.ocmultiplier", name))
       return 1;
@@ -37,7 +37,7 @@ uint64 MDFN_GetSettingUI(const char *name)
    return 0;
 }
 
-int64 MDFN_GetSettingI(const char *name)
+int64_t MDFN_GetSettingI(const char *name)
 {
    if (!strcmp("wswan.sex", name))
       return 0;
