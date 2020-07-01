@@ -15,17 +15,22 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <boolean.h>
 #include <retro_inline.h>
-
-#include "mednafen.h"
-#include "driver.h"
-#include "state.h"
 #include <compat/msvc.h>
+#include <compat/strl.h>
+
+#include "state.h"
 
 #define RLSB 		MDFNSTATE_RLSB	//0x80000000
+
+/* Forward declaration */
+int StateAction(StateMem *sm, int load, int data_only);
 
 static INLINE void MDFN_en32lsb(uint8_t *buf, uint32_t morp)
 {
@@ -334,7 +339,7 @@ static SFORMAT *FindSF(const char *name, SFORMAT *sf)
       }
 
       /* Link to another SFORMAT structure. */
-      if (sf->size == (uint32)~0) 
+      if (sf->size == (uint32_t)~0) 
       {
          SFORMAT *temp_sf = FindSF(name, (SFORMAT*)sf->v);
          if (temp_sf)
@@ -478,7 +483,7 @@ static int ReadStateChunk(StateMem *st, SFORMAT *sf, int size)
 }
 
 static int MDFNSS_StateAction_internal(StateMem *st, int load, int data_only,
-      SSDescriptor *section)
+      struct SSDescriptor *section)
 {
    if(load)
    {
@@ -539,7 +544,7 @@ static int MDFNSS_StateAction_internal(StateMem *st, int load, int data_only,
 
 int MDFNSS_StateAction(void *st_p, int load, int data_only, SFORMAT *sf, const char *name, bool optional)
 {
-   SSDescriptor love;
+   struct SSDescriptor love;
    StateMem *st   = (StateMem*)st_p;
 
    love.sf        = sf;
@@ -549,7 +554,7 @@ int MDFNSS_StateAction(void *st_p, int load, int data_only, SFORMAT *sf, const c
    return MDFNSS_StateAction_internal(st, load, 0, &love);
 }
 
-int MDFNSS_SaveSM(void *st_p, int, int, const void*, const void*, const void*)
+int MDFNSS_SaveSM(void *st_p, int a, int b, const void*c, const void*d, const void*e)
 {
    uint8_t header[32];
    StateMem *st = (StateMem*)st_p;
@@ -574,7 +579,7 @@ int MDFNSS_SaveSM(void *st_p, int, int, const void*, const void*, const void*)
    return(1);
 }
 
-int MDFNSS_LoadSM(void *st_p, int, int)
+int MDFNSS_LoadSM(void *st_p, int a, int b)
 {
    uint8_t header[32];
    uint32_t stateversion;

@@ -298,7 +298,7 @@ static void SetInput(int port, const char *type, void *ptr)
  if(!port) chee = (uint8 *)ptr;
 }
 
-int StateAction(StateMem *sm, int load, int data_only)
+extern "C" int StateAction(StateMem *sm, int load, int data_only)
 {
    if(!v30mz_StateAction(sm, load, data_only))
       return(0);
