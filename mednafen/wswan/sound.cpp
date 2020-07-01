@@ -19,6 +19,7 @@
 #include "sound.h"
 #include "v30mz.h"
 #include "wswan-memory.h"
+#include "../state_inline.h"
 
 #include "../include/blip/Blip_Buffer.h"
 

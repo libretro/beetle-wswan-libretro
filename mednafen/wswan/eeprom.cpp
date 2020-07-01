@@ -17,11 +17,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#include <ctype.h>
 
 #include "wswan.h"
 #include "eeprom.h"
 #include "wswan-memory.h"
-#include <ctype.h>
+#include "../state_inline.h"
 
 uint8_t wsEEPROM[2048];
 static uint8_t iEEPROM[0x400];

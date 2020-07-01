@@ -24,6 +24,7 @@
 #include "v30mz.h"
 #include "rtc.h"
 #include "../video.h"
+#include "../state_inline.h"
 
 static uint32 wsMonoPal[16][4];
 static uint32 wsColors[8];

@@ -17,6 +17,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+#include <math.h>
+
+#include <time.h>
 
 #include "wswan.h"
 #include "gfx.h"
@@ -26,8 +29,7 @@
 #include "rtc.h"
 #include "v30mz.h"
 #include "../mempatcher.h"
-#include <time.h>
-#include <math.h>
+#include "../state_inline.h"
 
 static bool SkipSL; // Skip save and load
 

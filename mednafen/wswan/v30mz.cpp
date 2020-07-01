@@ -27,14 +27,16 @@
 	Implement prefetch/pipeline emulation.
 */
 
+#include <string.h>
+
 #include "wswan.h"
 #include "wswan-memory.h"
-
-#include <string.h>
 
 #include "v30mz.h"
 #include "v30mz-private.h"
 #include "debug.h"
+
+#include "../state_inline.h"
 
 static uint16 old_CS, old_IP;
 

@@ -18,8 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "wswan.h"
 #include <time.h>
+
+#include "wswan.h"
+
+#include "../state_inline.h"
 
 static uint64 CurrentTime;
 static uint32 ClockCycleCounter;
