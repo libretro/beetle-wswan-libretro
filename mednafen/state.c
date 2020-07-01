@@ -218,6 +218,10 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix)
     * These two should both be zero only at the end of a struct. */
    while(sf->size || sf->name)	
    {
+      int slen;
+      int32_t bytesize;
+      char nameo[1 + 256];
+
       if(!sf->size || !sf->v)
       {
          sf++;
@@ -234,10 +238,9 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix)
          continue;
       }
 
-      int32_t bytesize = sf->size;
+      bytesize = sf->size;
 
-      char nameo[1 + 256];
-      int slen = snprintf(nameo + 1,
+      slen     = snprintf(nameo + 1,
             256, "%s%s", name_prefix ? name_prefix : "", sf->name);
       nameo[0] = slen;
 
@@ -262,7 +265,8 @@ static bool SubWrite(StateMem *st, SFORMAT *sf, const char *name_prefix)
        * Don't do it if we're only saving the raw data. */
       if(sf->flags & MDFNSTATE_BOOL)
       {
-         for(int32_t bool_monster = 0; bool_monster < bytesize; bool_monster++)
+         int32_t bool_monster;
+         for (bool_monster = 0; bool_monster < bytesize; bool_monster++)
          {
             uint8_t tmp_bool = ((bool *)sf->v)[bool_monster];
             smem_write(st, &tmp_bool, 1);
@@ -556,6 +560,7 @@ int MDFNSS_StateAction(void *st_p, int load, int data_only, SFORMAT *sf, const c
 
 int MDFNSS_SaveSM(void *st_p, int a, int b, const void*c, const void*d, const void*e)
 {
+   uint32_t sizy;
    uint8_t header[32];
    StateMem *st = (StateMem*)st_p;
    static const char *header_magic = "MDFNSVST";
@@ -572,7 +577,7 @@ int MDFNSS_SaveSM(void *st_p, int a, int b, const void*c, const void*d, const vo
    if(!StateAction(st, 0, 0))
       return(0);
 
-   uint32_t sizy = st->loc;
+   sizy = st->loc;
    smem_seek(st, 16 + 4, SEEK_SET);
    smem_write32le(st, sizy);
 
