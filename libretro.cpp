@@ -26,6 +26,8 @@ static retro_environment_t environ_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
 
+static bool libretro_supports_bitmasks = false;
+
 static bool overscan;
 static double last_sound_rate;
 
@@ -634,6 +636,9 @@ void retro_init(void)
    check_system_specs();
    check_variables();
    check_depth();
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_INPUT_BITMASKS, NULL))
+      libretro_supports_bitmasks = true;
 }
 
 void retro_reset(void)
@@ -776,10 +781,21 @@ static void update_input(void)
       }
    };
 
-   bool select_button = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT);
+   unsigned i;
+   int16_t bitmask = 0;
+   bool select_button;
 
-   if(select_button && !select_pressed_last_frame)
-   {
+   if (libretro_supports_bitmasks) {
+      bitmask = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
+   }
+   else {
+      for (i = 0; i < (RETRO_DEVICE_ID_JOYPAD_R3+1); i++) {
+         bitmask |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, i) ? 1 << i : 0;
+      }
+   }
+
+   select_button = bitmask & (1 << RETRO_DEVICE_ID_JOYPAD_SELECT);
+   if(select_button && !select_pressed_last_frame) {
       rotate_tall = !rotate_tall;
       rotate_display();
    }
@@ -789,8 +805,7 @@ static void update_input(void)
    bool joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
 
    for (unsigned i = 0; i < MAX_BUTTONS; i++) {
-         input_buf |= map[joymap][i] != -1u &&
-            input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, map[joymap][i]) ? (1 << i) : 0;
+      input_buf |= map[joymap][i] != -1u && ((1 << map[joymap][i]) & bitmask) ? (1 << i) : 0;
    }
 
 #ifdef MSB_FIRST
@@ -801,7 +816,6 @@ static void update_input(void)
    u.s = input_buf;
    input_buf = u.b[0] | u.b[1] << 8;
 #endif
-
 }
 
 static uint64_t video_frames, audio_frames;
@@ -918,6 +932,8 @@ void retro_deinit(void)
       log_cb(RETRO_LOG_INFO, "[%s]: Estimated FPS: %.5f\n",
             MEDNAFEN_CORE_NAME, (double)video_frames * 44100 / audio_frames);
    }
+
+   libretro_supports_bitmasks = false;
 }
 
 unsigned retro_get_region(void)
