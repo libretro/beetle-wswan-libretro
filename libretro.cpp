@@ -575,7 +575,8 @@ static void check_variables(void)
    var.key = "wswan_rotate_keymap",
    var.value = NULL;
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
       if (!strcmp(var.value, "disabled"))
          rotate_joymap = 0;
       else if (!strcmp(var.value, "enabled"))
@@ -604,12 +605,12 @@ static void check_variables(void)
    {
       unsigned old_value = RETRO_PIX_BYTES;
 
-      if (strcmp(var.value, "16bit") == 0)
+      if (!strcmp(var.value, "16bit"))
       {
          RETRO_PIX_BYTES = 2;
          RETRO_PIX_DEPTH = 16;
       }
-      else if (strcmp(var.value, "24bit") == 0)
+      else if (!strcmp(var.value, "24bit"))
       {
          RETRO_PIX_BYTES = 4;
          RETRO_PIX_DEPTH = 24;
@@ -664,7 +665,6 @@ static void set_volume (uint32_t *ptr, unsigned number)
 #define MAX_PLAYERS 1
 #define MAX_BUTTONS 11
 static uint16_t input_buf;
-
 
 bool retro_load_game(const struct retro_game_info *info)
 {
@@ -785,17 +785,17 @@ static void update_input(void)
    int16_t bitmask = 0;
    bool select_button;
 
-   if (libretro_supports_bitmasks) {
+   if (libretro_supports_bitmasks)
       bitmask = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
-   }
-   else {
-      for (i = 0; i < (RETRO_DEVICE_ID_JOYPAD_R3+1); i++) {
+   else
+   {
+      for (i = 0; i < (RETRO_DEVICE_ID_JOYPAD_R3+1); i++)
          bitmask |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, i) ? 1 << i : 0;
-      }
    }
 
    select_button = bitmask & (1 << RETRO_DEVICE_ID_JOYPAD_SELECT);
-   if(select_button && !select_pressed_last_frame) {
+   if (select_button && !select_pressed_last_frame)
+   {
       rotate_tall = !rotate_tall;
       rotate_display();
    }
@@ -804,9 +804,8 @@ static void update_input(void)
 
    bool joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
 
-   for (unsigned i = 0; i < MAX_BUTTONS; i++) {
+   for (unsigned i = 0; i < MAX_BUTTONS; i++)
       input_buf |= map[joymap][i] != -1u && ((1 << map[joymap][i]) & bitmask) ? (1 << i) : 0;
-   }
 
 #ifdef MSB_FIRST
    union {
@@ -820,10 +819,10 @@ static void update_input(void)
 
 static uint64_t video_frames, audio_frames;
 
-
 void retro_run(void)
 {
    int total;
+   static MDFN_Rect rects[FB_MAX_HEIGHT];
    static int16_t sound_buf[0x10000];
    bool updated = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
@@ -833,7 +832,6 @@ void retro_run(void)
 
    update_input();
 
-   static MDFN_Rect rects[FB_MAX_HEIGHT];
    rects[0].w = ~0;
 
    EmulateSpecStruct spec = {0};
@@ -885,7 +883,8 @@ void retro_run(void)
    audio_frames += spec.SoundBufSize;
 
    for (total = 0; total < spec.SoundBufSize; )
-      total += audio_batch_cb(spec.SoundBuf + total*2, spec.SoundBufSize - total);
+      total += audio_batch_cb(spec.SoundBuf + total*2,
+            spec.SoundBufSize - total);
 }
 
 void retro_get_system_info(struct retro_system_info *info)
@@ -1067,8 +1066,7 @@ size_t retro_get_memory_size(unsigned type)
             return eeprom_size;
          else if (SRAMSize)
             return SRAMSize;
-         else
-            return 0;
+         break;
       case RETRO_MEMORY_SYSTEM_RAM:
          return wsRAMSize;
       default:
@@ -1101,7 +1099,7 @@ void MDFND_MidSync(const EmulateSpecStruct *)
 
 void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
 {
- //MDFND_MidLineUpdate(espec, y);
+   //MDFND_MidLineUpdate(espec, y);
 }
 
 void MDFND_PrintError(const char* err)
