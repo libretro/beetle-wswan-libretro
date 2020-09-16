@@ -29,6 +29,7 @@
 
 #include <string.h>
 
+#include "interrupt.h"
 #include "wswan.h"
 #include "wswan-memory.h"
 
@@ -345,7 +346,6 @@ static void DoOP(uint8 opcode)
    switch(opcode)
    {
       default:
-         printf("Invalid op: %02x\n", opcode);
          CLK(10);
          break;
 
@@ -591,7 +591,7 @@ static void DoOP(uint8 opcode)
          OP( 0x8a, i_mov_r8b   ) { uint8  src; GetModRM; src = GetRMByte(ModRM);	RegByte(ModRM)=src;	CLK(1);	} OP_EPILOGUE;
          OP( 0x8b, i_mov_r16w  ) { uint16 src; GetModRM; src = GetRMWord(ModRM);	RegWord(ModRM)=src; 	CLK(1); } OP_EPILOGUE;
          OP( 0x8c, i_mov_wsreg ) { GetModRM; PutRMWord(ModRM,I.sregs[(ModRM & 0x38) >> 3]);		CLK(1);	} OP_EPILOGUE;
-         OP( 0x8d, i_lea       ) { uint16 ModRM = FETCH; if(ModRM >= 192) { printf("LEA Error: %02x\n", ModRM);} else { (void)(*GetEA[ModRM])(); } RegWord(ModRM)=EO; 	CLK(1);	} OP_EPILOGUE;
+         OP( 0x8d, i_lea       ) { uint16 ModRM = FETCH; if(ModRM >= 192) { } else { (void)(*GetEA[ModRM])(); } RegWord(ModRM)=EO; 	CLK(1);	} OP_EPILOGUE;
          OP( 0x8e, i_mov_sregw ) { uint16 src; GetModRM; src = GetRMWord(ModRM); CLKM(3,2);
             switch (ModRM & 0x38) {
                case 0x00: I.sregs[DS1] = src; break; /* mov ds1,ew */
@@ -619,7 +619,7 @@ static void DoOP(uint8 opcode)
          OP( 0x99, i_cwd       ) { I.regs.w[DW] = (I.regs.b[AH] & 0x80) ? 0xffff : 0;	CLK(1);	} OP_EPILOGUE;
 
          OP( 0x9a, i_call_far  ) { uint32 tmp, tmp2;	FETCHuint16(tmp); FETCHuint16(tmp2); PUSH(I.sregs[PS]); PUSH(I.pc); I.pc = (uint16)tmp; I.sregs[PS] = (uint16)tmp2; ADDBRANCHTRACE(I.sregs[PS], I.pc); CLK(10); } OP_EPILOGUE;
-         OP( 0x9b, i_poll      ) { puts("POLL"); } OP_EPILOGUE;
+         OP( 0x9b, i_poll      ) {  } OP_EPILOGUE;
          OP( 0x9c, i_pushf     ) { i_real_pushf(); } OP_EPILOGUE;
          OP( 0x9d, i_popf      ) { i_real_popf();  } OP_EPILOGUE;
          OP( 0x9e, i_sahf      ) { uint32 tmp = (CompressFlags() & 0xff00) | (I.regs.b[AH] & 0xd5); ExpandFlags(tmp); CLK(4); } OP_EPILOGUE;

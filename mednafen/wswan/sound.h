@@ -1,6 +1,8 @@
 #ifndef __WSWAN_SOUND_H
 #define __WSWAN_SOUND_H
 
+#include "../state.h"
+
 int32 WSwan_SoundFlush(int16 *SoundBuf, const int32 MaxSoundFrames);
 
 void WSwan_SoundInit(void);

@@ -18,8 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string.h>
+
 #include "wswan.h"
 #include "gfx.h"
+#include "interrupt.h"
 #include "wswan-memory.h"
 #include "v30mz.h"
 #include "rtc.h"
@@ -389,10 +392,6 @@ void wsScanline(uint16 *target, int depth)
                if(!(j >= FGx0 && j <= FGx1) || !((wsLine >= FGy0) && (wsLine < FGy1)))
                   in_window[7 + j] = 1;
             }
-         }
-         else
-         {
-            puts("Who knows!");
          }
       }
       else

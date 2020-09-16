@@ -15,6 +15,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <string.h>
+
 #include "wswan.h"
 #include "sound.h"
 #include "v30mz.h"
@@ -309,9 +311,6 @@ uint8 WSwan_SoundRead(uint32 A)
       return(volume[A - 0x88]);
    else switch(A)
    {
-      default:
-         printf("SoundRead: %04x\n", A);
-         break;
       case 0x6A: return(HVoiceCtrl);
       case 0x6B: return(HVoiceChanCtrl);
       case 0x8C: return(sweep_value);
@@ -323,6 +322,8 @@ uint8 WSwan_SoundRead(uint32 A)
       case 0x92: return((nreg >> 0) & 0xFF);
       case 0x93: return((nreg >> 8) & 0xFF);
       case 0x94: return(voice_volume);
+      default:
+         break;
    }
 
    return(0);

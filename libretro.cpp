@@ -64,6 +64,7 @@ static MDFN_Surface *surf;
 #include <sys/types.h>
 
 #include "mednafen/wswan/gfx.h"
+#include "mednafen/wswan/interrupt.h"
 #include "mednafen/wswan/wswan-memory.h"
 #include "mednafen/wswan/start.inc"
 #include "mednafen/wswan/sound.h"

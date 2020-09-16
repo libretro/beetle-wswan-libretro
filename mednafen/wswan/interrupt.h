@@ -1,6 +1,9 @@
 #ifndef __WSWAN_INTERRUPT_H
 #define __WSWAN_INTERRUPT_H
 
+#include "../mednafen-types.h"
+#include "../state.h"
+
 enum
 {
  WSINT_SERIAL_SEND = 0,

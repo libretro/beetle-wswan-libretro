@@ -23,12 +23,14 @@
 
 #include "wswan.h"
 #include "gfx.h"
+#include "interrupt.h"
 #include "wswan-memory.h"
 #include "sound.h"
 #include "eeprom.h"
 #include "rtc.h"
 #include "v30mz.h"
 #include "../mempatcher.h"
+#include "../settings.h"
 #include "../state_inline.h"
 
 static bool SkipSL; // Skip save and load

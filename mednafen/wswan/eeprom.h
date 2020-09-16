@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "../state.h"
+
 uint8_t WSwan_EEPROMRead(uint32_t A);
 void WSwan_EEPROMWrite(uint32_t A, uint8_t V);
 int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only);

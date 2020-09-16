@@ -1,6 +1,9 @@
 #ifndef __WSWAN_GFX_H
 #define __WSWAN_GFX_H
 
+#include "../state.h"
+#include "../video.h"
+
 void WSWan_TCacheInvalidByAddr(uint32);
 
 extern uint8		wsTCache[512*64];		  //tiles cache

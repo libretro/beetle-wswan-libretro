@@ -22,6 +22,7 @@
 
 #include "wswan.h"
 
+#include "../state.h"
 #include "../state_inline.h"
 
 static uint64 CurrentTime;

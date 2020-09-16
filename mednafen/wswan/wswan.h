@@ -1,10 +1,7 @@
 #ifndef __WSWAN_H
 #define __WSWAN_H
 
-#include "../mednafen.h"
-#include "../state.h"
-
-#include "interrupt.h"
+#include "../mednafen-types.h"
 
 #define  mBCD(value) (((value)/10)<<4)|((value)%10)
 
