@@ -8,7 +8,7 @@
 
 #include "git.h"
 
-extern MDFNGI *MDFNGameInfo;
+extern MDFNGI EmulatedWSwan;
 
 #include "settings.h"
 

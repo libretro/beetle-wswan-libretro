@@ -14,8 +14,6 @@ static int RETRO_SAMPLE_RATE = 44100;
 static int RETRO_PIX_BYTES = 2;
 static int RETRO_PIX_DEPTH = 15;
 
-static MDFNGI *game;
-
 struct retro_perf_callback perf_cb;
 retro_get_cpu_features_t perf_get_cpu_features_cb = NULL;
 retro_log_printf_t log_cb;
@@ -259,16 +257,14 @@ static int Load(const uint8_t *data, size_t size)
    }
 
    if(header[6] & 0x1)
-   {
-      MDFNGameInfo->rotated = MDFN_ROTATE90;
-   }
+      EmulatedWSwan.rotated = MDFN_ROTATE90;
 
    MDFNMP_Init(16384, (1 << 20) / 1024);
 
    v30mz_init(WSwan_readmem20, WSwan_writemem20, WSwan_readport, WSwan_writeport);
    WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); // EEPROM and SRAM are loaded in this func.
    WSwan_GfxInit();
-   MDFNGameInfo->fps = (uint32)((uint64)3072000 * 65536 * 256 / (159*256));
+   EmulatedWSwan.fps = (uint32)((uint64)3072000 * 65536 * 256 / (159*256));
 
    WSwan_SoundInit();
 
@@ -454,8 +450,8 @@ static bool update_video, update_audio;
 #define MEDNAFEN_CORE_VERSION "v0.9.35.1"
 #define MEDNAFEN_CORE_EXTENSIONS "ws|wsc|pc2"
 #define MEDNAFEN_CORE_TIMING_FPS 75.47
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W (game->nominal_width)
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H (game->nominal_height)
+#define MEDNAFEN_CORE_GEOMETRY_BASE_W (EmulatedWSwan.nominal_width)
+#define MEDNAFEN_CORE_GEOMETRY_BASE_H (EmulatedWSwan.nominal_height)
 #define MEDNAFEN_CORE_GEOMETRY_MAX_W 224
 #define MEDNAFEN_CORE_GEOMETRY_MAX_H 144
 #define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (14.0 / 9.0)
@@ -464,38 +460,26 @@ static bool update_video, update_audio;
 
 #define FB_MAX_HEIGHT FB_HEIGHT
 
-MDFNGI *MDFNGameInfo = &EmulatedWSwan;
-
-static MDFNGI *MDFNI_LoadGame(const char *force_module, const uint8_t *data,
+static bool MDFNI_LoadGame(
+      const char *force_module, const uint8_t *data,
       size_t size)
 {
-   MDFNGameInfo = &EmulatedWSwan;
-
    if(Load(data, size) <= 0)
-      goto error;
+      return false;
 
 	MDFN_LoadGameCheats(NULL);
 	MDFNMP_InstallReadPatches();
 
-   return(MDFNGameInfo);
-
-error:
-   MDFNGameInfo = NULL;
-   return NULL;
+   return true;
 }
 
 static void MDFNI_CloseGame(void)
 {
-   if(!MDFNGameInfo)
-      return;
-
    MDFN_FlushGameCheats(0);
 
    CloseGame();
 
    MDFNMP_Kill();
-
-   MDFNGameInfo = NULL;
 }
 
 static void check_system_specs(void)
@@ -681,9 +665,8 @@ bool retro_load_game(const struct retro_game_info *info)
    overscan = false;
    environ_cb(RETRO_ENVIRONMENT_GET_OVERSCAN, &overscan);
 
-   game = MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE,
-         (const uint8_t*)info->data, info->size);
-   if (!game)
+   if (!MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE,
+         (const uint8_t*)info->data, info->size))
       return false;
 
    SetInput(0, "gamepad", &input_buf);
@@ -722,9 +705,6 @@ bool retro_load_game(const struct retro_game_info *info)
 
 void retro_unload_game(void)
 {
-   if (!game)
-      return;
-
    MDFNI_CloseGame();
 
    if (surf)
@@ -929,9 +909,7 @@ unsigned retro_api_version(void)
    return RETRO_API_VERSION;
 }
 
-void retro_set_controller_port_device(unsigned in_port, unsigned device)
-{
-}
+void retro_set_controller_port_device(unsigned in_port, unsigned device) { }
 
 void retro_set_environment(retro_environment_t cb)
 {
@@ -964,8 +942,6 @@ void retro_set_video_refresh(retro_video_refresh_t cb)
    video_cb = cb;
 }
 
-static size_t serialize_size;
-
 size_t retro_serialize_size(void)
 {
    StateMem st;
@@ -981,7 +957,7 @@ size_t retro_serialize_size(void)
 
    free(st.data);
 
-   return serialize_size = st.len;
+   return st.len;
 }
 
 bool retro_serialize(void *data, size_t size)
@@ -1030,8 +1006,7 @@ void *retro_get_memory_data(unsigned type)
             return (uint8_t*)wsEEPROM;
          else if (SRAMSize)
             return wsSRAM;
-         else
-            return NULL;
+         break;
       case RETRO_MEMORY_SYSTEM_RAM:
          return (uint8_t*)wsRAM;
       default:
@@ -1060,11 +1035,8 @@ size_t retro_get_memory_size(unsigned type)
    return 0;
 }
 
-void retro_cheat_reset(void)
-{}
-
-void retro_cheat_set(unsigned, bool, const char *)
-{}
+void retro_cheat_reset(void) { }
+void retro_cheat_set(unsigned, bool, const char *) { }
 
 void MDFND_DispMessage(unsigned char *str)
 {
@@ -1078,16 +1050,14 @@ void MDFND_Message(const char *str)
       log_cb(RETRO_LOG_INFO, "%s\n", str);
 }
 
-void MDFND_MidSync(const EmulateSpecStruct *)
-{}
-
-void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
-{
-   //MDFND_MidLineUpdate(espec, y);
-}
-
 void MDFND_PrintError(const char* err)
 {
    if (log_cb)
       log_cb(RETRO_LOG_ERROR, "%s\n", err);
+}
+
+void MDFND_MidSync(const EmulateSpecStruct *) { }
+void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
+{
+   //MDFND_MidLineUpdate(espec, y);
 }

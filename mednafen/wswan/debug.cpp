@@ -329,7 +329,7 @@ static disassembler zedis;
 
 void WSwanDBG_Disassemble(uint32 &a, uint32 SpecialA, char *text_buffer)
 {
- uint32 mis = MDFNGameInfo->Debugger->MaxInstructionSize;
+ uint32 mis = EmulatedWSwan.Debugger->MaxInstructionSize;
  mis = 256;
  uint8 instr_buffer[mis];
  uint32 ps = v30mz_get_reg(NEC_PS);
