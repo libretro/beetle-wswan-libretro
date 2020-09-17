@@ -104,7 +104,8 @@ static void Reset(void)
 }
 
 static uint8 *chee;
-static void Emulate(EmulateSpecStruct *espec)
+
+static void Emulate(EmulateSpecStruct *espec, int16_t *sndbuf)
 {
  espec->DisplayRect.x = 0;
  espec->DisplayRect.y = 0;
@@ -115,22 +116,17 @@ static void Emulate(EmulateSpecStruct *espec)
   WSwan_SetPixelFormat(espec->surface->depth);
 
  if(espec->SoundFormatChanged)
-  WSwan_SetSoundRate(espec->SoundRate);
+  WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
 
  uint16 butt_data = chee[0] | (chee[1] << 8);
 
  WSButtonStatus = butt_data;
  
-
  MDFNMP_ApplyPeriodicCheats();
 
- while(!wsExecuteLine(espec->surface, espec->skip))
- {
+ while(!wsExecuteLine(espec->surface, espec->skip));
 
- }
-
-
- espec->SoundBufSize = WSwan_SoundFlush(espec->SoundBuf, espec->SoundBufMaxSize);
+ espec->SoundBufSize = WSwan_SoundFlush(sndbuf, espec->SoundBufMaxSize);
 
  espec->MasterCycles = v30mz_timestamp;
  v30mz_timestamp = 0;
@@ -429,15 +425,6 @@ static InputInfoStruct InputInfo =
 {
  sizeof(PortInfo) / sizeof(InputPortInfoStruct),
  PortInfo
-};
-
-static const FileExtensionSpecStruct KnownExtensions[] =
-{
- { ".ws", "WonderSwan ROM Image" },
- { ".wsc", "WonderSwan Color ROM Image" },
- { ".wsr", "WonderSwan Music Rip" },
- { ".pc2", "Benesse Pocket Challenge 2" },
- { NULL, NULL }
 };
 
 MDFNGI EmulatedWSwan =
@@ -837,12 +824,8 @@ void retro_run(void)
 
    EmulateSpecStruct spec = {0};
    spec.surface = surf;
-   spec.SoundRate = RETRO_SAMPLE_RATE;
-   spec.SoundBuf = sound_buf;
    spec.LineWidths = rects;
    spec.SoundBufMaxSize = sizeof(sound_buf) / 2;
-   spec.SoundVolume = 1.0;
-   spec.soundmultiplier = 1.0;
    spec.SoundBufSize = 0;
    spec.VideoFormatChanged = update_video;
    spec.SoundFormatChanged = update_audio;
@@ -869,7 +852,7 @@ void retro_run(void)
       update_audio = false;
    }
 
-   Emulate(&spec);
+   Emulate(&spec, sound_buf);
 
    int32 SoundBufSize = spec.SoundBufSize - spec.SoundBufSizeALMS;
 
@@ -884,7 +867,7 @@ void retro_run(void)
    audio_frames += spec.SoundBufSize;
 
    for (total = 0; total < spec.SoundBufSize; )
-      total += audio_batch_cb(spec.SoundBuf + total*2,
+      total += audio_batch_cb(sound_buf + total*2,
             spec.SoundBufSize - total);
 }
 
