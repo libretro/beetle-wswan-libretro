@@ -1,6 +1,7 @@
 #ifndef _GIT_H
 #define _GIT_H
 
+#include "mednafen-types.h"
 #include "state.h"
 #include "video.h"
 

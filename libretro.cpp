@@ -209,6 +209,7 @@ static int Load(const uint8_t *data, size_t size)
 
    memcpy(header, wsCartROM + rom_size - 10, 10);
 
+#if 0
    {
       const char *developer_name = "???";
       for(unsigned int x = 0; x < sizeof(Developers) / sizeof(DLEntry); x++)
@@ -219,8 +220,11 @@ static int Load(const uint8_t *data, size_t size)
             break;
          }
       }
-      printf("Developer: %s (0x%02x)\n", developer_name, header[0]);
+      if (log_cb)
+         log_cb(RETRO_LOG_INFO,
+               "Developer: %s (0x%02x)\n", developer_name, header[0]);
    }
+#endif
 
    SRAMSize = 0;
    eeprom_size = 0;
@@ -238,16 +242,17 @@ static int Load(const uint8_t *data, size_t size)
       case 0x50: eeprom_size = 1024; break;
    }
 
+#if 0
    {
       uint16 real_crc = 0;
       for(unsigned int i = 0; i < rom_size - 2; i++)
          real_crc += wsCartROM[i];
       printf("Real Checksum:      0x%04x\n", real_crc);
    }
+#endif
 
    if((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27)) /* Detective Conan */
    {
-      //puts("HAX");
       /* WS cpu is using cache/pipeline or there's protected ROM bank where pointing CS */
       wsCartROM[0xfffe8]=0xea;
       wsCartROM[0xfffe9]=0x00;
@@ -315,10 +320,7 @@ extern "C" int StateAction(StateMem *sm, int load, int data_only)
       return(0);
 
    if(!WSwan_EEPROMStateAction(sm, load, data_only))
-   {
-      puts("Oops");
       return(0);
-   }
 
    return(1);
 }
@@ -987,24 +989,6 @@ size_t retro_get_memory_size(unsigned type)
 
 void retro_cheat_reset(void) { }
 void retro_cheat_set(unsigned, bool, const char *) { }
-
-void MDFND_DispMessage(unsigned char *str)
-{
-   if (log_cb)
-      log_cb(RETRO_LOG_INFO, "%s\n", str);
-}
-
-void MDFND_Message(const char *str)
-{
-   if (log_cb)
-      log_cb(RETRO_LOG_INFO, "%s\n", str);
-}
-
-void MDFND_PrintError(const char* err)
-{
-   if (log_cb)
-      log_cb(RETRO_LOG_ERROR, "%s\n", err);
-}
 
 void MDFND_MidSync(const EmulateSpecStruct *) { }
 void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
