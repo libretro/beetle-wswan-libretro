@@ -334,55 +334,6 @@ static void DoSimpleCommand(int cmd)
    }
 }
 
-static const MDFNSetting_EnumList SexList[] =
-{
- { "m", WSWAN_SEX_MALE },
- { "male", WSWAN_SEX_MALE, "Male" },
-
- { "f", WSWAN_SEX_FEMALE },
- { "female", WSWAN_SEX_FEMALE, "Female" },
-
- { "3", 3 },
-
- { NULL, 0 },
-};
-
-static const MDFNSetting_EnumList BloodList[] =
-{
- { "a", WSWAN_BLOOD_A, "A" },
- { "b", WSWAN_BLOOD_B, "B" },
- { "o", WSWAN_BLOOD_O, "O" },
- { "ab", WSWAN_BLOOD_AB, "AB" },
-
- { "5", 5 },
-
- { NULL, 0 },
-};
-
-static const MDFNSetting_EnumList LanguageList[] =
-{
- { "japanese", 0, "Japanese" },
- { "0", 0 },
-
- { "english", 1, "English" },
- { "1", 1 },
-
- { NULL, 0 },
-};
-
-static const MDFNSetting WSwanSettings[] =
-{
- { "wswan.rotateinput", MDFNSF_NOFLAGS, "Virtually rotate D-pads along with screen.", NULL, MDFNST_BOOL, "0" },
- { "wswan.language", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Language games should display text in.", "The only game this setting is known to affect is \"Digimon Tamers - Battle Spirit\".", MDFNST_ENUM, "english", NULL, NULL, NULL, NULL, LanguageList },
- { "wswan.name", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Name", NULL, MDFNST_STRING, "Mednafen" },
- { "wswan.byear", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Birth Year", NULL, MDFNST_UINT, "1989", "0", "9999" },
- { "wswan.bmonth", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Birth Month", NULL, MDFNST_UINT, "6", "1", "12" },
- { "wswan.bday", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Birth Day", NULL, MDFNST_UINT, "23", "1", "31" },
- { "wswan.sex", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Sex", NULL, MDFNST_ENUM, "F", NULL, NULL, NULL, NULL, SexList },
- { "wswan.blood", MDFNSF_EMU_STATE | MDFNSF_UNTRUSTED_SAFE, "Blood Type", NULL, MDFNST_ENUM, "O", NULL, NULL, NULL, NULL, BloodList },
- { NULL }
-};
-
 static const InputDeviceInputInfoStruct IDII[] =
 {
  { "up-x", "UP ↑, X Cursors", 0, IDIT_BUTTON, "down-x",				{ "right-x", "down-x", "left-x" } },
@@ -425,7 +376,6 @@ static InputInfoStruct InputInfo =
 
 MDFNGI EmulatedWSwan =
 {
- WSwanSettings,
  MDFN_MASTERCLOCK_FIXED(3072000),
  0,
  false, // Multires possible?

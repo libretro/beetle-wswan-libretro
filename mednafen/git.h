@@ -1,6 +1,7 @@
 #ifndef _GIT_H
 #define _GIT_H
 
+#include "state.h"
 #include "video.h"
 
 enum
@@ -19,9 +20,6 @@ typedef enum
  GMT_CDROM,	// PC Engine CD, PC-FX
  GMT_PLAYER	// Music player(NSF, HES, GSF)
 } GameMediumTypes;
-
-#include "state.h"
-#include "settings-common.h"
 
 typedef enum
 {
@@ -158,8 +156,6 @@ typedef struct
 
 typedef struct
 {
- const MDFNSetting *Settings;
-
  // Time base for EmulateSpecStruct::MasterCycles
  int64 MasterClock;
 
