@@ -380,11 +380,8 @@ MDFNGI EmulatedWSwan =
 {
  MDFN_MASTERCLOCK_FIXED(3072000),
  0,
- false, // Multires possible?
-
  224,   // lcm_width
  144,   // lcm_height
- NULL,  // Dummy
 
  224,	// Nominal width
  144,	// Nominal height

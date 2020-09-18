@@ -15,15 +15,6 @@ enum
 
 typedef enum
 {
- GMT_CART,	// Self-explanatory!
- GMT_ARCADE,	// VS Unisystem, PC-10...
- GMT_DISK,	// Famicom Disk System, mostly
- GMT_CDROM,	// PC Engine CD, PC-FX
- GMT_PLAYER	// Music player(NSF, HES, GSF)
-} GameMediumTypes;
-
-typedef enum
-{
  IDIT_BUTTON,		// 1-bit
  IDIT_BUTTON_CAN_RAPID, // 1-bit
  IDIT_BUTTON_BYTE, // 8-bits, Button as a byte instead of a bit.
@@ -162,24 +153,8 @@ typedef struct
 
  uint32 fps; // frames per second * 65536 * 256, truncated
 
- // multires is a hint that, if set, indicates that the system has fairly programmable video modes(particularly, the ability
- // to display multiple horizontal resolutions, such as the PCE, PC-FX, or Genesis).  In practice, it will cause the driver
- // code to set the linear interpolation on by default.
- //
- // lcm_width and lcm_height are the least common multiples of all possible
- // resolutions in the frame buffer as specified by DisplayRect/LineWidths(Ex for PCE: widths of 256, 341.333333, 512,
- // lcm = 1024)
- //
- // nominal_width and nominal_height specify the resolution that Mednafen should display
- // the framebuffer image in at 1x scaling, scaled from the dimensions of DisplayRect, and optionally the LineWidths array
- // passed through espec to the Emulate() function.
- //
- bool multires;
-
  int lcm_width;
  int lcm_height;
-
- void *dummy_separator;	//
 
  int nominal_width;
  int nominal_height;
@@ -190,8 +165,6 @@ typedef struct
  int soundchan; 	// Number of output sound channels.
 
  int rotated;
-
- GameMediumTypes GameType;
 } MDFNGI;
 
 #ifdef __cplusplus
