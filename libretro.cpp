@@ -69,7 +69,6 @@ static MDFN_Surface *surf;
 #include "mednafen/wswan/v30mz.h"
 #include "mednafen/wswan/rtc.h"
 #include "mednafen/wswan/eeprom.h"
-#include "mednafen/wswan/debug.h"
 
 int 		wsc = 1;			/*color/mono*/
 uint32		rom_size;

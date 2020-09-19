@@ -35,7 +35,6 @@
 
 #include "v30mz.h"
 #include "v30mz-private.h"
-#include "debug.h"
 
 #include "../state_inline.h"
 
@@ -1139,22 +1138,6 @@ void v30mz_execute(int cycles)
    }
 
 }
-
-#ifdef WANT_DEBUGGER
-void v30mz_debug(void (*CPUHook)(uint32), uint8 (*ReadHook)(uint32), void (*WriteHook)(uint32, uint8), uint8 (*PortReadHook)(uint32), 
-      void (*PortWriteHook)(uint32, uint8), void (*BranchTraceHook)(uint16 from_CS, uint16 from_IP, uint16 to_CS, uint16 to_IP, bool interrupt))
-{
-   cpu_hook = CPUHook;
-   read_hook = ReadHook;
-   write_hook = WriteHook;
-   port_read_hook = PortReadHook;
-   port_write_hook = PortWriteHook;
-
-   hookie_hickey = read_hook || write_hook || port_read_hook || port_write_hook;
-
-   branch_trace_hook = BranchTraceHook;
-}
-#endif
 
 int v30mz_StateAction(StateMem *sm, int load, int data_only)
 {
