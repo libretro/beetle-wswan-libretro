@@ -243,13 +243,13 @@ int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only)
 {
    SFORMAT StateRegs[] =
    {
-      SFVAR(iEEPROM_Command),
-      SFVAR(iEEPROM_Address),
-      SFVAR(EEPROM_Command),
-      SFVAR(EEPROM_Address),
-      SFARRAY(iEEPROM, sizeof(iEEPROM)),
+      SFVARN(iEEPROM_Command, "iEEPROM_Command"),
+      SFVARN(iEEPROM_Address, "iEEPROM_Address"),
+      SFVARN(EEPROM_Command,  "EEPROM_Command"),
+      SFVARN(EEPROM_Address,  "EEPROM_Address"),
+      SFARRAYN((iEEPROM), (sizeof(iEEPROM)), "iEEPROM"),
       SFARRAYN(eeprom_size ? wsEEPROM : NULL, eeprom_size, "EEPROM"),
-      SFEND
+      { 0, 0, 0, 0 }
    };
 
    if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "EEPR", false))
