@@ -181,7 +181,7 @@ void v30mz_reset(void)
    InHLT = 0;
 }
 
-void v30mz_int(uint32 vector, bool IgnoreIF)
+extern "C" void v30mz_int(uint32 vector, bool IgnoreIF)
 {
    InHLT = false; // This is correct!  Standby mode is always exited when there is an INT signal, regardless of whether interrupt are disabled.
    if(I.IF || IgnoreIF)

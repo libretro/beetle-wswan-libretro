@@ -33,7 +33,14 @@ unsigned v30mz_get_reg(int regnum);
 void v30mz_reset(void);
 void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), uint8 (*readport)(uint32), void (*writeport)(uint32, uint8));
 
-void v30mz_int(uint32 vector, bool IgnoreIF = false);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+void v30mz_int(uint32 vector, bool IgnoreIF);
+#ifdef __cplusplus
+}
+#endif
 
 int v30mz_StateAction(StateMem *sm, int load, int data_only);
 

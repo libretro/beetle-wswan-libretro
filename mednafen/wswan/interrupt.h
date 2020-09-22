@@ -4,6 +4,10 @@
 #include "../mednafen-types.h"
 #include "../state.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum
 {
  WSINT_SERIAL_SEND = 0,
@@ -34,6 +38,10 @@ enum
 uint32 WSwan_InterruptGetRegister(const unsigned int id, char *special, const uint32 special_len);
 void WSwan_InterruptSetRegister(const unsigned int id, uint32 value);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif
