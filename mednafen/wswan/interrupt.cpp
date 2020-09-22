@@ -1,7 +1,7 @@
 #include "wswan.h"
 #include "interrupt.h"
 #include "v30mz.h"
-#include "../state_inline.h"
+#include "../state.h"
 
 static uint8 IStatus;
 static uint8 IEnable;
@@ -133,10 +133,10 @@ int WSwan_InterruptStateAction(StateMem *sm, int load, int data_only)
 {
    SFORMAT StateRegs[] =
    {
-      SFVAR(IStatus),
-      SFVAR(IEnable),
-      SFVAR(IVectorBase),
-      SFEND
+      { &(IStatus), (uint32_t)sizeof(IStatus), MDFNSTATE_RLSB, "IStatus" },
+      { &(IEnable), (uint32_t)sizeof(IEnable), MDFNSTATE_RLSB, "IEnable"},
+      { &(IVectorBase), (uint32_t)sizeof(IVectorBase), MDFNSTATE_RLSB, "IVectorBase" },
+      { 0, 0, 0, 0 }
    };
 
    if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "INTR", false))
