@@ -25,9 +25,9 @@
 
 #include "../include/blip/Blip_Buffer.h"
 
-static Blip_Synth<blip_good_quality, 4096> WaveSynth;
+static Blip_Synth WaveSynth;
 
-static Blip_Buffer *sbuf[2] = { NULL };
+static Blip_Buffer sbuf[2];
 
 static uint16 period[4];
 static uint8 volume[4]; // left volume in upper 4 bits, right in lower 4 bits
@@ -85,8 +85,8 @@ static uint32 last_ts;
 #define SYNCSAMPLE(wt)	\
    {	\
     int32 left = sample_cache[ch][0], right = sample_cache[ch][1];	\
-    WaveSynth.offset_inline(wt, left - last_val[ch][0], sbuf[0]);	\
-    WaveSynth.offset_inline(wt, right - last_val[ch][1], sbuf[1]);	\
+    Blip_Synth_offset(&WaveSynth, wt, left - last_val[ch][0], &sbuf[0]);	\
+    Blip_Synth_offset(&WaveSynth, wt, right - last_val[ch][1], &sbuf[1]);	\
     last_val[ch][0] = left;	\
     last_val[ch][1] = right;	\
    }
@@ -95,13 +95,14 @@ static uint32 last_ts;
 
 void WSwan_SoundUpdate(void)
 {
+   unsigned int ch;
    int32 run_time;
 
    //printf("%d\n", v30mz_timestamp);
    //printf("%02x %02x\n", control, noise_control);
    run_time = v30mz_timestamp - last_ts;
 
-   for(unsigned int ch = 0; ch < 4; ch++)
+   for(ch = 0; ch < 4; ch++)
    {
       // Channel is disabled?
       if(!(control & (1 << ch)))
@@ -215,8 +216,8 @@ void WSwan_SoundUpdate(void)
       left  = (HVoiceChanCtrl & 0x40) ? sample : 0;
       right = (HVoiceChanCtrl & 0x20) ? sample : 0;
 
-      WaveSynth.offset_inline(v30mz_timestamp, left - last_hv_val[0], sbuf[0]);
-      WaveSynth.offset_inline(v30mz_timestamp, right - last_hv_val[1], sbuf[1]);
+      Blip_Synth_offset(&WaveSynth, v30mz_timestamp, left - last_hv_val[0], &sbuf[0]);
+      Blip_Synth_offset(&WaveSynth, v30mz_timestamp, right - last_hv_val[0], &sbuf[1]);
       last_hv_val[0] = left;
       last_hv_val[1] = right;
    }
@@ -258,7 +259,8 @@ void WSwan_SoundWrite(uint32 A, uint8 V)
    }
    else if(A == 0x90)
    {
-      for(int n = 0; n < 4; n++)
+      int n;
+      for(n = 0; n < 4; n++)
       {
          if(!(control & (1 << n)) && (V & (1 << n)))
          {
@@ -338,10 +340,11 @@ int32 WSwan_SoundFlush(int16 *SoundBuf, const int32 MaxSoundFrames)
 
    if(SoundBuf)
    {
-      for(int y = 0; y < 2; y++)
+      int y;
+      for(y = 0; y < 2; y++)
       {
-         sbuf[y]->end_frame(v30mz_timestamp);
-         FrameCount = sbuf[y]->read_samples(SoundBuf + y, MaxSoundFrames, true);
+         Blip_Buffer_end_frame(&sbuf[y], v30mz_timestamp);
+         FrameCount = Blip_Buffer_read_samples(&sbuf[y], SoundBuf + y, MaxSoundFrames);
       }
    }
 
@@ -359,7 +362,9 @@ void WSwan_SoundCheckRAMWrite(uint32 A)
 
 static void RedoVolume(void)
 {
-   WaveSynth.volume(2.5);
+   double eff_volume = 1.0 / 4;
+
+   Blip_Synth_set_volume(&WaveSynth, eff_volume, 256);
 }
 
 void WSwan_SoundInit(void)
@@ -367,11 +372,10 @@ void WSwan_SoundInit(void)
    unsigned i;
    for(i = 0; i < 2; i++)
    {
-      sbuf[i] = new Blip_Buffer();
-
-      sbuf[i]->set_sample_rate(0 ? 0 : 44100, 60);
-      sbuf[i]->clock_rate((long)(3072000));
-      sbuf[i]->bass_freq(20);
+      Blip_Buffer_init(&sbuf[i]);
+      Blip_Buffer_set_sample_rate(&sbuf[i], 44100, 60);
+      Blip_Buffer_set_clock_rate(&sbuf[i], (long)(3072000));
+      Blip_Buffer_bass_freq(&sbuf[i], 20);
    }
 
    RedoVolume();
@@ -379,22 +383,18 @@ void WSwan_SoundInit(void)
 
 void WSwan_SoundKill(void)
 {
-   for(int i = 0; i < 2; i++)
+   int i;
+   for(i = 0; i < 2; i++)
    {
-      if(sbuf[i])
-      {
-         delete sbuf[i];
-         sbuf[i] = NULL;
-      }
+      Blip_Buffer_deinit(&sbuf[i]);
    }
-
 }
 
 bool WSwan_SetSoundRate(uint32 rate)
 {
    unsigned i;
    for(i = 0; i < 2; i++)
-      sbuf[i]->set_sample_rate(rate?rate:44100, 60);
+      Blip_Buffer_set_sample_rate(&sbuf[i], rate ? rate : 44100, 60);
 
    return(true);
 }
@@ -428,10 +428,11 @@ int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
 
  if(load)
  {
+  unsigned ch;
   if(sweep_8192_divider < 1)
    sweep_8192_divider = 1;
 
-  for(unsigned ch = 0; ch < 4; ch++)
+  for(ch = 0; ch < 4; ch++)
   {
    period[ch] &= 0x7FF;
 
@@ -478,5 +479,5 @@ void WSwan_SoundReset(void)
    HVoiceChanCtrl = 0;
 
    for(y = 0; y < 2; y++)
-      sbuf[y]->clear();
+      Blip_Buffer_clear(&sbuf[y], 1);
 }
