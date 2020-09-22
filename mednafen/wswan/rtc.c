@@ -23,7 +23,6 @@
 #include "wswan.h"
 
 #include "../state.h"
-#include "../state_inline.h"
 
 static uint64 CurrentTime;
 static uint32 ClockCycleCounter;
@@ -114,12 +113,12 @@ int WSwan_RTCStateAction(StateMem *sm, int load, int data_only)
 {
    SFORMAT StateRegs[] =
    {
-      SFVAR(CurrentTime),
-      SFVAR(ClockCycleCounter),
-      SFVAR(wsCA15),
-      SFVAR(Command),
-      SFVAR(Data),
-      SFEND
+      { &(CurrentTime), (uint32_t)sizeof(CurrentTime), MDFNSTATE_RLSB, "CurrentTime" },
+      { &(ClockCycleCounter), (uint32_t)sizeof(ClockCycleCounter), MDFNSTATE_RLSB, "ClockCycleCounter" },
+      { &(wsCA15), (uint32_t)sizeof(wsCA15), MDFNSTATE_RLSB, "wsCA15" },
+      { &(Command), (uint32_t)sizeof(Command), MDFNSTATE_RLSB, "Command" },
+      { &(Data), (uint32_t)sizeof(Data), MDFNSTATE_RLSB, "Data" },
+      { 0, 0, 0, 0 }
    };
 
    if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "RTC", false))

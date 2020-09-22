@@ -24,11 +24,11 @@ SOURCES_CXX += \
 	$(CORE_EMU_DIR)/v30mz.cpp \
 	$(CORE_EMU_DIR)/sound.cpp \
 	$(CORE_EMU_DIR)/tcache.cpp \
-	$(CORE_EMU_DIR)/eeprom.cpp \
-	$(CORE_EMU_DIR)/rtc.cpp
+	$(CORE_EMU_DIR)/eeprom.cpp
 
 SOURCES_C += \
-	$(CORE_EMU_DIR)/interrupt.c
+	$(CORE_EMU_DIR)/interrupt.c \
+	$(CORE_EMU_DIR)/rtc.c
 endif
 
 ifeq ($(NEED_BLIP), 1)
