@@ -20,8 +20,7 @@
 
 #include <string.h>
 
-#include "wswan.h"
-#include "gfx.h"
+#include "../mednafen-types.h"
 #include "wswan-memory.h"
 
 uint8	tiles[256][256][2][8];
