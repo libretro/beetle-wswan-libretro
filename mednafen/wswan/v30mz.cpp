@@ -1153,7 +1153,7 @@ int v30mz_StateAction(StateMem *sm, int load, int data_only)
       SFVARN(InHLT, "InHLT"),
       SFVARN(prefix_base, "prefix_base"),
       SFVARN(seg_prefix, "seg_prefix"),
-      SFVAR(PSW),
+      SFVARN(PSW, "PSW"),
       SFEND
    };
 
