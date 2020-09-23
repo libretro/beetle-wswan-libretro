@@ -1,8 +1,6 @@
 #include <libretro.h>
 #include <retro_math.h>
 
-#include <vector>
-
 #include "libretro_core_options.h"
 
 #include "mednafen/mempatcher.h"
@@ -87,16 +85,16 @@ MDFNGI EmulatedWSwan =
 {
  MDFN_MASTERCLOCK_FIXED(3072000),
  0,
- 224,   // lcm_width
- 144,   // lcm_height
+ 224,   /* lcm_width */
+ 144,   /* lcm_height */
 
- 224,	// Nominal width
- 144,	// Nominal height
+ 224,	  /* Nominal width */
+ 144,	  /* Nominal height */
 
- 224,	// Framebuffer width
- 144,	// Framebuffer height
+ 224,	  /* Framebuffer width */
+ 144,	  /* Framebuffer height */
 
- 2,     // Number of output sound channels
+ 2,     /* Number of output sound channels */
 };
 
 
@@ -164,7 +162,7 @@ static const DLEntry Developers[] =
  { 0x03, "Tomy" },
  { 0x04, "Koei" },
  { 0x05, "Data East" },
- { 0x06, "Asmik" }, // Asmik Ace?
+ { 0x06, "Asmik" }, /* Asmik Ace? */
  { 0x07, "Media Entertainment" },
  { 0x08, "Nichibutsu" },
  { 0x0A, "Coconuts Japan" },
@@ -195,8 +193,8 @@ static const DLEntry Developers[] =
  { 0x28, "Squaresoft" },
  { 0x2B, "Tom Create" },
  { 0x2D, "Namco" },
- { 0x2E, "Movic" }, // ????
- { 0x2F, "E3 Staff" }, // ????
+ { 0x2E, "Movic" }, /* ???? */
+ { 0x2F, "E3 Staff" }, /* ???? */
  { 0x31, "Vanguard" },
  { 0x32, "Megatron" },
  { 0x33, "Wiz" },
@@ -255,8 +253,8 @@ static int Load(const uint8_t *data, size_t size)
       case 0x01: SRAMSize =   8 * 1024; break;
       case 0x02: SRAMSize =  32 * 1024; break;
       case 0x03: SRAMSize = 128 * 1024; break;
-      case 0x04: SRAMSize = 256 * 1024; break; // Dicing Knight!, Judgement Silver
-      case 0x05: SRAMSize = 512 * 1024; break; // Wonder Gate
+      case 0x04: SRAMSize = 256 * 1024; break; /* Dicing Knight!, Judgement Silver */
+      case 0x05: SRAMSize = 512 * 1024; break; /* Wonder Gate */
 
       case 0x10: eeprom_size = 128; break;
       case 0x20: eeprom_size = 2 *1024; break;
@@ -288,7 +286,7 @@ static int Load(const uint8_t *data, size_t size)
    MDFNMP_Init(16384, (1 << 20) / 1024);
 
    v30mz_init(WSwan_readmem20, WSwan_writemem20, WSwan_readport, WSwan_writeport);
-   WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); // EEPROM and SRAM are loaded in this func.
+   WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); /* EEPROM and SRAM are loaded in this func. */
    WSwan_GfxInit();
    EmulatedWSwan.fps = (uint32)((uint64)3072000 * 65536 * 256 / (159*256));
 
@@ -324,7 +322,7 @@ extern "C" int StateAction(StateMem *sm, int load, int data_only)
    if(!v30mz_StateAction(sm, load, data_only))
       return(0);
 
-   // Call MemoryStateAction before others StateActions...
+   /* Call MemoryStateAction before others StateActions... */
    if(!WSwan_MemoryStateAction(sm, load, data_only))
       return(0);
 
@@ -438,8 +436,8 @@ static void MDFNI_CloseGame(void)
 
 static void check_system_specs(void)
 {
-   // TODO - should theoretically be level 4, but apparently
-   // doesn't run at fullspeed on PSP (yet)
+   /* TODO - should theoretically be level 4, but apparently
+    * doesn't run at fullspeed on PSP (yet) */
    unsigned level = 4;
    environ_cb(RETRO_ENVIRONMENT_SET_PERFORMANCE_LEVEL, &level);
 }
@@ -676,27 +674,27 @@ static void update_input(void)
 
    static unsigned map[2][11] = {
       {
-         RETRO_DEVICE_ID_JOYPAD_UP, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_RIGHT, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_DOWN, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_LEFT, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_R2, //Y Cursor UP vertical-layout games
-         RETRO_DEVICE_ID_JOYPAD_R, //Y Cursor RIGHT vertical-layout games
-         RETRO_DEVICE_ID_JOYPAD_L2, //Y Cursor DOWN vertical-layout games
-         RETRO_DEVICE_ID_JOYPAD_L, //Y Cursor LEFT vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_UP,    /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_RIGHT, /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_DOWN,  /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_LEFT,  /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_R2,    /* Y Cursor UP vertical-layout games */
+         RETRO_DEVICE_ID_JOYPAD_R,     /* Y Cursor RIGHT vertical-layout games */
+         RETRO_DEVICE_ID_JOYPAD_L2,    /* Y Cursor DOWN vertical-layout games */
+         RETRO_DEVICE_ID_JOYPAD_L,     /* Y Cursor LEFT vertical-layout games */
          RETRO_DEVICE_ID_JOYPAD_START,
          RETRO_DEVICE_ID_JOYPAD_A,
          RETRO_DEVICE_ID_JOYPAD_B,
       },
       {
-         RETRO_DEVICE_ID_JOYPAD_Y, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_X, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_A, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_B, //X Cursor horizontal-layout games
-         RETRO_DEVICE_ID_JOYPAD_LEFT, //Y Cursor UP vertical-layout games
-         RETRO_DEVICE_ID_JOYPAD_UP, //Y Cursor RIGHT vertical-layout games
-         RETRO_DEVICE_ID_JOYPAD_RIGHT, //Y Cursor DOWN vertical-layout games
-         RETRO_DEVICE_ID_JOYPAD_DOWN, //Y Cursor LEFT vertical-layout games
+         RETRO_DEVICE_ID_JOYPAD_Y,     /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_X,     /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_A,     /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_B,     /* X Cursor horizontal-layout games */
+         RETRO_DEVICE_ID_JOYPAD_LEFT,  /* Y Cursor UP vertical-layout games */
+         RETRO_DEVICE_ID_JOYPAD_UP,    /* Y Cursor RIGHT vertical-layout games */
+         RETRO_DEVICE_ID_JOYPAD_RIGHT, /* Y Cursor DOWN vertical-layout games */
+         RETRO_DEVICE_ID_JOYPAD_DOWN,  /* Y Cursor LEFT vertical-layout games */
          RETRO_DEVICE_ID_JOYPAD_START,
          RETRO_DEVICE_ID_JOYPAD_L,
          RETRO_DEVICE_ID_JOYPAD_R,
@@ -855,7 +853,7 @@ void retro_deinit(void)
 
 unsigned retro_get_region(void)
 {
-   return RETRO_REGION_NTSC; // FIXME: Regions for other cores.
+   return RETRO_REGION_NTSC; /* FIXME: Regions for other cores. */
 }
 
 unsigned retro_api_version(void)
@@ -995,5 +993,7 @@ void retro_cheat_set(unsigned, bool, const char *) { }
 void MDFND_MidSync(const EmulateSpecStruct *) { }
 void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
 {
-   //MDFND_MidLineUpdate(espec, y);
+#if 0
+   MDFND_MidLineUpdate(espec, y);
+#endif
 }
