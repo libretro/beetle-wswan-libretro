@@ -331,8 +331,7 @@ uint8 WSwan_SoundRead(uint32 A)
    return(0);
 }
 
-
-int32 WSwan_SoundFlush(int16 *SoundBuf, const int32 MaxSoundFrames)
+extern "C" int32 WSwan_SoundFlush(int16 *SoundBuf, const int32 MaxSoundFrames)
 {
    int32 FrameCount = 0;
 
@@ -367,7 +366,7 @@ static void RedoVolume(void)
    Blip_Synth_set_volume(&WaveSynth, eff_volume, 256);
 }
 
-void WSwan_SoundInit(void)
+extern "C" void WSwan_SoundInit(void)
 {
    unsigned i;
    for(i = 0; i < 2; i++)
@@ -381,7 +380,7 @@ void WSwan_SoundInit(void)
    RedoVolume();
 }
 
-void WSwan_SoundKill(void)
+extern "C" void WSwan_SoundKill(void)
 {
    int i;
    for(i = 0; i < 2; i++)
@@ -390,7 +389,7 @@ void WSwan_SoundKill(void)
    }
 }
 
-bool WSwan_SetSoundRate(uint32 rate)
+extern "C" bool WSwan_SetSoundRate(uint32 rate)
 {
    unsigned i;
    for(i = 0; i < 2; i++)
@@ -399,7 +398,7 @@ bool WSwan_SetSoundRate(uint32 rate)
    return(true);
 }
 
-int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
+extern "C" int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
 {
  SFORMAT StateRegs[] =
  {
@@ -446,7 +445,7 @@ int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
  return(1);
 }
 
-void WSwan_SoundReset(void)
+extern "C" void WSwan_SoundReset(void)
 {
    unsigned y,ch;
 

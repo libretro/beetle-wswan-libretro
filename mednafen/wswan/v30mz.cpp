@@ -130,7 +130,7 @@ static INLINE void i_real_popf(void)
 
 /***************************************************************************/
 
-void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), uint8 (*readport)(uint32), void (*writeport)(uint32, uint8))
+extern "C" void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), uint8 (*readport)(uint32), void (*writeport)(uint32, uint8))
 {
    cpu_readmem20 = readmem20;
    cpu_writemem20 = writemem20;
@@ -139,7 +139,7 @@ void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), ui
    cpu_writeport = writeport;
 }
 
-void v30mz_reset(void)
+extern "C" void v30mz_reset(void)
 {
    unsigned i;
    const BREGS reg_name[8] = { AL, CL, DL, BL, AH, CH, DH, BH };
@@ -1008,7 +1008,7 @@ unsigned v30mz_get_reg(int regnum)
 
 void nec_set_irq_line(int irqline, int state);
 
-void v30mz_set_reg(int regnum, unsigned val)
+extern "C" void v30mz_set_reg(int regnum, unsigned val)
 {
    switch( regnum )
    {
@@ -1139,7 +1139,7 @@ void v30mz_execute(int cycles)
 
 }
 
-int v30mz_StateAction(StateMem *sm, int load, int data_only)
+extern "C" int v30mz_StateAction(StateMem *sm, int load, int data_only)
 {
    uint16 PSW;
 

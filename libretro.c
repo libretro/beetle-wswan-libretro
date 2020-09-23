@@ -317,7 +317,7 @@ static void SetInput(int port, const char *type, void *ptr)
  if(!port) chee = (uint8 *)ptr;
 }
 
-extern "C" int StateAction(StateMem *sm, int load, int data_only)
+int StateAction(StateMem *sm, int load, int data_only)
 {
    if(!v30mz_StateAction(sm, load, data_only))
       return(0);
@@ -571,7 +571,7 @@ void retro_reset(void)
    DoSimpleCommand(MDFN_MSC_RESET);
 }
 
-bool retro_load_game_special(unsigned, const struct retro_game_info *, size_t)
+bool retro_load_game_special(unsigned a, const struct retro_game_info *b, size_t c)
 {
    return false;
 }
@@ -988,9 +988,9 @@ size_t retro_get_memory_size(unsigned type)
 }
 
 void retro_cheat_reset(void) { }
-void retro_cheat_set(unsigned, bool, const char *) { }
+void retro_cheat_set(unsigned a, bool b, const char *c) { }
 
-void MDFND_MidSync(const EmulateSpecStruct *) { }
+void MDFND_MidSync(const EmulateSpecStruct *a) { }
 void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
 {
 #if 0

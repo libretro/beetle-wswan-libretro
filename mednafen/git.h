@@ -84,7 +84,7 @@ struct CheatFormatInfoStruct
 {
  unsigned NumFormats;
 
- CheatFormatStruct *Formats;
+ struct CheatFormatStruct *Formats;
 };
 
 // Miscellaneous system/simple commands(power, reset, dip switch toggles, coin insert, etc.)
