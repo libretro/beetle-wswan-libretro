@@ -4,8 +4,6 @@
 #include "../state.h"
 #include "../video.h"
 
-void WSWan_TCacheInvalidByAddr(uint32);
-
 extern uint8		wsTCache[512*64];		  //tiles cache
 extern uint8		wsTCacheFlipped[512*64];  	  //tiles cache (H flip)
 extern uint8		wsTileRow[8];		  //extracted 8 pixels (tile row)
@@ -15,9 +13,19 @@ extern uint8		wsTCacheFlipped2[512*64];  	  //tiles cache (H flip)
 extern uint8		wsTCacheUpdate2[512];	  //tiles cache flags
 extern int		wsVMode;			  //Video Mode	
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void wsMakeTiles(void);
 void wsGetTile(uint32,uint32,int,int,int);
 void wsSetVideo(int, bool);
+void WSWan_TCacheInvalidByAddr(uint32);
+
+#ifdef __cplusplus
+}
+#endif
+
 
 void wsScanline(uint16 *target, int depth);
 
