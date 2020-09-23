@@ -52,6 +52,12 @@ static uint16 old_CS, old_IP;
    I.regs.w[SP]+=2; \
 }
 
+#define POPNOVAR() \
+{ \
+   ReadWord((((I.sregs[SS]<<4)+I.regs.w[SP]))); \
+   I.regs.w[SP]+=2; \
+}
+
 #ifdef WANT_DEBUGGER
  #define ADDBRANCHTRACE(x,y) { if(branch_trace_hook) branch_trace_hook(old_CS, old_IP, x, y, false); }
  #define ADDBRANCHTRACE_INT(x,y) { if(branch_trace_hook) branch_trace_hook(old_CS, old_IP, x,y, true); }
@@ -469,11 +475,10 @@ static void DoOP(uint8 opcode)
          } OP_EPILOGUE;
 
          OP( 0x61, i_popa  ) {
-            unsigned tmp;
             POP(I.regs.w[IY]);
             POP(I.regs.w[IX]);
             POP(I.regs.w[BP]);
-            POP(tmp);
+            POPNOVAR();
             POP(I.regs.w[BW]);
             POP(I.regs.w[DW]);
             POP(I.regs.w[CW]);
@@ -803,8 +808,8 @@ static void DoOP(uint8 opcode)
             }
          } OP_EPILOGUE;
 
-         OP( 0xd4, i_aam    ) { uint32 mult=FETCH; mult=0; I.regs.b[AH] = I.regs.b[AL] / 10; I.regs.b[AL] %= 10; SetSZPF_Word(I.regs.w[AW]); CLK(17); } OP_EPILOGUE;
-         OP( 0xd5, i_aad    ) { uint32 mult=FETCH; mult=0; I.regs.b[AL] = I.regs.b[AH] * 10 + I.regs.b[AL]; I.regs.b[AH] = 0; SetSZPF_Byte(I.regs.b[AL]); CLK(6); } OP_EPILOGUE;
+         OP( 0xd4, i_aam    ) { I.regs.b[AH] = I.regs.b[AL] / 10; I.regs.b[AL] %= 10; SetSZPF_Word(I.regs.w[AW]); CLK(17); } OP_EPILOGUE;
+         OP( 0xd5, i_aad    ) { I.regs.b[AL] = I.regs.b[AH] * 10 + I.regs.b[AL]; I.regs.b[AH] = 0; SetSZPF_Byte(I.regs.b[AL]); CLK(6); } OP_EPILOGUE;
          OP( 0xd6, i_setalc ) { I.regs.b[AL] = (CF)?0xff:0x00; CLK(3);  } OP_EPILOGUE;
          OP( 0xd7, i_trans  ) { uint32 dest = (I.regs.w[BW]+I.regs.b[AL])&0xffff; I.regs.b[AL] = GetMemB(DS0, dest); CLK(5); } OP_EPILOGUE;
 
