@@ -11,16 +11,17 @@ enum
    MEMORY_GSREG_BNK3SLCT
 };
 
-extern uint8 wsRAM[65536];
-extern uint8 *wsCartROM;
-extern uint32 eeprom_size;
-extern uint8 wsEEPROM[2048];
-extern uint8 *wsSRAM;
-extern uint32 wsRAMSize;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern uint8 wsRAM[65536];
+extern uint8 wsEEPROM[2048];
+extern uint8 *wsCartROM;
+extern uint32 eeprom_size;
+extern uint8 *wsSRAM;
+extern uint32 wsRAMSize;
 
 void WSwan_MemoryInit(bool lang, bool IsWSC, uint32 ssize, bool SkipSaveLoad);
 void WSwan_MemoryKill(void);

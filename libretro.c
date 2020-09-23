@@ -124,29 +124,31 @@ static uint8 *chee;
 
 static void Emulate(EmulateSpecStruct *espec, int16_t *sndbuf)
 {
- espec->DisplayRect.x = 0;
- espec->DisplayRect.y = 0;
- espec->DisplayRect.w = 224;
- espec->DisplayRect.h = 144;
+   uint16 butt_data;
 
- if(espec->VideoFormatChanged)
-  WSwan_SetPixelFormat(espec->surface->depth);
+   espec->DisplayRect.x = 0;
+   espec->DisplayRect.y = 0;
+   espec->DisplayRect.w = 224;
+   espec->DisplayRect.h = 144;
 
- if(espec->SoundFormatChanged)
-  WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
+   if(espec->VideoFormatChanged)
+      WSwan_SetPixelFormat(espec->surface->depth);
 
- uint16 butt_data = chee[0] | (chee[1] << 8);
+   if(espec->SoundFormatChanged)
+      WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
 
- WSButtonStatus = butt_data;
- 
- MDFNMP_ApplyPeriodicCheats();
+   butt_data = chee[0] | (chee[1] << 8);
 
- while(!wsExecuteLine(espec->surface, espec->skip));
+   WSButtonStatus = butt_data;
 
- espec->SoundBufSize = WSwan_SoundFlush(sndbuf, espec->SoundBufMaxSize);
+   MDFNMP_ApplyPeriodicCheats();
 
- espec->MasterCycles = v30mz_timestamp;
- v30mz_timestamp = 0;
+   while(!wsExecuteLine(espec->surface, espec->skip));
+
+   espec->SoundBufSize = WSwan_SoundFlush(sndbuf, espec->SoundBufMaxSize);
+
+   espec->MasterCycles = v30mz_timestamp;
+   v30mz_timestamp = 0;
 }
 
 typedef struct
@@ -670,8 +672,6 @@ void retro_unload_game(void)
 
 static void update_input(void)
 {
-   input_buf = 0;
-
    static unsigned map[2][11] = {
       {
          RETRO_DEVICE_ID_JOYPAD_UP,    /* X Cursor horizontal-layout games */
@@ -700,10 +700,18 @@ static void update_input(void)
          RETRO_DEVICE_ID_JOYPAD_R,
       }
    };
-
    unsigned i;
    int16_t bitmask = 0;
    bool select_button;
+   bool joymap;
+#ifdef MSB_FIRST
+   union {
+      uint8_t b[2];
+      uint16_t s;
+   } u;
+#endif
+
+   input_buf = 0;
 
    if (libretro_supports_bitmasks)
       bitmask = input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_MASK);
@@ -722,16 +730,12 @@ static void update_input(void)
 
    select_pressed_last_frame = select_button;
 
-   bool joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
+   joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
 
-   for (unsigned i = 0; i < MAX_BUTTONS; i++)
+   for (i = 0; i < MAX_BUTTONS; i++)
       input_buf |= map[joymap][i] != -1u && ((1 << map[joymap][i]) & bitmask) ? (1 << i) : 0;
 
 #ifdef MSB_FIRST
-   union {
-      uint8_t b[2];
-      uint16_t s;
-   } u;
    u.s = input_buf;
    input_buf = u.b[0] | u.b[1] << 8;
 #endif
@@ -742,9 +746,12 @@ static uint64_t video_frames, audio_frames;
 void retro_run(void)
 {
    int total;
+   unsigned width, height;
    static MDFN_Rect rects[FB_MAX_HEIGHT];
    static int16_t sound_buf[0x10000];
-   bool updated = false;
+   int32 SoundBufSize;
+   EmulateSpecStruct spec = {0};
+   bool updated           = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
       check_variables();
 
@@ -754,7 +761,6 @@ void retro_run(void)
 
    rects[0].w = ~0;
 
-   EmulateSpecStruct spec = {0};
    spec.surface = surf;
    spec.LineWidths = rects;
    spec.SoundBufMaxSize = sizeof(sound_buf) / 2;
@@ -786,12 +792,11 @@ void retro_run(void)
 
    Emulate(&spec, sound_buf);
 
-   int32 SoundBufSize = spec.SoundBufSize - spec.SoundBufSizeALMS;
-
+   SoundBufSize      = spec.SoundBufSize - spec.SoundBufSizeALMS;
    spec.SoundBufSize = spec.SoundBufSizeALMS + SoundBufSize;
 
-   unsigned width  = spec.DisplayRect.w;
-   unsigned height = spec.DisplayRect.h;
+   width             = spec.DisplayRect.w;
+   height            = spec.DisplayRect.h;
 
    video_cb(surf->pixels, width, height, FB_WIDTH * RETRO_PIX_BYTES);
 

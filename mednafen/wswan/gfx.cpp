@@ -121,7 +121,7 @@ void WSwan_GfxWrite(uint32 A, uint8 V)
    }
 }
 
-uint8 WSwan_GfxRead(uint32 A)
+extern "C" uint8 WSwan_GfxRead(uint32 A)
 {
    if(A >= 0x1C && A <= 0x1F)
    {

@@ -62,7 +62,7 @@ static uint8 CommControl, CommData;
 
 static bool language;
 
-extern uint16 WSButtonStatus;
+extern "C" uint16 WSButtonStatus;
 
 extern "C" void WSwan_writemem20(uint32 A, uint8 V)
 {

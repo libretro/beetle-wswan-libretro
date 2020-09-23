@@ -3,11 +3,6 @@
 
 #include "../mednafen-types.h"
 
-#define  mBCD(value) (((value)/10)<<4)|((value)%10)
-
-extern          uint32 rom_size;
-extern          int wsc;
-
 enum
 {
    WSWAN_SEX_MALE = 1,
@@ -21,5 +16,18 @@ enum
    WSWAN_BLOOD_O = 3,
    WSWAN_BLOOD_AB = 4
 };
+
+#define  mBCD(value) (((value)/10)<<4)|((value)%10)
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern          uint32 rom_size;
+extern          int wsc;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
