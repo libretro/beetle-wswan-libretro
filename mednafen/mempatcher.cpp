@@ -15,15 +15,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "mednafen.h"
-
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
 #include <vector>
 
 #include "mempatcher.h"
+#include "settings.h"
 
 #ifdef _WIN32
 #include "msvc_compat.h"
@@ -364,8 +364,6 @@ static bool TestConditions(const char *string)
          if(value_at_address | v_value)
             passed = 0;
       }
-      else
-         puts("Invalid operation");
       string = strchr(string, ',');
       if(string == NULL)
          break;

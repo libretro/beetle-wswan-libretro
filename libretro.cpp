@@ -1,12 +1,17 @@
-#include "mednafen/mednafen.h"
-#include "mednafen/mempatcher.h"
-#include "mednafen/git.h"
 #include <libretro.h>
 #include <retro_math.h>
 
 #include <vector>
 
 #include "libretro_core_options.h"
+
+#include "mednafen/mempatcher.h"
+#include "mednafen/settings.h"
+#include "mednafen/git.h"
+
+/* Forward declarations */
+void MDFN_LoadGameCheats(void *override_ptr);
+void MDFN_FlushGameCheats(int nosave);
 
 /* core options */
 static int RETRO_SAMPLE_RATE = 44100;
@@ -77,6 +82,23 @@ uint16 WSButtonStatus;
 
 
 static uint8 WSRCurrentSong;
+
+MDFNGI EmulatedWSwan =
+{
+ MDFN_MASTERCLOCK_FIXED(3072000),
+ 0,
+ 224,   // lcm_width
+ 144,   // lcm_height
+
+ 224,	// Nominal width
+ 144,	// Nominal height
+
+ 224,	// Framebuffer width
+ 144,	// Framebuffer height
+
+ 2,     // Number of output sound channels
+};
+
 
 static void Reset(void)
 {
@@ -373,22 +395,6 @@ static InputInfoStruct InputInfo =
 {
  sizeof(PortInfo) / sizeof(InputPortInfoStruct),
  PortInfo
-};
-
-MDFNGI EmulatedWSwan =
-{
- MDFN_MASTERCLOCK_FIXED(3072000),
- 0,
- 224,   // lcm_width
- 144,   // lcm_height
-
- 224,	// Nominal width
- 144,	// Nominal height
-
- 224,	// Framebuffer width
- 144,	// Framebuffer height
-
- 2,     // Number of output sound channels
 };
 
 static bool update_video, update_audio;
