@@ -197,7 +197,7 @@ void WSwan_EEPROMWrite(uint32_t A, uint8_t V)
    }
 }
 
-extern "C" void WSwan_EEPROMReset(void)
+void WSwan_EEPROMReset(void)
 {
    iEEPROM_Command = EEPROM_Command = 0;
    iEEPROM_Address = EEPROM_Address = 0;
@@ -239,7 +239,7 @@ void WSwan_EEPROMInit(const char *Name, const uint16_t BYear, const uint8_t BMon
    iEEPROM[0x375] = Blood;
 }
 
-extern "C" int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only)
+int WSwan_EEPROMStateAction(StateMem *sm, int load, int data_only)
 {
    SFORMAT StateRegs[] =
    {
