@@ -609,10 +609,9 @@ int WSwan_MemoryStateAction(StateMem *sm, int load, int data_only)
 
    if(load)
    {
-      for(uint32 A = 0xfe00; A <= 0xFFFF; A++)
-      {
+      uint32 A;
+      for(A = 0xfe00; A <= 0xFFFF; A++)
          WSwan_GfxWSCPaletteRAMWrite(A, wsRAM[A]);
-      }
    }
    return(1);
 }

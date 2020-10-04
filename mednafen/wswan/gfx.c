@@ -330,9 +330,10 @@ void wsScanline(uint16 *target, int depth)
    {
       for(t=0;t<29;t++)
       {
+         uint32 palette;
          b1=wsRAM[map_a+(startindex<<1)];
          b2=wsRAM[map_a+(startindex<<1)+1];
-         uint32 palette=(b2>>1)&15;
+         palette=(b2>>1)&15;
          b2=(b2<<8)|b1;
          wsGetTile(b2&0x1ff,start_tile_n&7,b2&0x8000,b2&0x4000,b2&0x2000);
 
@@ -340,7 +341,8 @@ void wsScanline(uint16 *target, int depth)
          {
             if(wsVMode & 0x2)
             {
-               for(int x = 0; x < 8; x++)
+               int x;
+               for(x = 0; x < 8; x++)
                   if(wsTileRow[x])
                   {
                      b_bg[adrbuf + x] = wsTileRow[x];
@@ -349,7 +351,8 @@ void wsScanline(uint16 *target, int depth)
             }
             else
             {
-               for(int x = 0; x < 8; x++)
+               int x;
+               for(x = 0; x < 8; x++)
                   if(wsTileRow[x] || !(palette & 0x4))
                   {
                      b_bg[adrbuf + x] = wsTileRow[x];
@@ -359,7 +362,8 @@ void wsScanline(uint16 *target, int depth)
          }
          else
          {
-            for(int x = 0; x < 8; x++)
+            int x;
+            for(x = 0; x < 8; x++)
                if(wsTileRow[x] || !(palette & 4))
                {
                   b_bg[adrbuf + x] = wsColors[wsMonoPal[palette][wsTileRow[x]]];
@@ -404,16 +408,19 @@ void wsScanline(uint16 *target, int depth)
 
       for(t=0; t<29; t++)
       {
+         uint32 palette;
          b1=wsRAM[map_a+(startindex<<1)];
          b2=wsRAM[map_a+(startindex<<1)+1];
-         uint32 palette=(b2>>1)&15;
+         palette=(b2>>1)&15;
          b2=(b2<<8)|b1;
          wsGetTile(b2&0x1ff,start_tile_n&7,b2&0x8000,b2&0x4000,b2&0x2000);
 
          if(wsVMode)
          {
             if(wsVMode & 0x2)
-               for(int x = 0; x < 8; x++)
+            {
+               int x;
+               for(x = 0; x < 8; x++)
                {
                   if(wsTileRow[x] && in_window[adrbuf + x])
                   {
@@ -421,8 +428,11 @@ void wsScanline(uint16 *target, int depth)
                      b_bg_pal[adrbuf + x] = palette;
                   }
                }
+            }
             else
-               for(int x = 0; x < 8; x++)
+            {
+               int x;
+               for(x = 0; x < 8; x++)
                {
                   if((wsTileRow[x] || !(palette & 0x4)) && in_window[adrbuf + x])
                   {
@@ -430,10 +440,12 @@ void wsScanline(uint16 *target, int depth)
                      b_bg_pal[adrbuf + x] = palette;
                   }
                }
+            }
          }
          else
          {
-            for(int x = 0; x < 8; x++)
+            int x;
+            for(x = 0; x < 8; x++)
                if((wsTileRow[x] || !(palette & 4)) && in_window[adrbuf + x])
                {
                   b_bg[adrbuf + x] = wsColors[wsMonoPal[palette][wsTileRow[x]]] | 0x10;
@@ -487,7 +499,8 @@ void wsScanline(uint16 *target, int depth)
             {
                if(wsVMode & 0x2)
                {
-                  for(int x = 0; x < 8; x++)
+                  int x;
+                  for(x = 0; x < 8; x++)
                      if(wsTileRow[x])
                      {
                         if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
@@ -511,7 +524,8 @@ void wsScanline(uint16 *target, int depth)
                }
                else
                {
-                  for(int x = 0; x < 8; x++)
+                  int x;
+                  for(x = 0; x < 8; x++)
                      if(wsTileRow[x] || !(palette & 0x4))
                      {
                         if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
@@ -538,7 +552,8 @@ void wsScanline(uint16 *target, int depth)
             }
             else
             {
-               for(int x = 0; x < 8; x++)
+               int x;
+               for(x = 0; x < 8; x++)
                   if(wsTileRow[x] || !(palette & 4))
                   {
                      if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
@@ -703,14 +718,15 @@ int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
 
    if(load)
    {
-      for(unsigned i = 0; i < 2; i++)
+      unsigned i, j;
+      for(i = 0; i < 2; i++)
       {
          if(SpriteCountCache[i] > 0x80)
             SpriteCountCache[i] = 0x80;
       }
 
-      for(unsigned i = 0; i < 16; i++)
-         for(unsigned j = 0; j < 4; j++)
+      for(i = 0; i < 16; i++)
+         for(j = 0; j < 4; j++)
             wsMonoPal[i][j] &= 0x7;
 
       wsSetVideo(VideoMode >> 5, true);

@@ -200,6 +200,7 @@ void WSwan_SoundUpdate(void)
 
    if(HVoiceCtrl & 0x80)
    {
+      int32 left, right;
       int16 sample = (uint8)HyperVoice;
 
       switch(HVoiceCtrl & 0xC)
@@ -212,7 +213,6 @@ void WSwan_SoundUpdate(void)
       // bring back to 11bit, keeping signedness
       sample >>= 5;
 
-      int32 left, right;
       left  = (HVoiceChanCtrl & 0x40) ? sample : 0;
       right = (HVoiceChanCtrl & 0x20) ? sample : 0;
 
