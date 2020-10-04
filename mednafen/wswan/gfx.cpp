@@ -660,7 +660,7 @@ extern "C" int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
 
       SFARRAYN(&SpriteTable[0][0][0], 2 * 0x80 * 4, "SpriteTable"),
       SFARRAY32N(&SpriteCountCache[0], 2 * 1, "SpriteCountCache"),
-      SFVAR(FrameWhichActive),
+      SFVARN_BOOL(FrameWhichActive, "FrameWhichActive"),
       SFVAR(DispControl),
       SFVAR(BGColor),
       SFVAR(LineCompare),
