@@ -1155,7 +1155,7 @@ extern "C" int v30mz_StateAction(StateMem *sm, int load, int data_only)
       SFARRAY16N(I.sregs, 4, "sregs"),
 
       SFVARN(v30mz_ICount, "ICount"),
-      SFVARN(InHLT, "InHLT"),
+      SFVARN_BOOL(InHLT, "InHLT"),
       SFVARN(prefix_base, "prefix_base"),
       SFVARN(seg_prefix, "seg_prefix"),
       SFVARN(PSW, "PSW"),
