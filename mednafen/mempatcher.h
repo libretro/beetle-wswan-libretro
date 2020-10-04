@@ -24,11 +24,11 @@ void MDFNMP_InstallReadPatches(void);
 
 bool MDFNMP_Init(uint32 ps, uint32 numpages);
 
+void MDFNMP_AddRAM(uint32 size, uint32 address, uint8 *RAM);
+
 #ifdef __cplusplus
 }
 #endif
-
-void MDFNMP_AddRAM(uint32 size, uint32 address, uint8 *RAM);
 
 void MDFNMP_RemoveReadPatches(void);
 

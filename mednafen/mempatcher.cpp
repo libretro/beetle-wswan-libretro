@@ -115,8 +115,7 @@ extern "C" void MDFNMP_Kill(void)
  }
 }
 
-
-void MDFNMP_AddRAM(uint32 size, uint32 A, uint8 *RAM)
+extern "C" void MDFNMP_AddRAM(uint32 size, uint32 A, uint8 *RAM)
 {
  uint32 AB = A / PageSize;
  

@@ -63,7 +63,7 @@ static uint16 VBTimerPeriod;
 static uint16 HBCounter, VBCounter;
 static uint8 VideoMode;
 
-extern "C" void WSwan_GfxInit(void)
+void WSwan_GfxInit(void)
 {
    LayerEnabled = 7; // BG, FG, sprites
 }
@@ -121,7 +121,7 @@ void WSwan_GfxWrite(uint32 A, uint8 V)
    }
 }
 
-extern "C" uint8 WSwan_GfxRead(uint32 A)
+uint8 WSwan_GfxRead(uint32 A)
 {
    if(A >= 0x1C && A <= 0x1F)
    {
@@ -176,7 +176,7 @@ extern "C" uint8 WSwan_GfxRead(uint32 A)
    return 0;
 }
 
-extern "C" bool wsExecuteLine(MDFN_Surface *surface, bool skip)
+bool wsExecuteLine(MDFN_Surface *surface, bool skip)
 {
    bool ret = false;
 
@@ -270,7 +270,7 @@ void WSwan_SetLayerEnableMask(uint64 mask)
    LayerEnabled = mask;
 }
 
-extern "C" void WSwan_SetPixelFormat(int depth)
+void WSwan_SetPixelFormat(int depth)
 {
    unsigned r, g, b, i;
    for(r = 0; r < 16; r++)
@@ -601,7 +601,7 @@ void wsScanline(uint16 *target, int depth)
 }
 
 
-extern "C" void WSwan_GfxReset(void)
+void WSwan_GfxReset(void)
 {
    unsigned u0, u1;
 
@@ -649,7 +649,7 @@ extern "C" void WSwan_GfxReset(void)
 
 }
 
-extern "C" int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
+int WSwan_GfxStateAction(StateMem *sm, int load, int data_only)
 {
    SFORMAT StateRegs[] =
    {

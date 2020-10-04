@@ -62,9 +62,9 @@ static uint8 CommControl, CommData;
 
 static bool language;
 
-extern "C" uint16 WSButtonStatus;
+uint16 WSButtonStatus;
 
-extern "C" void WSwan_writemem20(uint32 A, uint8 V)
+void WSwan_writemem20(uint32 A, uint8 V)
 {
    uint32 offset = A & 0xffff;
    uint32   bank = (A>>16) & 0xF;
@@ -86,7 +86,7 @@ extern "C" void WSwan_writemem20(uint32 A, uint8 V)
    }
 }
 
-extern "C" uint8 WSwan_readmem20(uint32 A)
+uint8 WSwan_readmem20(uint32 A)
 {
    uint8 bank_num;
    uint32 offset = A & 0xFFFF;
@@ -188,7 +188,7 @@ void WSwan_CheckSoundDMA(void)
    }
 }
 
-extern "C" uint8 WSwan_readport(uint32 number)
+uint8 WSwan_readport(uint32 number)
 {
    number &= 0xFF;
 
@@ -256,7 +256,7 @@ extern "C" uint8 WSwan_readport(uint32 number)
    return(0);
 }
 
-extern "C" void WSwan_writeport(uint32 IOPort, uint8 V)
+void WSwan_writeport(uint32 IOPort, uint8 V)
 {
    IOPort &= 0xFF;
 
@@ -497,14 +497,14 @@ void WSwan_MemorySetRegister(const unsigned int id, uint32 value)
 
 #endif
 
-extern "C" void WSwan_MemoryKill(void)
+void WSwan_MemoryKill(void)
 {
    if(wsSRAM)
       free(wsSRAM);
    wsSRAM = NULL;
 }
 
-extern "C" void WSwan_MemoryInit(bool lang, bool IsWSC, uint32 ssize, bool SkipSaveLoad)
+void WSwan_MemoryInit(bool lang, bool IsWSC, uint32 ssize, bool SkipSaveLoad)
 {
    const uint16 byear = MDFN_GetSettingUI("wswan.byear");
    const uint8 bmonth = MDFN_GetSettingUI("wswan.bmonth");
@@ -545,7 +545,7 @@ extern "C" void WSwan_MemoryInit(bool lang, bool IsWSC, uint32 ssize, bool SkipS
       MDFNMP_AddRAM(sram_size, 0x10000, wsSRAM);
 }
 
-extern "C" void WSwan_MemoryReset(void)
+void WSwan_MemoryReset(void)
 {
    memset(wsRAM, 0, 65536);
 
@@ -575,7 +575,7 @@ extern "C" void WSwan_MemoryReset(void)
    CommData = 0;
 }
 
-extern "C" int WSwan_MemoryStateAction(StateMem *sm, int load, int data_only)
+int WSwan_MemoryStateAction(StateMem *sm, int load, int data_only)
 {
    SFORMAT StateRegs[] =
    {

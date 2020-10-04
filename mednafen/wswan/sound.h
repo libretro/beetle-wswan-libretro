@@ -18,14 +18,15 @@ int32 WSwan_SoundFlush(int16 *SoundBuf, const int32 MaxSoundFrames);
 void WSwan_SoundKill(void);
 
 int WSwan_SoundStateAction(StateMem *sm, int load, int data_only);
-#ifdef __cplusplus
-}
-#endif
 
 void WSwan_SetSoundMultiplier(double multiplier);
 
 void WSwan_SoundWrite(uint32, uint8);
 uint8 WSwan_SoundRead(uint32);
 void WSwan_SoundCheckRAMWrite(uint32 A);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

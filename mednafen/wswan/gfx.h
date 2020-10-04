@@ -4,6 +4,10 @@
 #include "../state.h"
 #include "../video.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint8		wsTCache[512*64];		  //tiles cache
 extern uint8		wsTCacheFlipped[512*64];  	  //tiles cache (H flip)
 extern uint8		wsTCacheUpdate[512];	  //tiles cache flags
@@ -11,9 +15,6 @@ extern uint8		wsTCache2[512*64];		  //tiles cache
 extern uint8		wsTCacheFlipped2[512*64];  	  //tiles cache (H flip)
 extern uint8		wsTCacheUpdate2[512];	  //tiles cache flags
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern uint8		wsTileRow[8];		  //extracted 8 pixels (tile row)
 extern int		wsVMode;			  //Video Mode	
@@ -35,21 +36,13 @@ uint8 WSwan_GfxRead(uint32 A);
 
 int WSwan_GfxStateAction(StateMem *sm, int load, int data_only);
 
-#ifdef __cplusplus
-}
-#endif
-
-
 void wsScanline(uint16 *target, int depth);
 
 extern uint32		dx_r,dx_g,dx_b,dx_sr,dx_sg,dx_sb;
 extern uint32		dx_bits,dx_pitch,cmov,dx_linewidth_blit,dx_buffer_line;
 
-
-
 void WSwan_GfxWrite(uint32 A, uint8 V);
 void WSwan_GfxWSCPaletteRAMWrite(uint32 ws_offset, uint8 data);
-
 
 void WSwan_SetLayerEnableMask(uint64 mask);
 
@@ -57,5 +50,10 @@ void WSwan_SetLayerEnableMask(uint64 mask);
 void WSwan_GfxSetGraphicsDecode(MDFN_Surface *surface, int line, int which, int xscroll, int yscroll, int pbn);
 uint32 WSwan_GfxGetRegister(const std::string &oname, std::string *special);
 #endif
+
+#ifdef __cplusplus
+}
+#endif
+
 
 #endif

@@ -35,14 +35,13 @@ uint8 WSwan_readport(uint32 number);
 void WSwan_MemoryReset(void);
 int WSwan_MemoryStateAction(StateMem *sm, int load, int data_only);
 
-#ifdef __cplusplus
-}
-#endif
-
-
 void WSwan_CheckSoundDMA(void);
 
 uint32 WSwan_MemoryGetRegister(const unsigned int id, char *special, const uint32 special_len);
 void WSwan_MemorySetRegister(const unsigned int id, uint32 value);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
