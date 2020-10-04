@@ -21,6 +21,10 @@ enum
    NEC_DS0
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Public variables */
 extern int32 v30mz_ICount;
 
@@ -29,9 +33,6 @@ void v30mz_execute(int cycles);
 unsigned v30mz_get_reg(int regnum);
 
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 extern uint32 v30mz_timestamp;
 
 void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), uint8 (*readport)(uint32), void (*writeport)(uint32, uint8));
@@ -39,15 +40,14 @@ void v30mz_set_reg(int, unsigned);
 void v30mz_reset(void);
 void v30mz_int(uint32 vector, bool IgnoreIF);
 int v30mz_StateAction(StateMem *sm, int load, int data_only);
-#ifdef __cplusplus
-}
-#endif
-
-
 
 #ifdef WANT_DEBUGGER
 void v30mz_debug(void (*CPUHook)(uint32), uint8 (*ReadHook)(uint32), void (*WriteHook)(uint32, uint8), uint8 (*PortReadHook)(uint32), void (*PortWriteHook)(uint32, uint8),
 			void (*BranchTraceHook)(uint16 from_CS, uint16 from_IP, uint16 to_CS, uint16 to_IP, bool interrupt) );
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

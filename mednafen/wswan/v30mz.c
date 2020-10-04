@@ -136,7 +136,7 @@ static INLINE void i_real_popf(void)
 
 /***************************************************************************/
 
-extern "C" void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), uint8 (*readport)(uint32), void (*writeport)(uint32, uint8))
+void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32,uint8), uint8 (*readport)(uint32), void (*writeport)(uint32, uint8))
 {
    cpu_readmem20 = readmem20;
    cpu_writemem20 = writemem20;
@@ -145,7 +145,7 @@ extern "C" void v30mz_init(uint8 (*readmem20)(uint32), void (*writemem20)(uint32
    cpu_writeport = writeport;
 }
 
-extern "C" void v30mz_reset(void)
+void v30mz_reset(void)
 {
    unsigned i;
    const BREGS reg_name[8] = { AL, CL, DL, BL, AH, CH, DH, BH };
@@ -187,7 +187,7 @@ extern "C" void v30mz_reset(void)
    InHLT = 0;
 }
 
-extern "C" void v30mz_int(uint32 vector, bool IgnoreIF)
+void v30mz_int(uint32 vector, bool IgnoreIF)
 {
    InHLT = false; // This is correct!  Standby mode is always exited when there is an INT signal, regardless of whether interrupt are disabled.
    if(I.IF || IgnoreIF)
@@ -1013,7 +1013,7 @@ unsigned v30mz_get_reg(int regnum)
 
 void nec_set_irq_line(int irqline, int state);
 
-extern "C" void v30mz_set_reg(int regnum, unsigned val)
+void v30mz_set_reg(int regnum, unsigned val)
 {
    switch( regnum )
    {
@@ -1144,7 +1144,7 @@ void v30mz_execute(int cycles)
 
 }
 
-extern "C" int v30mz_StateAction(StateMem *sm, int load, int data_only)
+int v30mz_StateAction(StateMem *sm, int load, int data_only)
 {
    uint16 PSW;
 

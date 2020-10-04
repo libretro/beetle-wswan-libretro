@@ -21,13 +21,13 @@ ifneq ($(HAVE_GRIFFIN),1)
 SOURCES_CXX += \
 	$(CORE_EMU_DIR)/gfx.cpp \
 	$(CORE_EMU_DIR)/wswan-memory.cpp \
-	$(CORE_EMU_DIR)/v30mz.cpp \
 	$(CORE_EMU_DIR)/sound.cpp
 
 SOURCES_C += \
 	$(CORE_EMU_DIR)/interrupt.c \
 	$(CORE_EMU_DIR)/rtc.c \
 	$(CORE_EMU_DIR)/tcache.c \
+	$(CORE_EMU_DIR)/v30mz.c \
 	$(CORE_EMU_DIR)/eeprom.c
 endif
 
