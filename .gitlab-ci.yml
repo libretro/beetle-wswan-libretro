@@ -1,7 +1,7 @@
 .core-defs:
   variables:
     JNI_PATH: .
-    CORENAME: mednafen_vb
+    CORENAME: mednafen_wswan
 
 include:
   - template: Jobs/Code-Quality.gitlab-ci.yml
