@@ -78,7 +78,6 @@ uint32		rom_size;
 
 uint16 WSButtonStatus;
 
-
 static uint8 WSRCurrentSong;
 
 MDFNGI EmulatedWSwan =
