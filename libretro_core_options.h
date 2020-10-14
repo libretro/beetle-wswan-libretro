@@ -50,12 +50,23 @@ extern "C" {
 
 struct retro_core_option_definition option_defs_us[] = {
    {
-      "wswan_rotate_keymap",
-      "Rotate button mappings",
-      "",
+      "wswan_rotate_display",
+      "Rotate Display",
+      "Rotate the console screen to achieve the correct layout of 'portrait' oriented games on a conventional (landscape) display. 'Manual' enables rotation via the controller (default button: SELECT).",
       {
-         { "auto",  NULL },
-         { "disabled",  NULL },
+         { "manual",  "Manual" },
+         { "enabled", NULL },
+         { NULL, NULL},
+      },
+      "manual",
+   },
+   {
+      "wswan_rotate_keymap",
+      "Rotate Button Mappings",
+      "'Auto' adjusts button mapping to match the current display rotation.",
+      {
+         { "auto",     "Auto" },
+         { "disabled", NULL },
          { "enabled",  NULL },
          { NULL, NULL},
       },
@@ -66,11 +77,11 @@ struct retro_core_option_definition option_defs_us[] = {
       "Sound Output Sample Rate",
       "Slightly higher quality or higher performance.",
       {
-         { "11025", NULL },
-         { "22050", NULL },
-         { "44100", NULL },
-         { "48000", NULL },
-         { "96000", NULL },
+         { "11025",  NULL },
+         { "22050",  NULL },
+         { "44100",  NULL },
+         { "48000",  NULL },
+         { "96000",  NULL },
          { "192000", NULL },
          { "384000", NULL },
          { NULL, NULL },

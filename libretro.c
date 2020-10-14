@@ -32,12 +32,25 @@ static bool libretro_supports_bitmasks = false;
 static bool overscan;
 static double last_sound_rate;
 
-static bool rotate_tall;
-static bool select_pressed_last_frame;
+static bool rotate_tall               = false;
+static bool rotate_tall_override      = false;
+static bool select_pressed_last_frame = false;
+static bool hw_rotate_enabled         = false;
 
-static unsigned rotate_joymap;
+static unsigned rotate_joymap = 0;
 
-static MDFN_Surface *surf;
+static MDFN_Surface *surf   = NULL;
+static uint16_t *rotate_buf = NULL;
+
+#define ROTATE_PIXEL_BUF(typename_t, src, width, height, dst)                            \
+   {                                                                                     \
+      typename_t *in_ptr  = (typename_t*)src;                                            \
+      typename_t *out_ptr = (typename_t*)dst;                                            \
+      size_t x, y;                                                                       \
+      for (x = 0; x < width; x++)                                                        \
+         for (y = 0; y < height; y++)                                                    \
+            *(out_ptr + y + (((width - 1) - x) * height)) = *(in_ptr + x + (y * width)); \
+   }
 
 /* Cygne
  *
@@ -475,27 +488,54 @@ static void check_depth(void)
 
 static void rotate_display(void)
 {
-   if (rotate_tall)
+   if (hw_rotate_enabled)
    {
-      struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (9.0 / 14.0)};
-      const unsigned rot_angle = 1;/*90 degrees*/
-         
+      struct retro_game_geometry new_geom = {
+            FB_WIDTH,
+            FB_HEIGHT,
+            FB_WIDTH,
+            FB_HEIGHT,
+            rotate_tall ? (9.0 / 14.0) : (14.0 / 9.0)
+      };
+      unsigned rot_angle = rotate_tall ?
+            1 : /* 90 degrees */
+            0;  /* 0 degrees  */
+
       environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
       environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
    }
    else
    {
-      struct retro_game_geometry new_geom = {FB_WIDTH, FB_HEIGHT, FB_WIDTH, FB_HEIGHT, (14.0 / 9.0)};
-      const unsigned rot_angle = 0;/*0 degrees*/
-         
+      struct retro_game_geometry new_geom = {
+            rotate_tall ? FB_HEIGHT : FB_WIDTH,
+            rotate_tall ? FB_WIDTH  : FB_HEIGHT,
+            FB_WIDTH,
+            FB_WIDTH,
+            rotate_tall ? (9.0 / 14.0) : (14.0 / 9.0)
+      };
+
       environ_cb(RETRO_ENVIRONMENT_SET_GEOMETRY, (void*)&new_geom);
-      environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
    }
 }
 
 static void check_variables(void)
 {
    struct retro_variable var = {0};
+
+   var.key = "wswan_rotate_display",
+   var.value = NULL;
+
+   rotate_tall_override = false;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+      if (!strcmp(var.value, "enabled"))
+         rotate_tall_override = true;
+
+   if (rotate_tall_override && !rotate_tall)
+   {
+      rotate_tall = true;
+      rotate_display();
+   }
 
    var.key = "wswan_rotate_keymap",
    var.value = NULL;
@@ -593,6 +633,8 @@ static uint16_t input_buf;
 
 bool retro_load_game(const struct retro_game_info *info)
 {
+   const unsigned rot_angle = 0;
+
    struct retro_input_descriptor desc[] = {
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT, "X Cursor Left" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP, "X Cursor Up" },
@@ -639,7 +681,24 @@ bool retro_load_game(const struct retro_game_info *info)
    if (!surf->pixels)
    {
       free(surf);
+      surf = NULL;
       return false;
+   }
+
+   /* Check whether 'hardware' rotation (via frontend
+    * gfx driver) is supported */
+   hw_rotate_enabled = environ_cb(RETRO_ENVIRONMENT_SET_ROTATION, (void*)&rot_angle);
+
+   if (!hw_rotate_enabled && !rotate_buf)
+   {
+      rotate_buf = (uint16_t*)calloc(1, FB_WIDTH * FB_HEIGHT * sizeof(uint32_t));
+      if (!rotate_buf)
+      {
+         free(surf->pixels);
+         free(surf);
+         surf = NULL;
+         return false;
+      }
    }
 
    rotate_tall = false;
@@ -667,6 +726,10 @@ void retro_unload_game(void)
       free(surf);
    }
    surf = NULL;
+
+   if (rotate_buf)
+      free(rotate_buf);
+   rotate_buf = NULL;
 }
 
 static void update_input(void)
@@ -721,12 +784,13 @@ static void update_input(void)
    }
 
    select_button = bitmask & (1 << RETRO_DEVICE_ID_JOYPAD_SELECT);
-   if (select_button && !select_pressed_last_frame)
+   if (!rotate_tall_override &&
+       select_button &&
+       !select_pressed_last_frame)
    {
       rotate_tall = !rotate_tall;
       rotate_display();
    }
-
    select_pressed_last_frame = select_button;
 
    joymap = (rotate_joymap == 2) ? rotate_tall : (rotate_joymap ? true : false);
@@ -797,7 +861,20 @@ void retro_run(void)
    width             = spec.DisplayRect.w;
    height            = spec.DisplayRect.h;
 
-   video_cb(surf->pixels, width, height, FB_WIDTH * RETRO_PIX_BYTES);
+   if (hw_rotate_enabled || !rotate_tall)
+      video_cb(surf->pixels, width, height, FB_WIDTH * RETRO_PIX_BYTES);
+   else
+   {
+      /* Perform software-based display rotation */
+      if (RETRO_PIX_BYTES == 4)
+         ROTATE_PIXEL_BUF(
+               uint32_t, surf->pixels, width, height, rotate_buf)
+      else
+         ROTATE_PIXEL_BUF(
+               uint16_t, surf->pixels, width, height, rotate_buf)
+
+      video_cb(rotate_buf, height, width, FB_HEIGHT * RETRO_PIX_BYTES);
+   }
 
    video_frames++;
    audio_frames += spec.SoundBufSize;
@@ -823,13 +900,31 @@ void retro_get_system_info(struct retro_system_info *info)
 void retro_get_system_av_info(struct retro_system_av_info *info)
 {
    memset(info, 0, sizeof(*info));
-   info->timing.fps            = MEDNAFEN_CORE_TIMING_FPS;
-   info->timing.sample_rate    = RETRO_SAMPLE_RATE;
-   info->geometry.base_width   = MEDNAFEN_CORE_GEOMETRY_BASE_W;
-   info->geometry.base_height  = MEDNAFEN_CORE_GEOMETRY_BASE_H;
-   info->geometry.max_width    = MEDNAFEN_CORE_GEOMETRY_MAX_W;
-   info->geometry.max_height   = MEDNAFEN_CORE_GEOMETRY_MAX_H;
-   info->geometry.aspect_ratio = MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO;
+
+   info->timing.fps               = MEDNAFEN_CORE_TIMING_FPS;
+   info->timing.sample_rate       = RETRO_SAMPLE_RATE;
+
+   if (hw_rotate_enabled || !rotate_tall)
+   {
+      info->geometry.base_width   = MEDNAFEN_CORE_GEOMETRY_BASE_W;
+      info->geometry.base_height  = MEDNAFEN_CORE_GEOMETRY_BASE_H;
+   }
+   else
+   {
+      info->geometry.base_width   = MEDNAFEN_CORE_GEOMETRY_BASE_H;
+      info->geometry.base_height  = MEDNAFEN_CORE_GEOMETRY_BASE_W;
+   }
+
+   info->geometry.max_width       = MEDNAFEN_CORE_GEOMETRY_MAX_W;
+   if (hw_rotate_enabled)
+      info->geometry.max_height   = MEDNAFEN_CORE_GEOMETRY_MAX_H;
+   else
+      info->geometry.max_height   = MEDNAFEN_CORE_GEOMETRY_MAX_W;
+
+   if (rotate_tall)
+      info->geometry.aspect_ratio = 1.0f / MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO;
+   else
+      info->geometry.aspect_ratio = MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO;
 
    check_depth();
 }
@@ -843,6 +938,10 @@ void retro_deinit(void)
       free(surf);
    }
    surf = NULL;
+
+   if (rotate_buf)
+      free(rotate_buf);
+   rotate_buf = NULL;
 
    if (log_cb)
    {
