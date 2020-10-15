@@ -518,7 +518,7 @@ static void rotate_display(void)
    }
 }
 
-static void check_variables(void)
+static void check_variables(int startup)
 {
    struct retro_variable var = {0};
 
@@ -566,7 +566,7 @@ static void check_variables(void)
    var.key = "wswan_gfx_colors";
    var.value = NULL;
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value && startup)
    {
       unsigned old_value = RETRO_PIX_BYTES;
 
@@ -600,7 +600,7 @@ void retro_init(void)
       perf_get_cpu_features_cb = NULL;
 
    check_system_specs();
-   check_variables();
+   check_variables(true);
    check_depth();
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_INPUT_BITMASKS, NULL))
@@ -705,7 +705,7 @@ bool retro_load_game(const struct retro_game_info *info)
    select_pressed_last_frame = false;
    rotate_joymap = 0;
 
-   check_variables();
+   check_variables(false);
 
    WSwan_SetPixelFormat(RETRO_PIX_DEPTH);
 
@@ -816,7 +816,7 @@ void retro_run(void)
    EmulateSpecStruct spec = {0};
    bool updated           = false;
    if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &updated) && updated)
-      check_variables();
+      check_variables(false);
 
    input_poll_cb();
 
