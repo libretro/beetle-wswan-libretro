@@ -86,7 +86,7 @@ struct retro_core_option_definition option_defs_tr[] = {
       },
       "auto",
    },
-   { NULL, NULL, NULL, { NULL, NULL }, NULL },
+   { NULL, NULL, NULL, { { NULL, NULL } }, NULL },
 };
 
 #ifdef __cplusplus
