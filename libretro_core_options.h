@@ -90,7 +90,7 @@ struct retro_core_option_definition option_defs_us[] = {
    },
    {
       "wswan_gfx_colors",
-      "Color Depth",
+      "Color Depth (Restart)",
       "24-bit is slower and not available on all platforms.",
       {
          { "16bit", "Thousands (16-bit)" },
@@ -99,7 +99,7 @@ struct retro_core_option_definition option_defs_us[] = {
       },
       "16bit"
    },
-   { NULL, NULL, NULL, { NULL, NULL }, NULL },
+   { NULL, NULL, NULL, { { NULL, NULL } }, NULL },
 };
 
 /*
