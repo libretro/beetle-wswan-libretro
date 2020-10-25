@@ -26,7 +26,9 @@ void WSWan_TCacheInvalidByAddr(uint32);
 
 bool wsExecuteLine(MDFN_Surface *surface, bool skip);
 
-void WSwan_SetPixelFormat(int depth);
+void WSwan_SetMonoPalette(int depth, uint32 mono_start, uint32 mono_end);
+
+void WSwan_SetPixelFormat(int depth, uint32 mono_start, uint32 mono_end);
 
 void WSwan_GfxInit(void);
 
