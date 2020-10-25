@@ -52,6 +52,75 @@ static uint16_t *rotate_buf = NULL;
             *(out_ptr + y + (((width - 1) - x) * height)) = *(in_ptr + x + (y * width)); \
    }
 
+/* Mono palettes */
+
+struct ws_mono_palette
+{
+   const char *name;
+   uint32 start;
+   uint32 end;
+};
+
+struct ws_mono_palette ws_mono_palettes[] = {
+   { "default",                0x000000, 0xFFFFFF },
+   { "wonderswan",             0x3E3D20, 0x9B9D66 },
+   { "wondeswan_color",        0x1B201E, 0xD7D49D },
+   { "swancrystal",            0x151108, 0xFFFCCA },
+   { "gb_dmg",                 0x00420C, 0x578200 },
+   { "gb_pocket",              0x2A3325, 0xA7B19A },
+   { "gb_light",               0x00778D, 0x01CBDF },
+   { "blossom_pink",           0x180F0F, 0xF09898 },
+   { "bubbles_blue",           0x0D1418, 0x88D0F0 },
+   { "buttercup_green",        0x12160D, 0xB8E088 },
+   { "digivice",               0x000000, 0x8C8C73 },
+   { "game_com",               0x000000, 0xA7BF6B },
+   { "gameking",               0x184221, 0x8CCE94 },
+   { "game_master",            0x2D2D2B, 0x829FA6 },
+   { "golden_wild",            0x120F0A, 0xB99F65 },
+   { "greenscale",             0x0C360C, 0x9CBE0C },
+   { "hokage_orange",          0x170D08, 0xEA8352 },
+   { "labo_fawn",              0x15110B, 0xD7AA73 },
+   { "legendary_super_saiyan", 0x101509, 0xA5DB5A },
+   { "microvision",            0x303030, 0xA0A0A0 },
+   { "million_live_gold",      0x141109, 0xCDB261 },
+   { "odyssey_gold",           0x131000, 0xC2A000 },
+   { "shiny_sky_blue",         0x0E1216, 0x8CB6DF },
+   { "slime_blue",             0x040E14, 0x2F8CCC },
+   { "ti_83",                  0x181810, 0x9CA684 },
+   { "travel_wood",            0x482810, 0xF8D8B0 },
+   { "virtual_boy",            0x000000, 0xE30000 },
+   { NULL, 0, 0 },
+};
+
+static uint32 mono_pal_start = 0x000000;
+static uint32 mono_pal_end   = 0xFFFFFF;
+
+static bool find_mono_palette(const char* name,
+      uint32 *start, uint32 *end)
+{
+   bool palette_found = false;
+   unsigned i;
+
+   for (i = 0; ws_mono_palettes[i].name; i++)
+   {
+      if (!strcmp(ws_mono_palettes[i].name, name))
+      {
+         *start        = ws_mono_palettes[i].start;
+         *end          = ws_mono_palettes[i].end;
+         palette_found = true;
+         break;
+      }
+   }
+
+   if (!palette_found)
+   {
+      *start = 0x000000;
+      *end   = 0xFFFFFF;
+   }
+
+   return palette_found;
+}
+
 /* Cygne
  *
  * Copyright notice for this file:
@@ -144,7 +213,8 @@ static void Emulate(EmulateSpecStruct *espec, int16_t *sndbuf)
    espec->DisplayRect.h = 144;
 
    if(espec->VideoFormatChanged)
-      WSwan_SetPixelFormat(espec->surface->depth);
+      WSwan_SetPixelFormat(espec->surface->depth,
+            mono_pal_start, mono_pal_end);
 
    if(espec->SoundFormatChanged)
       WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
@@ -521,6 +591,8 @@ static void rotate_display(void)
 static void check_variables(int startup)
 {
    struct retro_variable var = {0};
+   uint32 prev_mono_pal_start;
+   uint32 prev_mono_pal_end;
 
    var.key = "wswan_rotate_display",
    var.value = NULL;
@@ -549,6 +621,19 @@ static void check_variables(int startup)
       else if (!strcmp(var.value, "auto"))
          rotate_joymap = 2;
    }
+
+   var.key = "wswan_mono_palette",
+   var.value = NULL;
+
+   prev_mono_pal_start = mono_pal_start;
+   prev_mono_pal_end   = mono_pal_end;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+      find_mono_palette(var.value, &mono_pal_start, &mono_pal_end);
+
+   if ((mono_pal_start != prev_mono_pal_start) ||
+       (mono_pal_end   != prev_mono_pal_end))
+      WSwan_SetMonoPalette(RETRO_PIX_DEPTH, mono_pal_start, mono_pal_end);
 
    var.key = "wswan_sound_sample_rate";
    var.value = NULL;
@@ -707,7 +792,8 @@ bool retro_load_game(const struct retro_game_info *info)
 
    check_variables(false);
 
-   WSwan_SetPixelFormat(RETRO_PIX_DEPTH);
+   WSwan_SetPixelFormat(RETRO_PIX_DEPTH,
+         mono_pal_start, mono_pal_end);
 
    update_video = false;
    update_audio = true;
