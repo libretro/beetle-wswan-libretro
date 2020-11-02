@@ -183,7 +183,7 @@ else ifeq ($(platform), ps2)
    CC =  mips64r5900el-ps2-elf-gcc$(EXE_EXT)
    CXX =  mips64r5900el-ps2-elf-g++$(EXE_EXT)
    AR =  mips64r5900el-ps2-elf-ar$(EXE_EXT)
-   FLAGS += -DPS2 -G0
+   FLAGS += -DPS2 -G0 -DABGR1555
    STATIC_LINKING = 1
    OLD_GCC = 1
 

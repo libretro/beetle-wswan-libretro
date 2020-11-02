@@ -290,7 +290,11 @@ void WSwan_SetMonoPalette(int depth, uint32 mono_start, uint32 mono_end)
       switch(depth)
       {
          case 15: ColorMapG[i] = MAKECOLOR_15(neo_r, neo_g, neo_b, 0); break;
+#if defined(ABGR1555)
+         case 16: ColorMapG[i] = MAKECOLOR_15_1(neo_r, neo_g, neo_b, 0); break;
+#else
          case 16: ColorMapG[i] = MAKECOLOR_16(neo_r, neo_g, neo_b, 0); break;
+#endif
          case 24: ColorMapG[i] = MAKECOLOR_24(neo_r, neo_g, neo_b, 0); break;
       }
    }
@@ -312,7 +316,11 @@ void WSwan_SetPixelFormat(int depth, uint32 mono_start, uint32 mono_end)
             switch(depth)
             {
                case 15: ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR_15(neo_r, neo_g, neo_b, 0); break;
+#if defined(ABGR1555)
+               case 16: ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR_15_1(neo_r, neo_g, neo_b, 0); break;
+#else
                case 16: ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR_16(neo_r, neo_g, neo_b, 0); break;
+#endif
                case 24: ColorMap[(r << 8) | (g << 4) | (b << 0)] = MAKECOLOR_24(neo_r, neo_g, neo_b, 0); break;
             }
          }
