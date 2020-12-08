@@ -141,7 +141,7 @@ libretro-build-libnx-aarch64:
     - .core-defs
     
 # OpenDingux
-libretro-build-dingux-i386:
+libretro-build-dingux-mips32:
   extends:
-    - .libretro-dingux-i386-make-default
+    - .libretro-dingux-mips32-make-default
     - .core-defs
