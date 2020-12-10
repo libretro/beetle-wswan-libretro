@@ -129,29 +129,8 @@ extern "C" void MDFNMP_AddRAM(uint32 size, uint32 A, uint8 *RAM)
  }
 }
 
-extern "C" void MDFNMP_InstallReadPatches(void)
-{
- if(!CheatsActive) return;
-
- std::vector<SUBCHEAT>::iterator chit;
-
-#if 0
- for(unsigned int x = 0; x < 8; x++)
-  for(chit = SubCheats[x].begin(); chit != SubCheats[x].end(); chit++)
-  {
-   if(EmulatedWSwan.InstallReadPatch)
-    EmulatedWSwan.InstallReadPatch(chit->addr);
-  }
-#endif
-}
-
-void MDFNMP_RemoveReadPatches(void)
-{
-#if 0
- if(EmulatedWSwan.RemoveReadPatches)
-  EmulatedWSwan.RemoveReadPatches();
-#endif
-}
+extern "C" void MDFNMP_InstallReadPatches(void) { }
+void MDFNMP_RemoveReadPatches(void) { }
 
 /* This function doesn't allocate any memory for "name" */
 static int AddCheatEntry(char *name, char *conditions, uint32 addr, uint64 val, uint64 compare, int status, char type, unsigned int length, bool bigendian)
@@ -273,14 +252,6 @@ static bool TestConditions(const char *string)
    {
       uint64 v_value;
       uint64 value_at_address;
-#if 0
-      uint32 v_address;
-
-      if(address[0] == '0' && address[1] == 'x')
-         v_address = strtoul(address + 2, NULL, 16);
-      else
-         v_address = strtoul(address, NULL, 10);
-#endif
 
       if(value[0] == '0' && value[1] == 'x')
          v_value = strtoull(value + 2, NULL, 16);
@@ -288,19 +259,6 @@ static bool TestConditions(const char *string)
          v_value = strtoull(value, NULL, 0);
 
       value_at_address = 0;
-
-#if 0
-      for(unsigned int x = 0; x < bytelen; x++)
-      {
-         unsigned int shiftie;
-
-         if(endian == 'B')
-            shiftie = (bytelen - 1 - x) * 8;
-         else
-            shiftie = x * 8;
-         value_at_address |= EmulatedWSwan.MemRead(v_address + x) << shiftie;
-      }
-#endif
 
       //printf("A: %08x, V: %08llx, VA: %08llx, OP: %s\n", v_address, v_value, value_at_address, operation);
       if(!strcmp(operation, ">="))

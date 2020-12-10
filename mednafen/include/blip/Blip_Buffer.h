@@ -115,26 +115,11 @@ blip_resampled_time_t Blip_Buffer_clock_rate_factor(Blip_Buffer* bbuf,
 /* Number of bits in resample ratio fraction. Higher values give a more accurate ratio
  * but reduce maximum buffer size. */
 
-#if 0
-#ifndef BLIP_BUFFER_ACCURACY
-#define BLIP_BUFFER_ACCURACY 16
-#endif
-#endif
-
 /* Number bits in phase offset. Fewer than 6 bits (64 phase offsets) results in
  * noticeable broadband noise when synthesizing high frequency square waves.
  * Affects size of Blip_Synth objects since they store the waveform directly.
  */
 
-#if 0
-#ifndef BLIP_PHASE_BITS
- #if BLIP_BUFFER_FAST
-    #define BLIP_PHASE_BITS 8
- #else
-    #define BLIP_PHASE_BITS 6
- #endif
-#endif
-#endif
 
 /* Internal */
 #define blip_widest_impulse_  16

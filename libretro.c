@@ -396,23 +396,6 @@ static int Load(const uint8_t *data, size_t size)
 
    memcpy(header, wsCartROM + rom_size - 10, 10);
 
-#if 0
-   {
-      const char *developer_name = "???";
-      for(unsigned int x = 0; x < sizeof(Developers) / sizeof(DLEntry); x++)
-      {
-         if(Developers[x].id == header[0])
-         {
-            developer_name = Developers[x].name;
-            break;
-         }
-      }
-      if (log_cb)
-         log_cb(RETRO_LOG_INFO,
-               "Developer: %s (0x%02x)\n", developer_name, header[0]);
-   }
-#endif
-
    SRAMSize = 0;
    eeprom_size = 0;
 
@@ -428,15 +411,6 @@ static int Load(const uint8_t *data, size_t size)
       case 0x20: eeprom_size = 2 *1024; break;
       case 0x50: eeprom_size = 1024; break;
    }
-
-#if 0
-   {
-      uint16 real_crc = 0;
-      for(unsigned int i = 0; i < rom_size - 2; i++)
-         real_crc += wsCartROM[i];
-      printf("Real Checksum:      0x%04x\n", real_crc);
-   }
-#endif
 
    if((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27)) /* Detective Conan */
    {
@@ -1341,9 +1315,4 @@ void retro_cheat_reset(void) { }
 void retro_cheat_set(unsigned a, bool b, const char *c) { }
 
 void MDFND_MidSync(const EmulateSpecStruct *a) { }
-void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y)
-{
-#if 0
-   MDFND_MidLineUpdate(espec, y);
-#endif
-}
+void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y) { }
