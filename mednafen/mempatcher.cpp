@@ -429,13 +429,10 @@ int MDFNI_SetCheat(uint32 which, const char *name, uint32 a, uint64 v, uint64 co
    {
       char *t;
 
-      if((t=(char *)realloc(next->name,strlen(name+1))))
-      {
-         next->name=t;
-         strcpy(next->name,name);
-      }
-      else
+      if(!(t=(char *)realloc(next->name,strlen(name)+1)))
          return(0);
+      next->name=t;
+      strcpy(next->name,name);
    }
    next->addr=a;
    next->val=v;
