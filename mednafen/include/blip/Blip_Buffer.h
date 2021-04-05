@@ -8,7 +8,6 @@
 
 #include <limits.h>
 #include <stdint.h>
-#include <assert.h>
 
 #include <retro_inline.h>
 
@@ -197,23 +196,18 @@ static INLINE void Blip_Synth_offset_resampled(
    int phase;
    blip_long* buf, left, right;
 
-   /* Fails if time is beyond end of Blip_Buffer, due to a bug in caller code or the
-    * need for a longer buffer as set by set_sample_rate().
-    */
-   assert((blip_long)(time >> BLIP_BUFFER_ACCURACY) < blip_buf->buffer_size);
    delta *= synth->delta_factor;
-   buf = blip_buf->buffer + (time >>
-                                        BLIP_BUFFER_ACCURACY);
-   phase = (int)(time >> (BLIP_BUFFER_ACCURACY - BLIP_PHASE_BITS) &
+   buf    = blip_buf->buffer + (time >> BLIP_BUFFER_ACCURACY);
+   phase  = (int)(time >> (BLIP_BUFFER_ACCURACY - BLIP_PHASE_BITS) &
                      (blip_res - 1));
 
-   left = buf [0] + delta;
+   left   = buf [0] + delta;
 
    /* Kind of crappy, but doing shift after multiply results in overflow.
     * Alternate way of delaying multiply by delta_factor results in worse
     * sub-sample resolution.
     */
-   right = (delta >> BLIP_PHASE_BITS) * phase;
+   right  = (delta >> BLIP_PHASE_BITS) * phase;
    left  -= right;
    right += buf [1];
 
