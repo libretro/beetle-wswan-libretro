@@ -52,8 +52,7 @@ static retro_environment_t environ_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
 
-static bool libretro_supports_persistent_buffer = false;
-static bool libretro_supports_bitmasks          = false;
+static bool libretro_supports_bitmasks = false;
 
 static bool overscan;
 static double last_sound_rate;
@@ -68,13 +67,13 @@ static unsigned rotate_joymap = 0;
 static MDFN_Surface *surf   = NULL;
 static uint16_t *rotate_buf = NULL;
 
-#define ROTATE_PIXEL_BUF(typename_t, src, width, height, dst) \
-   { \
-      typename_t *in_ptr  = (typename_t*)src; \
-      typename_t *out_ptr = (typename_t*)dst; \
-      size_t x, y; \
-      for (x = 0; x < width; x++) \
-         for (y = 0; y < height; y++) \
+#define ROTATE_PIXEL_BUF(typename_t, src, width, height, dst)                            \
+   {                                                                                     \
+      typename_t *in_ptr  = (typename_t*)src;                                            \
+      typename_t *out_ptr = (typename_t*)dst;                                            \
+      size_t x, y;                                                                       \
+      for (x = 0; x < width; x++)                                                        \
+         for (y = 0; y < height; y++)                                                    \
             *(out_ptr + y + (((width - 1) - x) * height)) = *(in_ptr + x + (y * width)); \
    }
 
@@ -241,7 +240,7 @@ static void init_frameskip(void)
  */
 
 int 		wsc = 1;			/*color/mono*/
-uint32	rom_size;
+uint32		rom_size;
 
 uint16 WSButtonStatus;
 
@@ -249,19 +248,20 @@ static uint8 WSRCurrentSong;
 
 MDFNGI EmulatedWSwan =
 {
-   MDFN_MASTERCLOCK_FIXED(3072000),
-   0,
-   224,   /* lcm_width */
-   144,   /* lcm_height */
+ MDFN_MASTERCLOCK_FIXED(3072000),
+ 0,
+ 224,   /* lcm_width */
+ 144,   /* lcm_height */
 
-   224,	  /* Nominal width */
-   144,	  /* Nominal height */
+ 224,	  /* Nominal width */
+ 144,	  /* Nominal height */
 
-   224,	  /* Framebuffer width */
-   144,	  /* Framebuffer height */
+ 224,	  /* Framebuffer width */
+ 144,	  /* Framebuffer height */
 
-   2,     /* Number of output sound channels */
+ 2,     /* Number of output sound channels */
 };
+
 
 static void Reset(void)
 {
@@ -289,6 +289,8 @@ static uint8 *chee;
 
 static void Emulate(EmulateSpecStruct *espec, int16_t *sndbuf)
 {
+   uint16 butt_data;
+
    espec->DisplayRect.x = 0;
    espec->DisplayRect.y = 0;
    espec->DisplayRect.w = 224;
@@ -301,7 +303,9 @@ static void Emulate(EmulateSpecStruct *espec, int16_t *sndbuf)
    if(espec->SoundFormatChanged)
       WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
 
-   WSButtonStatus = chee[0] | (chee[1] << 8);
+   butt_data = chee[0] | (chee[1] << 8);
+
+   WSButtonStatus = butt_data;
 
    MDFNMP_ApplyPeriodicCheats();
 
@@ -367,12 +371,11 @@ static const DLEntry Developers[] =
 
 static uint32 SRAMSize;
 
-static int Load(bool persistent_data, const uint8_t *data, size_t size)
+static int Load(const uint8_t *data, size_t size)
 {
+   uint32 pow_size      = 0;
+   uint32 real_rom_size = 0;
    uint8 header[10];
-   uint32 pow_size         = 0;
-   uint32 real_rom_size    = 0;
-   bool is_detective_conan = false;
 
    if(size < 65536)
       return(0);
@@ -381,70 +384,37 @@ static int Load(bool persistent_data, const uint8_t *data, size_t size)
    pow_size      = next_pow2(real_rom_size);
    rom_size      = pow_size + (pow_size == 0);
 
-   memcpy(header, data + rom_size - 10, 10);
+   wsCartROM     = (uint8 *)calloc(1, rom_size);
 
-   /* Detective Conan */
-   is_detective_conan = ((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27));
+   /* This real_rom_size vs rom_size funny business 
+    * is intended primarily for handling
+    * WSR files. */
+   if(real_rom_size < rom_size)
+      memset(wsCartROM, 0xFF, rom_size - real_rom_size);
 
-   /* Detective Conan needs to manipulate wsCartROM,
-    * have to forcibly disable persistent buffer
-    * support unfortunately because of this */
-   if (is_detective_conan)
-   {
-      libretro_supports_persistent_buffer = false;
-      persistent_data                     = false;
-   }
+   memcpy(wsCartROM + (rom_size - real_rom_size), data, size);
 
-   if (persistent_data)
-      wsCartROM     = (uint8 *)data;
-   else
-   {
-      wsCartROM     = (uint8 *)calloc(1, rom_size);
+   memcpy(header, wsCartROM + rom_size - 10, 10);
 
-      /* This real_rom_size vs rom_size funny business 
-       * is intended primarily for handling
-       * WSR files. */
-      if (real_rom_size < rom_size)
-         memset(wsCartROM, 0xFF, rom_size - real_rom_size);
-
-      memcpy(wsCartROM + (rom_size - real_rom_size), data, size);
-   }
-
-   SRAMSize    = 0;
+   SRAMSize = 0;
    eeprom_size = 0;
 
    switch(header[5])
    {
-      case 0x01:
-         SRAMSize =   8 * 1024;
-         break;
-      case 0x02:
-         SRAMSize =  32 * 1024;
-         break;
-      case 0x03:
-         SRAMSize = 128 * 1024;
-         break;
-      case 0x04:
-         SRAMSize = 256 * 1024;
-         break; /* Dicing Knight!, Judgement Silver */
-      case 0x05:
-         SRAMSize = 512 * 1024;
-         break; /* Wonder Gate */
-      case 0x10:
-         eeprom_size = 128;
-         break;
-      case 0x20:
-         eeprom_size = 2 *1024;
-         break;
-      case 0x50:
-         eeprom_size = 1024;
-         break;
+      case 0x01: SRAMSize =   8 * 1024; break;
+      case 0x02: SRAMSize =  32 * 1024; break;
+      case 0x03: SRAMSize = 128 * 1024; break;
+      case 0x04: SRAMSize = 256 * 1024; break; /* Dicing Knight!, Judgement Silver */
+      case 0x05: SRAMSize = 512 * 1024; break; /* Wonder Gate */
+
+      case 0x10: eeprom_size = 128; break;
+      case 0x20: eeprom_size = 2 *1024; break;
+      case 0x50: eeprom_size = 1024; break;
    }
 
-   if (is_detective_conan)
+   if((header[8] | (header[9] << 8)) == 0x8de1 && (header[0]==0x01)&&(header[2]==0x27)) /* Detective Conan */
    {
-      /* WS cpu is using cache/pipeline or 
-       * there's protected ROM bank where pointing CS */
+      /* WS cpu is using cache/pipeline or there's protected ROM bank where pointing CS */
       wsCartROM[0xfffe8]=0xea;
       wsCartROM[0xfffe9]=0x00;
       wsCartROM[0xfffea]=0x00;
@@ -471,10 +441,22 @@ static int Load(bool persistent_data, const uint8_t *data, size_t size)
    return(1);
 }
 
+static void CloseGame(void)
+{
+   WSwan_MemoryKill();
+
+   WSwan_SoundKill();
+
+   if(wsCartROM)
+   {
+      free(wsCartROM);
+      wsCartROM = NULL;
+   }
+}
+
 static void SetInput(int port, const char *type, void *ptr)
 {
-   if (!port)
-      chee = (uint8 *)ptr;
+ if(!port) chee = (uint8 *)ptr;
 }
 
 int StateAction(StateMem *sm, int load, int data_only)
@@ -556,6 +538,28 @@ static InputInfoStruct InputInfo =
 };
 
 static bool update_video, update_audio;
+
+static bool MDFNI_LoadGame(
+      const char *force_module, const uint8_t *data,
+      size_t size)
+{
+   if(Load(data, size) <= 0)
+      return false;
+
+	MDFN_LoadGameCheats(NULL);
+	MDFNMP_InstallReadPatches();
+
+   return true;
+}
+
+static void MDFNI_CloseGame(void)
+{
+   MDFN_FlushGameCheats(0);
+
+   CloseGame();
+
+   MDFNMP_Kill();
+}
 
 static void check_system_specs(void)
 {
@@ -772,10 +776,19 @@ void retro_reset(void)
    DoSimpleCommand(MDFN_MSC_RESET);
 }
 
-bool retro_load_game_special(unsigned a,
-      const struct retro_game_info *b, size_t c)
+bool retro_load_game_special(unsigned a, const struct retro_game_info *b, size_t c)
 {
    return false;
+}
+
+static void set_volume (uint32_t *ptr, unsigned number)
+{
+   switch(number)
+   {
+      default:
+         *ptr = number;
+         break;
+   }
 }
 
 #define MAX_PLAYERS 1
@@ -784,11 +797,9 @@ static uint16_t input_buf;
 
 bool retro_load_game(const struct retro_game_info *info)
 {
-   const uint8_t *rom_data  = NULL;
-   size_t         rom_size  = 0;
    const unsigned rot_angle = 0;
-   const struct retro_game_info_ext *info_ext = NULL;
-   struct retro_input_descriptor desc[]       = {
+
+   struct retro_input_descriptor desc[] = {
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT, "X Cursor Left" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP, "X Cursor Up" },
       { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN, "X Cursor Down" },
@@ -813,25 +824,10 @@ bool retro_load_game(const struct retro_game_info *info)
    overscan = false;
    environ_cb(RETRO_ENVIRONMENT_GET_OVERSCAN, &overscan);
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_GAME_INFO_EXT, &info_ext) &&
-       info_ext->persistent_data)
-   {
-      libretro_supports_persistent_buffer = true;
-      rom_data                            = (const uint8_t*)info_ext->data;
-      rom_size                            = info_ext->size;
-   }
-   else
-   {
-      libretro_supports_persistent_buffer = false;
-      rom_data                            = (const uint8_t*)info->data;
-      rom_size                            = info->size;
-   }
-
-   if (Load(libretro_supports_persistent_buffer, rom_data, rom_size) <= 0)
+   if (!MDFNI_LoadGame(MEDNAFEN_CORE_NAME_MODULE,
+         (const uint8_t*)info->data, info->size))
       return false;
 
-   MDFN_LoadGameCheats(NULL);
-   MDFNMP_InstallReadPatches();
    SetInput(0, "gamepad", &input_buf);
 
    surf = (MDFN_Surface*)calloc(1, sizeof(*surf));
@@ -869,34 +865,24 @@ bool retro_load_game(const struct retro_game_info *info)
       }
    }
 
-   rotate_tall               = false;
+   rotate_tall = false;
    select_pressed_last_frame = false;
-   rotate_joymap             = 0;
+   rotate_joymap = 0;
 
    check_variables(false);
 
    WSwan_SetPixelFormat(RETRO_PIX_DEPTH,
          mono_pal_start, mono_pal_end);
 
-   update_video              = false;
-   update_audio              = true;
+   update_video = false;
+   update_audio = true;
 
    return true;
 }
 
 void retro_unload_game(void)
 {
-   MDFN_FlushGameCheats(0);
-   WSwan_MemoryKill();
-   WSwan_SoundKill();
-
-   if(wsCartROM)
-   {
-      if (!libretro_supports_persistent_buffer)
-         free(wsCartROM);
-      wsCartROM = NULL;
-   }
-   MDFNMP_Kill();
+   MDFNI_CloseGame();
 
    if (surf)
    {
@@ -909,8 +895,6 @@ void retro_unload_game(void)
    if (rotate_buf)
       free(rotate_buf);
    rotate_buf = NULL;
-
-   libretro_supports_persistent_buffer = false;
 }
 
 static void update_input(void)
@@ -985,9 +969,7 @@ static void update_input(void)
 #endif
 }
 
-#ifdef DEBUG
 static uint64_t video_frames, audio_frames;
-#endif
 
 void retro_run(void)
 {
@@ -1115,10 +1097,8 @@ void retro_run(void)
          video_cb(NULL, height, width, FB_HEIGHT * RETRO_PIX_BYTES);
    }
 
-#ifdef DEBUG
    video_frames++;
    audio_frames += spec.SoundBufSize;
-#endif
 
    for (total = 0; total < spec.SoundBufSize; )
       total += audio_batch_cb(sound_buf + total*2,
@@ -1184,7 +1164,6 @@ void retro_deinit(void)
       free(rotate_buf);
    rotate_buf = NULL;
 
-#ifdef DEBUG
    if (log_cb)
    {
       log_cb(RETRO_LOG_INFO, "[%s]: Samples / Frame: %.5f\n",
@@ -1192,7 +1171,6 @@ void retro_deinit(void)
       log_cb(RETRO_LOG_INFO, "[%s]: Estimated FPS: %.5f\n",
             MEDNAFEN_CORE_NAME, (double)video_frames * 44100 / audio_frames);
    }
-#endif
 
    libretro_supports_bitmasks = false;
 }
@@ -1211,23 +1189,14 @@ void retro_set_controller_port_device(unsigned in_port, unsigned device) { }
 
 void retro_set_environment(retro_environment_t cb)
 {
-   static const struct retro_system_content_info_override content_overrides[] = {
-      {
-         MEDNAFEN_CORE_EXTENSIONS, /* extensions */
-         false,    /* need_fullpath */
-         true      /* persistent_data */
-      },
-      { NULL, false, false }
-   };
    environ_cb = cb;
 
    libretro_set_core_options(environ_cb);
-   /* Request a persistent content data buffer */
-   environ_cb(RETRO_ENVIRONMENT_SET_CONTENT_INFO_OVERRIDE,
-         (void*)content_overrides);
 }
 
-void retro_set_audio_sample(retro_audio_sample_t cb) { }
+void retro_set_audio_sample(retro_audio_sample_t cb)
+{
+}
 
 void retro_set_audio_sample_batch(retro_audio_sample_batch_t cb)
 {
@@ -1283,7 +1252,7 @@ bool retro_serialize(void *data, size_t size)
    st.malloced       = size;
    st.initial_malloc = 0;
 
-   ret               = MDFNSS_SaveSM(&st, 0, 0, NULL, NULL, NULL);
+   ret = MDFNSS_SaveSM(&st, 0, 0, NULL, NULL, NULL);
 
    memcpy(data, st.data, size);
    free(st.data);
