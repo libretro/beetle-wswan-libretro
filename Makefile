@@ -319,6 +319,25 @@ else ifeq ($(platform), gcw0)
    SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
    FLAGS += -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32r2 -mhard-float
 
+#RETROFW
+else ifeq ($(platform), retrofw)
+   NEED_STEREO_SOUND = 0
+   TARGET := $(TARGET_NAME)_libretro.so
+   CC = /opt/retrofw-toolchain/usr/bin/mipsel-linux-gcc
+   CXX = /opt/retrofw-toolchain/usr/bin/mipsel-linux-g++
+   AR = /opt/retrofw-toolchain/usr/bin/mipsel-linux-ar
+   fpic := -fPIC
+   SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
+   FLAGS += -flto -fwhole-program -fuse-linker-plugin -mplt
+   FLAGS += -fomit-frame-pointer -ffast-math -march=mips32 -mtune=mips32 -mhard-float   
+   FLAGS += -fdata-sections -ffunction-sections
+   FLAGS += -fno-stack-protector -fno-ident
+   FLAGS += -fmerge-all-constants -fno-math-errno
+   FLAGS += -funsafe-math-optimizations -fsingle-precision-constant -fexpensive-optimizations
+   FLAGS += -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-unroll-loops
+   FLAGS += -fmerge-all-constants -fno-math-errno -fno-stack-protector -fno-ident 
+   FLAGS += -DRETROFW 
+   
 # Windows MSVC 2017 all architectures
 else ifneq (,$(findstring windows_msvc2017,$(platform)))
 
@@ -554,6 +573,8 @@ all: $(TARGET)
 
 ifeq ($(DEBUG),1)
    FLAGS += -O0 -g
+else ifeq($(platform), retrofw)
+   FLAGS += -Ofast -DNDEBUG $(EXTRA_GCC_FLAGS)
 else
    FLAGS += -O2 -DNDEBUG $(EXTRA_GCC_FLAGS)
 endif

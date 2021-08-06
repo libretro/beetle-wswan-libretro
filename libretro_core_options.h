@@ -118,7 +118,11 @@ struct retro_core_option_definition option_defs_us[] = {
          { "manual",   "Manual" },
          { NULL, NULL },
       },
-      "disabled"
+#if defined(RETROFW)
+      "manual",
+#else
+      "disabled",
+#endif
    },
    {
       "wswan_frameskip_threshold",
@@ -143,7 +147,11 @@ struct retro_core_option_definition option_defs_us[] = {
          { "60", NULL },
          { NULL, NULL },
       },
+#if defined(RETROFW)
+      "15"
+#else
       "33"
+#endif
    },
    {
       "wswan_sound_sample_rate",
@@ -159,7 +167,11 @@ struct retro_core_option_definition option_defs_us[] = {
          { "384000", NULL },
          { NULL, NULL },
       },
+#if defined(RETROFW)
+      "11025",
+#else
       "44100",
+#endif
    },
    {
       "wswan_gfx_colors",
