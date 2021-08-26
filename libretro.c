@@ -58,7 +58,8 @@ static bool overscan;
 static double last_sound_rate;
 
 static bool rotate_tall               = false;
-static bool rotate_tall_override      = false;
+static bool rotate_portrait_override  = false;
+static bool rotate_landscape_override = false;
 static bool select_pressed_last_frame = false;
 static bool hw_rotate_enabled         = false;
 
@@ -641,15 +642,26 @@ static void check_variables(int startup)
    var.key = "wswan_rotate_display",
    var.value = NULL;
 
-   rotate_tall_override = false;
+   rotate_portrait_override = false;
+   rotate_landscape_override = false;
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
-      if (!strcmp(var.value, "enabled"))
-         rotate_tall_override = true;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
+      if (!strcmp(var.value, "portrait"))
+         rotate_portrait_override = true;
 
-   if (rotate_tall_override && !rotate_tall)
+      if (!strcmp(var.value, "landscape"))
+         rotate_landscape_override = true;
+   }
+
+   if (rotate_portrait_override && !rotate_tall)
    {
       rotate_tall = true;
+      rotate_display();
+   }
+
+   if (rotate_landscape_override && rotate_tall)
+   {
+      rotate_tall = false;
       rotate_display();
    }
 
@@ -949,7 +961,8 @@ static void update_input(void)
    }
 
    select_button = bitmask & (1 << RETRO_DEVICE_ID_JOYPAD_SELECT);
-   if (!rotate_tall_override &&
+   if (!rotate_portrait_override &&
+       !rotate_landscape_override &&
        select_button &&
        !select_pressed_last_frame)
    {

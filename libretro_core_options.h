@@ -55,8 +55,9 @@ struct retro_core_option_definition option_defs_us[] = {
       "Rotate the console screen to achieve the correct layout of 'portrait' oriented games on a conventional (landscape) display. 'Manual' enables rotation via the controller (default button: SELECT).",
       {
          { "manual",  "Manual" },
-         { "enabled", NULL },
-         { NULL, NULL},
+         { "portrait", "Portrait" },
+         { "landscape", "Landscape" },
+         { NULL, NULL },
       },
       "manual",
    },
