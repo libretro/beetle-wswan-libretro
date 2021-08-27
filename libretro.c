@@ -57,9 +57,16 @@ static bool libretro_supports_bitmasks = false;
 static bool overscan;
 static double last_sound_rate;
 
+typedef enum
+{
+   DISPLAY_ROTATION_MANUAL = 0,
+   DISPLAY_ROTATION_PORTRAIT,
+   DISPLAY_ROTATION_LANDSCAPE
+} retro_display_rotation_t;
+
+static retro_display_rotation_t retro_display_rotation = DISPLAY_ROTATION_MANUAL;
+
 static bool rotate_tall               = false;
-static bool rotate_portrait_override  = false;
-static bool rotate_landscape_override = false;
 static bool select_pressed_last_frame = false;
 static bool hw_rotate_enabled         = false;
 
@@ -642,27 +649,34 @@ static void check_variables(int startup)
    var.key = "wswan_rotate_display",
    var.value = NULL;
 
-   rotate_portrait_override = false;
-   rotate_landscape_override = false;
+   retro_display_rotation = DISPLAY_ROTATION_MANUAL;
 
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value) {
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
       if (!strcmp(var.value, "portrait"))
-         rotate_portrait_override = true;
-
-      if (!strcmp(var.value, "landscape"))
-         rotate_landscape_override = true;
+         retro_display_rotation = DISPLAY_ROTATION_PORTRAIT;
+      else if (!strcmp(var.value, "landscape"))
+         retro_display_rotation = DISPLAY_ROTATION_LANDSCAPE;
    }
 
-   if (rotate_portrait_override && !rotate_tall)
+   switch (retro_display_rotation)
    {
-      rotate_tall = true;
-      rotate_display();
-   }
-
-   if (rotate_landscape_override && rotate_tall)
-   {
-      rotate_tall = false;
-      rotate_display();
+      case DISPLAY_ROTATION_PORTRAIT:
+         if (!rotate_tall)
+         {
+            rotate_tall = true;
+            rotate_display();
+         }
+         break;
+      case DISPLAY_ROTATION_LANDSCAPE:
+         if (rotate_tall)
+         {
+            rotate_tall = false;
+            rotate_display();
+         }
+         break;
+      default:
+         break;
    }
 
    var.key = "wswan_rotate_keymap",
@@ -961,8 +975,7 @@ static void update_input(void)
    }
 
    select_button = bitmask & (1 << RETRO_DEVICE_ID_JOYPAD_SELECT);
-   if (!rotate_portrait_override &&
-       !rotate_landscape_override &&
+   if ((retro_display_rotation == DISPLAY_ROTATION_MANUAL) &&
        select_button &&
        !select_pressed_last_frame)
    {
