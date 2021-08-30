@@ -51,12 +51,13 @@ extern "C" {
 struct retro_core_option_definition option_defs_us[] = {
    {
       "wswan_rotate_display",
-      "Rotate Display",
-      "Rotate the console screen to achieve the correct layout of 'portrait' oriented games on a conventional (landscape) display. 'Manual' enables rotation via the controller (default button: SELECT).",
+      "Display Rotation",
+      "Sets the orientation of the console screen. 'Portrait' can be used to achieve the correct layout of 'portrait' oriented games on a conventional (landscape) display. 'Manual' enables rotation via the controller (default button: SELECT).",
       {
-         { "manual",  "Manual" },
-         { "enabled", NULL },
-         { NULL, NULL},
+         { "manual",    "Manual" },
+         { "portrait",  "Portrait" },
+         { "landscape", "Landscape" },
+         { NULL, NULL },
       },
       "manual",
    },
