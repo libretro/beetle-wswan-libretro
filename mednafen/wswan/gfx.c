@@ -212,7 +212,7 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
       memcpy(SpriteTable[!FrameWhichActive], &wsRAM[(SPRBase << 9) + (SpriteStart << 2)], SpriteCountCache[!FrameWhichActive] << 2);
    }
 
-   if(wsLine == 144)
+   else if(wsLine == 144)
    {
       FrameWhichActive = !FrameWhichActive;
       ret = true;
@@ -254,10 +254,7 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
    v30mz_execute(96);
    wsLine = (wsLine + 1) % (MAX(144, LCDVtotal) + 1);
    if(wsLine == LineCompare)
-   {
       WSwan_Interrupt(WSINT_LINE_HIT);
-      //printf("Line hit: %d\n", wsLine);
-   }
 
    v30mz_execute(32);
    WSwan_RTCClock(256);
