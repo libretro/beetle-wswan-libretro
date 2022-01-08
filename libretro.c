@@ -53,6 +53,7 @@ static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
 
 static bool libretro_supports_bitmasks = false;
+static bool libretro_supports_option_categories = false;
 
 static bool overscan;
 static double last_sound_rate;
@@ -1217,7 +1218,9 @@ void retro_set_environment(retro_environment_t cb)
 {
    environ_cb = cb;
 
-   libretro_set_core_options(environ_cb);
+   libretro_supports_option_categories = false;
+   libretro_set_core_options(environ_cb,
+      &libretro_supports_option_categories);
 }
 
 void retro_set_audio_sample(retro_audio_sample_t cb)
