@@ -41,12 +41,12 @@ extern "C" {
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_AR NULL
 #define WSWAN_ROTATE_DISPLAY_INFO_0_AR NULL
-#define OPTION_VAL_MANUAL_AR NULL
+#define OPTION_VAL_MANUAL_AR "يدوي"
 #define OPTION_VAL_LANDSCAPE_AR NULL
 #define OPTION_VAL_PORTRAIT_AR NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_AR NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_AR NULL
-#define OPTION_VAL_AUTO_AR NULL
+#define OPTION_VAL_AUTO_AR "تلقائي"
 #define WSWAN_MONO_PALETTE_LABEL_AR NULL
 #define WSWAN_MONO_PALETTE_INFO_0_AR NULL
 #define OPTION_VAL_DEFAULT_AR NULL
@@ -284,8 +284,8 @@ struct retro_core_options_v2 options_ar = {
 #define OPTION_VAL_VIRTUAL_BOY_AST NULL
 #define WSWAN_GFX_COLORS_LABEL_AST NULL
 #define WSWAN_GFX_COLORS_INFO_0_AST NULL
-#define OPTION_VAL_16BIT_AST NULL
-#define OPTION_VAL_24BIT_AST NULL
+#define OPTION_VAL_16BIT_AST "Miles (16 bits)"
+#define OPTION_VAL_24BIT_AST "Millones (24 bits)"
 #define WSWAN_FRAMESKIP_LABEL_AST NULL
 #define WSWAN_FRAMESKIP_INFO_0_AST NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_AST NULL
@@ -657,21 +657,21 @@ struct retro_core_options_v2 options_ca = {
 
 /* RETRO_LANGUAGE_CHS */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_CHS NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_CHS "显示旋转"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_CHS NULL
-#define OPTION_VAL_MANUAL_CHS NULL
-#define OPTION_VAL_LANDSCAPE_CHS NULL
-#define OPTION_VAL_PORTRAIT_CHS NULL
+#define OPTION_VAL_MANUAL_CHS "手工"
+#define OPTION_VAL_LANDSCAPE_CHS "横向"
+#define OPTION_VAL_PORTRAIT_CHS "纵向"
 #define WSWAN_ROTATE_KEYMAP_LABEL_CHS NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_CHS NULL
-#define OPTION_VAL_AUTO_CHS NULL
-#define WSWAN_MONO_PALETTE_LABEL_CHS NULL
-#define WSWAN_MONO_PALETTE_INFO_0_CHS NULL
-#define OPTION_VAL_DEFAULT_CHS NULL
+#define WSWAN_ROTATE_KEYMAP_INFO_0_CHS "选择首选按钮映射。“自动”将调整按钮映射以匹配当前显示旋转。"
+#define OPTION_VAL_AUTO_CHS "自动"
+#define WSWAN_MONO_PALETTE_LABEL_CHS "色板"
+#define WSWAN_MONO_PALETTE_INFO_0_CHS "选择WonderSwan (Mono) 游戏的颜色化。'WS' 调色板将模仿原始WonderSwan 硬件的显示。"
+#define OPTION_VAL_DEFAULT_CHS "灰阶"
 #define OPTION_VAL_WONDERSWAN_CHS NULL
 #define OPTION_VAL_WONDESWAN_COLOR_CHS NULL
 #define OPTION_VAL_SWANCRYSTAL_CHS NULL
-#define OPTION_VAL_GB_DMG_CHS NULL
+#define OPTION_VAL_GB_DMG_CHS "Game Boy DMG（元祖GB）"
 #define OPTION_VAL_GB_POCKET_CHS NULL
 #define OPTION_VAL_GB_LIGHT_CHS NULL
 #define OPTION_VAL_BLOSSOM_PINK_CHS NULL
@@ -694,16 +694,16 @@ struct retro_core_options_v2 options_ca = {
 #define OPTION_VAL_TI_83_CHS NULL
 #define OPTION_VAL_TRAVEL_WOOD_CHS NULL
 #define OPTION_VAL_VIRTUAL_BOY_CHS NULL
-#define WSWAN_GFX_COLORS_LABEL_CHS NULL
-#define WSWAN_GFX_COLORS_INFO_0_CHS NULL
-#define OPTION_VAL_16BIT_CHS NULL
-#define OPTION_VAL_24BIT_CHS NULL
-#define WSWAN_FRAMESKIP_LABEL_CHS NULL
-#define WSWAN_FRAMESKIP_INFO_0_CHS NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHS NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHS NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_CHS NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CHS NULL
+#define WSWAN_GFX_COLORS_LABEL_CHS "色深(需要重启)"
+#define WSWAN_GFX_COLORS_INFO_0_CHS "24-bit 较慢且无法在所有平台上使用。"
+#define OPTION_VAL_16BIT_CHS "千位级(16-bit)"
+#define OPTION_VAL_24BIT_CHS "百万位级(24-bit)"
+#define WSWAN_FRAMESKIP_LABEL_CHS "跳帧"
+#define WSWAN_FRAMESKIP_INFO_0_CHS "跳过帧以避免运行下的音频缓冲区(崩溃)。提高性能以牺牲视觉性能。 “自动”跳板帧在前端建议时。“手动”使用了“Frameskip 阈值(%)”设置。"
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHS "跳帧阈值(%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHS "当'Frameskip'设置为“手动”时，这将指定音频缓冲区占用阈值(百分比)，低于此值的帧将被跳过。 较高的值会导致帧更频繁地丢失，从而降低破碎的风险。"
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_CHS "声音输出采样率"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CHS "较高的数值略微提高了音质，牺牲了性能。"
 
 struct retro_core_option_v2_category option_cats_chs[] = {
    { NULL, NULL, NULL },
@@ -870,7 +870,7 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_PORTRAIT_CHT NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_CHT NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_CHT NULL
-#define OPTION_VAL_AUTO_CHT NULL
+#define OPTION_VAL_AUTO_CHT "自動"
 #define WSWAN_MONO_PALETTE_LABEL_CHT NULL
 #define WSWAN_MONO_PALETTE_INFO_0_CHT NULL
 #define OPTION_VAL_DEFAULT_CHT NULL
@@ -1687,17 +1687,17 @@ struct retro_core_options_v2 options_da = {
 
 /* RETRO_LANGUAGE_DE */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_DE NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_DE "Bildschirmrotation"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_DE NULL
-#define OPTION_VAL_MANUAL_DE NULL
+#define OPTION_VAL_MANUAL_DE "Manuell"
 #define OPTION_VAL_LANDSCAPE_DE NULL
 #define OPTION_VAL_PORTRAIT_DE NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_DE NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_DE NULL
-#define OPTION_VAL_AUTO_DE NULL
-#define WSWAN_MONO_PALETTE_LABEL_DE NULL
+#define OPTION_VAL_AUTO_DE "Automatisch"
+#define WSWAN_MONO_PALETTE_LABEL_DE "Farbpalette"
 #define WSWAN_MONO_PALETTE_INFO_0_DE NULL
-#define OPTION_VAL_DEFAULT_DE NULL
+#define OPTION_VAL_DEFAULT_DE "Graustufen"
 #define OPTION_VAL_WONDERSWAN_DE NULL
 #define OPTION_VAL_WONDESWAN_COLOR_DE NULL
 #define OPTION_VAL_SWANCRYSTAL_DE NULL
@@ -1724,13 +1724,13 @@ struct retro_core_options_v2 options_da = {
 #define OPTION_VAL_TI_83_DE NULL
 #define OPTION_VAL_TRAVEL_WOOD_DE NULL
 #define OPTION_VAL_VIRTUAL_BOY_DE NULL
-#define WSWAN_GFX_COLORS_LABEL_DE NULL
+#define WSWAN_GFX_COLORS_LABEL_DE "Farbtiefe (Neustart erforderlich)"
 #define WSWAN_GFX_COLORS_INFO_0_DE NULL
-#define OPTION_VAL_16BIT_DE NULL
-#define OPTION_VAL_24BIT_DE NULL
+#define OPTION_VAL_16BIT_DE "Tausende (16 Bit)"
+#define OPTION_VAL_24BIT_DE "Millionen (24 Bit)"
 #define WSWAN_FRAMESKIP_LABEL_DE NULL
-#define WSWAN_FRAMESKIP_INFO_0_DE NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_DE NULL
+#define WSWAN_FRAMESKIP_INFO_0_DE "Überspringen Sie Frames um zu vermeiden, dass Audio-Puffer unterlaufen (Knistern). Verbessert die Leistung auf Kosten der visuellen Glätte. 'Auto' überspringt Frames wenn vom Frontend empfohlen wird. 'Manuell' verwendet die Einstellung 'Frameskip Grenzwert (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_DE "Frameskip Grenzwert (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_DE NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_DE NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_DE NULL
@@ -1895,13 +1895,13 @@ struct retro_core_options_v2 options_de = {
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_EL NULL
 #define WSWAN_ROTATE_DISPLAY_INFO_0_EL NULL
-#define OPTION_VAL_MANUAL_EL NULL
+#define OPTION_VAL_MANUAL_EL "Χειροκίνητο"
 #define OPTION_VAL_LANDSCAPE_EL NULL
 #define OPTION_VAL_PORTRAIT_EL NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_EL NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_EL NULL
-#define OPTION_VAL_AUTO_EL NULL
-#define WSWAN_MONO_PALETTE_LABEL_EL NULL
+#define OPTION_VAL_AUTO_EL "Αυτόματο"
+#define WSWAN_MONO_PALETTE_LABEL_EL "Παλέτα Χρωμάτων"
 #define WSWAN_MONO_PALETTE_INFO_0_EL NULL
 #define OPTION_VAL_DEFAULT_EL NULL
 #define OPTION_VAL_WONDERSWAN_EL NULL
@@ -2305,53 +2305,53 @@ struct retro_core_options_v2 options_eo = {
 
 /* RETRO_LANGUAGE_ES */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_ES NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_ES NULL
-#define OPTION_VAL_MANUAL_ES NULL
-#define OPTION_VAL_LANDSCAPE_ES NULL
-#define OPTION_VAL_PORTRAIT_ES NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_ES NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_ES NULL
-#define OPTION_VAL_AUTO_ES NULL
-#define WSWAN_MONO_PALETTE_LABEL_ES NULL
-#define WSWAN_MONO_PALETTE_INFO_0_ES NULL
-#define OPTION_VAL_DEFAULT_ES NULL
-#define OPTION_VAL_WONDERSWAN_ES NULL
-#define OPTION_VAL_WONDESWAN_COLOR_ES NULL
-#define OPTION_VAL_SWANCRYSTAL_ES NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_ES "Rotación de imagen"
+#define WSWAN_ROTATE_DISPLAY_INFO_0_ES "Selecciona la orientación de la pantalla de la consola. «Vertical» ofrece la distribución correcta para los juegos con orientación vertical en una pantalla convencional. «Selección manual» permite rotar la pantalla con un botón del mando (botón predeterminado: SELECT)."
+#define OPTION_VAL_MANUAL_ES "Selección manual"
+#define OPTION_VAL_LANDSCAPE_ES "Horizontal"
+#define OPTION_VAL_PORTRAIT_ES "Vertical"
+#define WSWAN_ROTATE_KEYMAP_LABEL_ES "Girar la asignación de botones"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_ES "Selecciona la asignación de botones preferida. «Selección automática» ajustará la asignación de los botones según la rotación actual de la imagen."
+#define OPTION_VAL_AUTO_ES "Selección automática"
+#define WSWAN_MONO_PALETTE_LABEL_ES "Paleta de colores"
+#define WSWAN_MONO_PALETTE_INFO_0_ES "Selecciona la coloración de los juegos para WonderSwan (Mono). Las opciones «WS» imitan la pantalla de las WonderSwan originales."
+#define OPTION_VAL_DEFAULT_ES "Escala de grises"
+#define OPTION_VAL_WONDERSWAN_ES "WS (WonderSwan)"
+#define OPTION_VAL_WONDESWAN_COLOR_ES "WS (WonderSwan Color)"
+#define OPTION_VAL_SWANCRYSTAL_ES "WS (SwanCrystal)"
 #define OPTION_VAL_GB_DMG_ES NULL
 #define OPTION_VAL_GB_POCKET_ES NULL
 #define OPTION_VAL_GB_LIGHT_ES NULL
-#define OPTION_VAL_BLOSSOM_PINK_ES NULL
-#define OPTION_VAL_BUBBLES_BLUE_ES NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_ES NULL
+#define OPTION_VAL_BLOSSOM_PINK_ES "Rosa Pétalo"
+#define OPTION_VAL_BUBBLES_BLUE_ES "Azul Burbuja"
+#define OPTION_VAL_BUTTERCUP_GREEN_ES "Verde Cactus"
 #define OPTION_VAL_DIGIVICE_ES NULL
 #define OPTION_VAL_GAME_COM_ES NULL
 #define OPTION_VAL_GAMEKING_ES NULL
 #define OPTION_VAL_GAME_MASTER_ES NULL
-#define OPTION_VAL_GOLDEN_WILD_ES NULL
-#define OPTION_VAL_GREENSCALE_ES NULL
-#define OPTION_VAL_HOKAGE_ORANGE_ES NULL
-#define OPTION_VAL_LABO_FAWN_ES NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_ES NULL
+#define OPTION_VAL_GOLDEN_WILD_ES "Dorado Wild"
+#define OPTION_VAL_GREENSCALE_ES "Escala de verdes"
+#define OPTION_VAL_HOKAGE_ORANGE_ES "Naranja Hokage"
+#define OPTION_VAL_LABO_FAWN_ES "Beige Labo"
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_ES "Súper Saiyan legendario"
 #define OPTION_VAL_MICROVISION_ES NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_ES NULL
-#define OPTION_VAL_ODYSSEY_GOLD_ES NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_ES NULL
-#define OPTION_VAL_SLIME_BLUE_ES NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_ES "Dorado Million Live"
+#define OPTION_VAL_ODYSSEY_GOLD_ES "Dorado Odyssey"
+#define OPTION_VAL_SHINY_SKY_BLUE_ES "Azul cielo SHINY"
+#define OPTION_VAL_SLIME_BLUE_ES "Azul limo"
 #define OPTION_VAL_TI_83_ES NULL
-#define OPTION_VAL_TRAVEL_WOOD_ES NULL
+#define OPTION_VAL_TRAVEL_WOOD_ES "Madera de álbum de fotos"
 #define OPTION_VAL_VIRTUAL_BOY_ES NULL
-#define WSWAN_GFX_COLORS_LABEL_ES NULL
-#define WSWAN_GFX_COLORS_INFO_0_ES NULL
-#define OPTION_VAL_16BIT_ES NULL
-#define OPTION_VAL_24BIT_ES NULL
-#define WSWAN_FRAMESKIP_LABEL_ES NULL
-#define WSWAN_FRAMESKIP_INFO_0_ES NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_ES NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_ES NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_ES NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_ES NULL
+#define WSWAN_GFX_COLORS_LABEL_ES "Profundidad de color (es necesario reiniciar)"
+#define WSWAN_GFX_COLORS_INFO_0_ES "El modo a 24 bits es más lento y no se encuentra disponible en todas las plataformas."
+#define OPTION_VAL_16BIT_ES "Miles (16 bits)"
+#define OPTION_VAL_24BIT_ES "Millones (24 bits)"
+#define WSWAN_FRAMESKIP_LABEL_ES "Omisión de fotogramas"
+#define WSWAN_FRAMESKIP_INFO_0_ES "Omite fotogramas para no saturar el búfer de audio (chasquidos en el sonido). Mejora el rendimiento a costa de perder fluidez visual. Selección automática omite fotogramas según lo aconseje el front-end. El valor Manual utiliza el ajuste Umbral de omisión de fotogramas (%)."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_ES "Umbral de omisión de fotogramas (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_ES "Cuando la omisión de fotogramas esté configurada como Manual, este ajuste especifica el umbral de ocupación del búfer de audio (en porcentaje) por debajo del cual se omitirán fotogramas si el valor. Un valor más elevado reduce el riesgo de chasquidos omitiendo fotogramas con una mayor frecuencia."
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_ES "Frecuencia de muestreo de salida de audio"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_ES "Un valor más alto mejorará levemente la calidad del sonido, a costa del rendimiento."
 
 struct retro_core_option_v2_category option_cats_es[] = {
    { NULL, NULL, NULL },
@@ -2717,17 +2717,17 @@ struct retro_core_options_v2 options_fa = {
 
 /* RETRO_LANGUAGE_FI */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_FI NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_FI "Näytön kierto"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_FI NULL
-#define OPTION_VAL_MANUAL_FI NULL
+#define OPTION_VAL_MANUAL_FI "Manuaalinen"
 #define OPTION_VAL_LANDSCAPE_FI NULL
 #define OPTION_VAL_PORTRAIT_FI NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_FI NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_FI NULL
-#define OPTION_VAL_AUTO_FI NULL
-#define WSWAN_MONO_PALETTE_LABEL_FI NULL
+#define OPTION_VAL_AUTO_FI "Automaattinen"
+#define WSWAN_MONO_PALETTE_LABEL_FI "Väripaletti"
 #define WSWAN_MONO_PALETTE_INFO_0_FI NULL
-#define OPTION_VAL_DEFAULT_FI NULL
+#define OPTION_VAL_DEFAULT_FI "Harmaasävy"
 #define OPTION_VAL_WONDERSWAN_FI NULL
 #define OPTION_VAL_WONDESWAN_COLOR_FI NULL
 #define OPTION_VAL_SWANCRYSTAL_FI NULL
@@ -2754,13 +2754,13 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_TI_83_FI NULL
 #define OPTION_VAL_TRAVEL_WOOD_FI NULL
 #define OPTION_VAL_VIRTUAL_BOY_FI NULL
-#define WSWAN_GFX_COLORS_LABEL_FI NULL
+#define WSWAN_GFX_COLORS_LABEL_FI "Värisyvyys (Uudelleenkäynnistys vaaditaan)"
 #define WSWAN_GFX_COLORS_INFO_0_FI NULL
-#define OPTION_VAL_16BIT_FI NULL
-#define OPTION_VAL_24BIT_FI NULL
-#define WSWAN_FRAMESKIP_LABEL_FI NULL
-#define WSWAN_FRAMESKIP_INFO_0_FI NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FI NULL
+#define OPTION_VAL_16BIT_FI "Tuhansissa (16-bit)"
+#define OPTION_VAL_24BIT_FI "Miljoonissa (24-bittinen)"
+#define WSWAN_FRAMESKIP_LABEL_FI "Kuvanohitus"
+#define WSWAN_FRAMESKIP_INFO_0_FI "Ohita kuvia välttääksesi äänipuskurin ali ajon (säröily). Parantaa suorituskykyä visuaalisen tasaisuuden kustannuksella. \"Automaatti\" ohittaa kehykset käyttöliittymän asetusten mukaan. \"Manuaalinen\" käyttää \"Kuvienohituksen arvo (%)\" -asetusta."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FI "Kuvienohituksen arvo (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_FI NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_FI NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_FI NULL
@@ -2923,53 +2923,53 @@ struct retro_core_options_v2 options_fi = {
 
 /* RETRO_LANGUAGE_FR */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_FR NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_FR NULL
-#define OPTION_VAL_MANUAL_FR NULL
-#define OPTION_VAL_LANDSCAPE_FR NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_FR "Rotation d'écran"
+#define WSWAN_ROTATE_DISPLAY_INFO_0_FR "Choisir l'orientation d'écran de la console. 'Portrait' peut être utilisé pour obtenir la bonne mise en page pour les jeux en mode portrait sur un affichage conventionnel (en mode paysage). 'Manuel' active la rotation via la manette (touche par défaut : SELECT)."
+#define OPTION_VAL_MANUAL_FR "Manuelle"
+#define OPTION_VAL_LANDSCAPE_FR "Paysage"
 #define OPTION_VAL_PORTRAIT_FR NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_FR NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_FR NULL
-#define OPTION_VAL_AUTO_FR NULL
-#define WSWAN_MONO_PALETTE_LABEL_FR NULL
-#define WSWAN_MONO_PALETTE_INFO_0_FR NULL
-#define OPTION_VAL_DEFAULT_FR NULL
+#define WSWAN_ROTATE_KEYMAP_LABEL_FR "Faire pivoter le mappage des touches"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_FR "Choisir le mappage des touches préféré. 'Automatiquement' ajuste le mappage des touches pour correspondre à la rotation actuelle de l'affichage."
+#define OPTION_VAL_AUTO_FR "Automatiquement"
+#define WSWAN_MONO_PALETTE_LABEL_FR "Palette de couleurs"
+#define WSWAN_MONO_PALETTE_INFO_0_FR "Choisir la colorisation des jeux WonderSwan (Mono), les palettes 'WS' imitent l'affichage du matériel original de la WonderSwan."
+#define OPTION_VAL_DEFAULT_FR "Niveaux de gris"
 #define OPTION_VAL_WONDERSWAN_FR NULL
 #define OPTION_VAL_WONDESWAN_COLOR_FR NULL
 #define OPTION_VAL_SWANCRYSTAL_FR NULL
-#define OPTION_VAL_GB_DMG_FR NULL
+#define OPTION_VAL_GB_DMG_FR "DMG Game Boy"
 #define OPTION_VAL_GB_POCKET_FR NULL
 #define OPTION_VAL_GB_LIGHT_FR NULL
-#define OPTION_VAL_BLOSSOM_PINK_FR NULL
-#define OPTION_VAL_BUBBLES_BLUE_FR NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_FR NULL
+#define OPTION_VAL_BLOSSOM_PINK_FR "Rose Belle"
+#define OPTION_VAL_BUBBLES_BLUE_FR "Bleu Bulle"
+#define OPTION_VAL_BUTTERCUP_GREEN_FR "Vert Rebelle"
 #define OPTION_VAL_DIGIVICE_FR NULL
 #define OPTION_VAL_GAME_COM_FR NULL
 #define OPTION_VAL_GAMEKING_FR NULL
 #define OPTION_VAL_GAME_MASTER_FR NULL
-#define OPTION_VAL_GOLDEN_WILD_FR NULL
-#define OPTION_VAL_GREENSCALE_FR NULL
-#define OPTION_VAL_HOKAGE_ORANGE_FR NULL
-#define OPTION_VAL_LABO_FAWN_FR NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_FR NULL
+#define OPTION_VAL_GOLDEN_WILD_FR "Doré Wild"
+#define OPTION_VAL_GREENSCALE_FR "Niveaux de vert"
+#define OPTION_VAL_HOKAGE_ORANGE_FR "Orange Hokage"
+#define OPTION_VAL_LABO_FAWN_FR "Faon Labo"
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_FR "Super Saiyan Légendaire"
 #define OPTION_VAL_MICROVISION_FR NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_FR NULL
-#define OPTION_VAL_ODYSSEY_GOLD_FR NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_FR NULL
-#define OPTION_VAL_SLIME_BLUE_FR NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_FR "Or Million Live"
+#define OPTION_VAL_ODYSSEY_GOLD_FR "Or Odyssey"
+#define OPTION_VAL_SHINY_SKY_BLUE_FR "Bleu Shiny Sky"
+#define OPTION_VAL_SLIME_BLUE_FR "Bleu Slime"
 #define OPTION_VAL_TI_83_FR NULL
-#define OPTION_VAL_TRAVEL_WOOD_FR NULL
+#define OPTION_VAL_TRAVEL_WOOD_FR "Bois des voyages"
 #define OPTION_VAL_VIRTUAL_BOY_FR NULL
-#define WSWAN_GFX_COLORS_LABEL_FR NULL
-#define WSWAN_GFX_COLORS_INFO_0_FR NULL
-#define OPTION_VAL_16BIT_FR NULL
-#define OPTION_VAL_24BIT_FR NULL
-#define WSWAN_FRAMESKIP_LABEL_FR NULL
-#define WSWAN_FRAMESKIP_INFO_0_FR NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FR NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_FR NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_FR NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_FR NULL
+#define WSWAN_GFX_COLORS_LABEL_FR "Profondeur des couleurs (Redémarrage requis)"
+#define WSWAN_GFX_COLORS_INFO_0_FR "24 bits est plus lent et n'est pas disponibles sur toutes les plateformes."
+#define OPTION_VAL_16BIT_FR "Milliers (16 bits)"
+#define OPTION_VAL_24BIT_FR "Millions (24 bits)"
+#define WSWAN_FRAMESKIP_LABEL_FR "Saut d'images"
+#define WSWAN_FRAMESKIP_INFO_0_FR "Sauter des images pour éviter que le tampon audio ne soit sous-exécuté (crépitements). Améliore les performances au détriment de la fluidité visuelle. 'Auto' saute des images lorsque l'interface le conseille. 'Manuel' utilise le paramètre 'Seuil de saut d'images (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FR "Seuil de saut d'images (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_FR "Lorsque 'Saut d'images' est réglé sur 'Manuel', cette option spécifie le seuil d'occupation du tampon audio (pourcentage) en dessous duquel des images seront sautées. Des valeurs plus élevées réduisent le risque de crépitements en faisant sauter des images plus fréquemment."
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_FR "Fréquence d'échantillonnage de sortie audio"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_FR "Des valeurs plus élevées améliorent légèrement la qualité sonore au détriment des performances."
 
 struct retro_core_option_v2_category option_cats_fr[] = {
    { NULL, NULL, NULL },
@@ -3543,7 +3543,7 @@ struct retro_core_options_v2 options_he = {
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_HU NULL
 #define WSWAN_ROTATE_DISPLAY_INFO_0_HU NULL
-#define OPTION_VAL_MANUAL_HU NULL
+#define OPTION_VAL_MANUAL_HU "Kézi"
 #define OPTION_VAL_LANDSCAPE_HU NULL
 #define OPTION_VAL_PORTRAIT_HU NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_HU NULL
@@ -3953,17 +3953,17 @@ struct retro_core_options_v2 options_id = {
 
 /* RETRO_LANGUAGE_IT */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_IT NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_IT NULL
-#define OPTION_VAL_MANUAL_IT NULL
-#define OPTION_VAL_LANDSCAPE_IT NULL
-#define OPTION_VAL_PORTRAIT_IT NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_IT NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_IT NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_IT "Rotazione Display"
+#define WSWAN_ROTATE_DISPLAY_INFO_0_IT "Scegli l'orientamento dello schermo della console. 'Portrait' può essere utilizzato per ottenere il corretto layout dei giochi orientati al ritratto su un display convenzionale (orizzontale). 'Manuale' abilita la rotazione tramite il controller (pulsante predefinito: SELECT)."
+#define OPTION_VAL_MANUAL_IT "Manuale"
+#define OPTION_VAL_LANDSCAPE_IT "Orizzontale"
+#define OPTION_VAL_PORTRAIT_IT "Verticale"
+#define WSWAN_ROTATE_KEYMAP_LABEL_IT "Mapping Pulsante Di Rotazione"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_IT "Scegli la mappatura dei pulsanti preferiti. 'Auto' regola la mappatura dei pulsanti in base alla rotazione corrente del display."
 #define OPTION_VAL_AUTO_IT NULL
-#define WSWAN_MONO_PALETTE_LABEL_IT NULL
-#define WSWAN_MONO_PALETTE_INFO_0_IT NULL
-#define OPTION_VAL_DEFAULT_IT NULL
+#define WSWAN_MONO_PALETTE_LABEL_IT "Tavolozza Colore"
+#define WSWAN_MONO_PALETTE_INFO_0_IT "Scegli la colorazione dei giochi WonderSwan (Mono). Le tavolozze 'WS' imitano il display dell'hardware originale WonderSwan."
+#define OPTION_VAL_DEFAULT_IT "Scala di grigi"
 #define OPTION_VAL_WONDERSWAN_IT NULL
 #define OPTION_VAL_WONDESWAN_COLOR_IT NULL
 #define OPTION_VAL_SWANCRYSTAL_IT NULL
@@ -3971,8 +3971,8 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_GB_POCKET_IT NULL
 #define OPTION_VAL_GB_LIGHT_IT NULL
 #define OPTION_VAL_BLOSSOM_PINK_IT NULL
-#define OPTION_VAL_BUBBLES_BLUE_IT NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_IT NULL
+#define OPTION_VAL_BUBBLES_BLUE_IT "Blu Bolle"
+#define OPTION_VAL_BUTTERCUP_GREEN_IT "Buttercup Verde"
 #define OPTION_VAL_DIGIVICE_IT NULL
 #define OPTION_VAL_GAME_COM_IT NULL
 #define OPTION_VAL_GAMEKING_IT NULL
@@ -3981,7 +3981,7 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_GREENSCALE_IT NULL
 #define OPTION_VAL_HOKAGE_ORANGE_IT NULL
 #define OPTION_VAL_LABO_FAWN_IT NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_IT NULL
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_IT "Super Saiyan Leggendario"
 #define OPTION_VAL_MICROVISION_IT NULL
 #define OPTION_VAL_MILLION_LIVE_GOLD_IT NULL
 #define OPTION_VAL_ODYSSEY_GOLD_IT NULL
@@ -3990,16 +3990,16 @@ struct retro_core_options_v2 options_id = {
 #define OPTION_VAL_TI_83_IT NULL
 #define OPTION_VAL_TRAVEL_WOOD_IT NULL
 #define OPTION_VAL_VIRTUAL_BOY_IT NULL
-#define WSWAN_GFX_COLORS_LABEL_IT NULL
-#define WSWAN_GFX_COLORS_INFO_0_IT NULL
-#define OPTION_VAL_16BIT_IT NULL
-#define OPTION_VAL_24BIT_IT NULL
+#define WSWAN_GFX_COLORS_LABEL_IT "Profondità Colore (Riavvio Richiesto)"
+#define WSWAN_GFX_COLORS_INFO_0_IT "24 bit è più lento e non disponibile su tutte le piattaforme."
+#define OPTION_VAL_16BIT_IT "Migliaia (16-bit)"
+#define OPTION_VAL_24BIT_IT "Milioni (24-bit)"
 #define WSWAN_FRAMESKIP_LABEL_IT NULL
-#define WSWAN_FRAMESKIP_INFO_0_IT NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_IT NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_IT NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_IT NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_IT NULL
+#define WSWAN_FRAMESKIP_INFO_0_IT "Salta i fotogrammi per evitare la sottoesecuzione del buffer audio (crackling). Migliora le prestazioni a scapito della fluidità visiva. 'Auto' salta i quadri quando consigliato dal frontend. 'Manuale' utilizza l'impostazione 'Frameskip Threshold (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_IT "Soglia salto fotogrammi (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_IT "Quando 'Frameskip' è impostato a 'Manuale', specifica la soglia di occupazione del buffer audio (percentuale) al di sotto della quale i quadri verranno saltati. Valori più elevati riducono il rischio di rompere causando un calo più frequente dei fotogrammi."
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_IT "Campionatura Uscita Suono"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_IT "Valori più elevati migliorano leggermente la qualità del suono a scapito delle prestazioni."
 
 struct retro_core_option_v2_category option_cats_it[] = {
    { NULL, NULL, NULL },
@@ -4159,14 +4159,14 @@ struct retro_core_options_v2 options_it = {
 
 /* RETRO_LANGUAGE_JA */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_JA NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_JA "ディスプレイの回転"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_JA NULL
-#define OPTION_VAL_MANUAL_JA NULL
+#define OPTION_VAL_MANUAL_JA "手動"
 #define OPTION_VAL_LANDSCAPE_JA NULL
 #define OPTION_VAL_PORTRAIT_JA NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_JA NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_JA NULL
-#define OPTION_VAL_AUTO_JA NULL
+#define OPTION_VAL_AUTO_JA "自動"
 #define WSWAN_MONO_PALETTE_LABEL_JA NULL
 #define WSWAN_MONO_PALETTE_INFO_0_JA NULL
 #define OPTION_VAL_DEFAULT_JA NULL
@@ -4196,13 +4196,13 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_TI_83_JA NULL
 #define OPTION_VAL_TRAVEL_WOOD_JA NULL
 #define OPTION_VAL_VIRTUAL_BOY_JA NULL
-#define WSWAN_GFX_COLORS_LABEL_JA NULL
+#define WSWAN_GFX_COLORS_LABEL_JA "色深度 (再起動が必要)"
 #define WSWAN_GFX_COLORS_INFO_0_JA NULL
-#define OPTION_VAL_16BIT_JA NULL
-#define OPTION_VAL_24BIT_JA NULL
-#define WSWAN_FRAMESKIP_LABEL_JA NULL
-#define WSWAN_FRAMESKIP_INFO_0_JA NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_JA NULL
+#define OPTION_VAL_16BIT_JA "数千 (16ビット)"
+#define OPTION_VAL_24BIT_JA "数百万 (24ビット)"
+#define WSWAN_FRAMESKIP_LABEL_JA "フレームスキップ"
+#define WSWAN_FRAMESKIP_INFO_0_JA "フレームをスキップしてオーディオバッファアンダーラン (音割れ) を回避します。視覚的な滑らかさを犠牲にしてパフォーマンスを向上させます。 「自動」は、フロントエンドにアドバイスされたときにフレームをスキップします。「マニュアル」は、「フレームスキップ閾値 (%)」設定を使用します。"
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_JA "フレームスキップ閾値 (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_JA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_JA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_JA NULL
@@ -4365,53 +4365,53 @@ struct retro_core_options_v2 options_ja = {
 
 /* RETRO_LANGUAGE_KO */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_KO NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_KO NULL
-#define OPTION_VAL_MANUAL_KO NULL
-#define OPTION_VAL_LANDSCAPE_KO NULL
-#define OPTION_VAL_PORTRAIT_KO NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_KO NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_KO NULL
-#define OPTION_VAL_AUTO_KO NULL
-#define WSWAN_MONO_PALETTE_LABEL_KO NULL
-#define WSWAN_MONO_PALETTE_INFO_0_KO NULL
-#define OPTION_VAL_DEFAULT_KO NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_KO "화면 회전"
+#define WSWAN_ROTATE_DISPLAY_INFO_0_KO "콘솔 화면의 방향을 선택합니다. '세로'를 선택하면 일반적인(가로) 화면에서 세로 방향을 사용하는 게임을 올바르게 표시할 수 있습니다. '수동'을 선택하면 컨트롤러로 방향을 전환할 수 있습니다(기본 버튼: 선택)."
+#define OPTION_VAL_MANUAL_KO "수동"
+#define OPTION_VAL_LANDSCAPE_KO "가로"
+#define OPTION_VAL_PORTRAIT_KO "세로"
+#define WSWAN_ROTATE_KEYMAP_LABEL_KO "버튼 매핑 회전"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_KO "선호하는 버튼 매핑 방식을 선택합니다. '자동' 선택 시 버튼 매핑을 화면 회전 방향에 따라 조정합니다."
+#define OPTION_VAL_AUTO_KO "자동"
+#define WSWAN_MONO_PALETTE_LABEL_KO "색상 팔레트"
+#define WSWAN_MONO_PALETTE_INFO_0_KO "WonderSwan(흑백) 게임들의 색상화 방식을 선택합니다. 'WS' 팔레트들은 원본 WonderSwan 하드웨어의 색상을 흉내냅니다."
+#define OPTION_VAL_DEFAULT_KO "흑백"
 #define OPTION_VAL_WONDERSWAN_KO NULL
 #define OPTION_VAL_WONDESWAN_COLOR_KO NULL
 #define OPTION_VAL_SWANCRYSTAL_KO NULL
 #define OPTION_VAL_GB_DMG_KO NULL
 #define OPTION_VAL_GB_POCKET_KO NULL
 #define OPTION_VAL_GB_LIGHT_KO NULL
-#define OPTION_VAL_BLOSSOM_PINK_KO NULL
-#define OPTION_VAL_BUBBLES_BLUE_KO NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_KO NULL
-#define OPTION_VAL_DIGIVICE_KO NULL
+#define OPTION_VAL_BLOSSOM_PINK_KO "블로섬 핑크"
+#define OPTION_VAL_BUBBLES_BLUE_KO "버블 블루"
+#define OPTION_VAL_BUTTERCUP_GREEN_KO "버터컵 그린"
+#define OPTION_VAL_DIGIVICE_KO "디지바이스"
 #define OPTION_VAL_GAME_COM_KO NULL
 #define OPTION_VAL_GAMEKING_KO NULL
 #define OPTION_VAL_GAME_MASTER_KO NULL
-#define OPTION_VAL_GOLDEN_WILD_KO NULL
-#define OPTION_VAL_GREENSCALE_KO NULL
-#define OPTION_VAL_HOKAGE_ORANGE_KO NULL
-#define OPTION_VAL_LABO_FAWN_KO NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_KO NULL
+#define OPTION_VAL_GOLDEN_WILD_KO "골든 와일드"
+#define OPTION_VAL_GREENSCALE_KO "초록 단색"
+#define OPTION_VAL_HOKAGE_ORANGE_KO "호카게 오렌지"
+#define OPTION_VAL_LABO_FAWN_KO "라보 황갈색"
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_KO "전설의 슈퍼 사이어인"
 #define OPTION_VAL_MICROVISION_KO NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_KO NULL
-#define OPTION_VAL_ODYSSEY_GOLD_KO NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_KO NULL
-#define OPTION_VAL_SLIME_BLUE_KO NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_KO "밀리언 라이브 골드"
+#define OPTION_VAL_ODYSSEY_GOLD_KO "오디세이 골드"
+#define OPTION_VAL_SHINY_SKY_BLUE_KO "샤이니 스카이 블루"
+#define OPTION_VAL_SLIME_BLUE_KO "슬라임 블루"
 #define OPTION_VAL_TI_83_KO NULL
-#define OPTION_VAL_TRAVEL_WOOD_KO NULL
-#define OPTION_VAL_VIRTUAL_BOY_KO NULL
-#define WSWAN_GFX_COLORS_LABEL_KO NULL
-#define WSWAN_GFX_COLORS_INFO_0_KO NULL
-#define OPTION_VAL_16BIT_KO NULL
-#define OPTION_VAL_24BIT_KO NULL
-#define WSWAN_FRAMESKIP_LABEL_KO NULL
-#define WSWAN_FRAMESKIP_INFO_0_KO NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_KO NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_KO NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_KO NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_KO NULL
+#define OPTION_VAL_TRAVEL_WOOD_KO "낡은 여행 사진"
+#define OPTION_VAL_VIRTUAL_BOY_KO "버추얼 보이"
+#define WSWAN_GFX_COLORS_LABEL_KO "색 깊이 (재시작 필요)"
+#define WSWAN_GFX_COLORS_INFO_0_KO "24비트는 느리며 일부 플랫폼에서는 지원되지 않습니다."
+#define OPTION_VAL_16BIT_KO "수천가지 (16비트)"
+#define OPTION_VAL_24BIT_KO "수백만가지 (24비트)"
+#define WSWAN_FRAMESKIP_LABEL_KO "프레임 스킵"
+#define WSWAN_FRAMESKIP_INFO_0_KO "오디오 버퍼 언더런(소리깨짐) 을 줄이기 위해 프레임 건너뛰기를 합니다. 시각적인 부드러움을 포기하는 대신 성능이 향상됩니다. '자동'은 프론트엔드의 추천값으로 실행되고 '사용자 설정'은 '프레임 스킵 임계값(%)' 설정을 이용해 실행됩니다."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_KO "프레임 스킵 임계값 (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_KO "'프레임 스킵'이 '수동'일 경우 프레임 스킵을 수행할 오디오 버퍼 점유 임계점(퍼센트)을 설정합니다. 값이 높을수록 프레임을 자주 스킵하여 소리 깨짐 현상을 줄일 수 있습니다."
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_KO "소리 출력 샘플 레이트"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_KO "높은 값은 음질을 약간 향상시키지만 높은 성능을 필요로 합니다."
 
 struct retro_core_option_v2_category option_cats_ko[] = {
    { NULL, NULL, NULL },
@@ -4784,7 +4784,7 @@ struct retro_core_options_v2 options_mt = {
 #define OPTION_VAL_PORTRAIT_NL NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_NL NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_NL NULL
-#define OPTION_VAL_AUTO_NL NULL
+#define OPTION_VAL_AUTO_NL "Automatisch"
 #define WSWAN_MONO_PALETTE_LABEL_NL NULL
 #define WSWAN_MONO_PALETTE_INFO_0_NL NULL
 #define OPTION_VAL_DEFAULT_NL NULL
@@ -4979,6 +4979,212 @@ struct retro_core_option_v2_definition option_defs_nl[] = {
 struct retro_core_options_v2 options_nl = {
    option_cats_nl,
    option_defs_nl
+};
+
+/* RETRO_LANGUAGE_NO */
+
+#define WSWAN_ROTATE_DISPLAY_LABEL_NO NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_NO NULL
+#define OPTION_VAL_MANUAL_NO NULL
+#define OPTION_VAL_LANDSCAPE_NO NULL
+#define OPTION_VAL_PORTRAIT_NO NULL
+#define WSWAN_ROTATE_KEYMAP_LABEL_NO NULL
+#define WSWAN_ROTATE_KEYMAP_INFO_0_NO NULL
+#define OPTION_VAL_AUTO_NO NULL
+#define WSWAN_MONO_PALETTE_LABEL_NO NULL
+#define WSWAN_MONO_PALETTE_INFO_0_NO NULL
+#define OPTION_VAL_DEFAULT_NO NULL
+#define OPTION_VAL_WONDERSWAN_NO NULL
+#define OPTION_VAL_WONDESWAN_COLOR_NO NULL
+#define OPTION_VAL_SWANCRYSTAL_NO NULL
+#define OPTION_VAL_GB_DMG_NO NULL
+#define OPTION_VAL_GB_POCKET_NO NULL
+#define OPTION_VAL_GB_LIGHT_NO NULL
+#define OPTION_VAL_BLOSSOM_PINK_NO NULL
+#define OPTION_VAL_BUBBLES_BLUE_NO NULL
+#define OPTION_VAL_BUTTERCUP_GREEN_NO NULL
+#define OPTION_VAL_DIGIVICE_NO NULL
+#define OPTION_VAL_GAME_COM_NO NULL
+#define OPTION_VAL_GAMEKING_NO NULL
+#define OPTION_VAL_GAME_MASTER_NO NULL
+#define OPTION_VAL_GOLDEN_WILD_NO NULL
+#define OPTION_VAL_GREENSCALE_NO NULL
+#define OPTION_VAL_HOKAGE_ORANGE_NO NULL
+#define OPTION_VAL_LABO_FAWN_NO NULL
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_NO NULL
+#define OPTION_VAL_MICROVISION_NO NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_NO NULL
+#define OPTION_VAL_ODYSSEY_GOLD_NO NULL
+#define OPTION_VAL_SHINY_SKY_BLUE_NO NULL
+#define OPTION_VAL_SLIME_BLUE_NO NULL
+#define OPTION_VAL_TI_83_NO NULL
+#define OPTION_VAL_TRAVEL_WOOD_NO NULL
+#define OPTION_VAL_VIRTUAL_BOY_NO NULL
+#define WSWAN_GFX_COLORS_LABEL_NO NULL
+#define WSWAN_GFX_COLORS_INFO_0_NO NULL
+#define OPTION_VAL_16BIT_NO NULL
+#define OPTION_VAL_24BIT_NO NULL
+#define WSWAN_FRAMESKIP_LABEL_NO NULL
+#define WSWAN_FRAMESKIP_INFO_0_NO NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_NO NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_NO NULL
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_NO NULL
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_NO NULL
+
+struct retro_core_option_v2_category option_cats_no[] = {
+   { NULL, NULL, NULL },
+};
+struct retro_core_option_v2_definition option_defs_no[] = {
+   {
+      "wswan_rotate_display",
+      WSWAN_ROTATE_DISPLAY_LABEL_NO,
+      NULL,
+      WSWAN_ROTATE_DISPLAY_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "manual",    OPTION_VAL_MANUAL_NO },
+         { "landscape", OPTION_VAL_LANDSCAPE_NO },
+         { "portrait",  OPTION_VAL_PORTRAIT_NO },
+         { NULL, NULL },
+      },
+      "manual",
+   },
+   {
+      "wswan_rotate_keymap",
+      WSWAN_ROTATE_KEYMAP_LABEL_NO,
+      NULL,
+      WSWAN_ROTATE_KEYMAP_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "auto",     OPTION_VAL_AUTO_NO },
+         { "disabled", OPTION_VAL_LANDSCAPE_NO },
+         { "enabled",  OPTION_VAL_PORTRAIT_NO },
+         { NULL, NULL},
+      },
+      "auto",
+   },
+   {
+      "wswan_mono_palette",
+      WSWAN_MONO_PALETTE_LABEL_NO,
+      NULL,
+      WSWAN_MONO_PALETTE_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "default",                OPTION_VAL_DEFAULT_NO },
+         { "wonderswan",             OPTION_VAL_WONDERSWAN_NO },
+         { "wondeswan_color",        OPTION_VAL_WONDESWAN_COLOR_NO },
+         { "swancrystal",            OPTION_VAL_SWANCRYSTAL_NO },
+         { "gb_dmg",                 OPTION_VAL_GB_DMG_NO },
+         { "gb_pocket",              OPTION_VAL_GB_POCKET_NO },
+         { "gb_light",               OPTION_VAL_GB_LIGHT_NO },
+         { "blossom_pink",           OPTION_VAL_BLOSSOM_PINK_NO },
+         { "bubbles_blue",           OPTION_VAL_BUBBLES_BLUE_NO },
+         { "buttercup_green",        OPTION_VAL_BUTTERCUP_GREEN_NO },
+         { "digivice",               OPTION_VAL_DIGIVICE_NO },
+         { "game_com",               OPTION_VAL_GAME_COM_NO },
+         { "gameking",               OPTION_VAL_GAMEKING_NO },
+         { "game_master",            OPTION_VAL_GAME_MASTER_NO },
+         { "golden_wild",            OPTION_VAL_GOLDEN_WILD_NO },
+         { "greenscale",             OPTION_VAL_GREENSCALE_NO },
+         { "hokage_orange",          OPTION_VAL_HOKAGE_ORANGE_NO },
+         { "labo_fawn",              OPTION_VAL_LABO_FAWN_NO },
+         { "legendary_super_saiyan", OPTION_VAL_LEGENDARY_SUPER_SAIYAN_NO },
+         { "microvision",            OPTION_VAL_MICROVISION_NO },
+         { "million_live_gold",      OPTION_VAL_MILLION_LIVE_GOLD_NO },
+         { "odyssey_gold",           OPTION_VAL_ODYSSEY_GOLD_NO },
+         { "shiny_sky_blue",         OPTION_VAL_SHINY_SKY_BLUE_NO },
+         { "slime_blue",             OPTION_VAL_SLIME_BLUE_NO },
+         { "ti_83",                  OPTION_VAL_TI_83_NO },
+         { "travel_wood",            OPTION_VAL_TRAVEL_WOOD_NO },
+         { "virtual_boy",            OPTION_VAL_VIRTUAL_BOY_NO },
+         { NULL, NULL },
+      },
+      "default"
+   },
+   {
+      "wswan_gfx_colors",
+      WSWAN_GFX_COLORS_LABEL_NO,
+      NULL,
+      WSWAN_GFX_COLORS_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "16bit", OPTION_VAL_16BIT_NO },
+         { "24bit", OPTION_VAL_24BIT_NO },
+         { NULL, NULL },
+      },
+      "16bit"
+   },
+   {
+      "wswan_frameskip",
+      WSWAN_FRAMESKIP_LABEL_NO,
+      NULL,
+      WSWAN_FRAMESKIP_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "auto",     OPTION_VAL_AUTO_NO },
+         { "manual",   OPTION_VAL_MANUAL_NO },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "wswan_frameskip_threshold",
+      WSWAN_FRAMESKIP_THRESHOLD_LABEL_NO,
+      NULL,
+      WSWAN_FRAMESKIP_THRESHOLD_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "15", NULL },
+         { "18", NULL },
+         { "21", NULL },
+         { "24", NULL },
+         { "27", NULL },
+         { "30", NULL },
+         { "33", NULL },
+         { "36", NULL },
+         { "39", NULL },
+         { "42", NULL },
+         { "45", NULL },
+         { "48", NULL },
+         { "51", NULL },
+         { "54", NULL },
+         { "57", NULL },
+         { "60", NULL },
+         { NULL, NULL },
+      },
+      "33"
+   },
+   {
+      "wswan_sound_sample_rate",
+      WSWAN_SOUND_SAMPLE_RATE_LABEL_NO,
+      NULL,
+      WSWAN_SOUND_SAMPLE_RATE_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "11025",  NULL },
+         { "22050",  NULL },
+         { "44100",  NULL },
+         { "48000",  NULL },
+         { "96000",  NULL },
+         { "192000", NULL },
+         { "384000", NULL },
+         { NULL, NULL },
+      },
+      "44100",
+   },
+   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
+};
+struct retro_core_options_v2 options_no = {
+   option_cats_no,
+   option_defs_no
 };
 
 /* RETRO_LANGUAGE_OC */
@@ -5189,17 +5395,17 @@ struct retro_core_options_v2 options_oc = {
 
 /* RETRO_LANGUAGE_PL */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_PL NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_PL "Obrót ekranu"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_PL NULL
-#define OPTION_VAL_MANUAL_PL NULL
+#define OPTION_VAL_MANUAL_PL "Ręcznie"
 #define OPTION_VAL_LANDSCAPE_PL NULL
 #define OPTION_VAL_PORTRAIT_PL NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_PL NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_PL NULL
 #define OPTION_VAL_AUTO_PL NULL
-#define WSWAN_MONO_PALETTE_LABEL_PL NULL
+#define WSWAN_MONO_PALETTE_LABEL_PL "Paleta kolorów"
 #define WSWAN_MONO_PALETTE_INFO_0_PL NULL
-#define OPTION_VAL_DEFAULT_PL NULL
+#define OPTION_VAL_DEFAULT_PL "Odcienie szarości"
 #define OPTION_VAL_WONDERSWAN_PL NULL
 #define OPTION_VAL_WONDESWAN_COLOR_PL NULL
 #define OPTION_VAL_SWANCRYSTAL_PL NULL
@@ -5230,9 +5436,9 @@ struct retro_core_options_v2 options_oc = {
 #define WSWAN_GFX_COLORS_INFO_0_PL NULL
 #define OPTION_VAL_16BIT_PL NULL
 #define OPTION_VAL_24BIT_PL NULL
-#define WSWAN_FRAMESKIP_LABEL_PL NULL
+#define WSWAN_FRAMESKIP_LABEL_PL "Pomijanie klatek"
 #define WSWAN_FRAMESKIP_INFO_0_PL NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PL NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PL "Próg pominięcia ramki (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_PL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PL NULL
@@ -5395,17 +5601,17 @@ struct retro_core_options_v2 options_pl = {
 
 /* RETRO_LANGUAGE_PT_BR */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_PT_BR NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_PT_BR "Rotação de tela"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_PT_BR NULL
 #define OPTION_VAL_MANUAL_PT_BR NULL
 #define OPTION_VAL_LANDSCAPE_PT_BR NULL
 #define OPTION_VAL_PORTRAIT_PT_BR NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_PT_BR NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_PT_BR NULL
-#define OPTION_VAL_AUTO_PT_BR NULL
-#define WSWAN_MONO_PALETTE_LABEL_PT_BR NULL
+#define OPTION_VAL_AUTO_PT_BR "Automática"
+#define WSWAN_MONO_PALETTE_LABEL_PT_BR "Paleta de cores"
 #define WSWAN_MONO_PALETTE_INFO_0_PT_BR NULL
-#define OPTION_VAL_DEFAULT_PT_BR NULL
+#define OPTION_VAL_DEFAULT_PT_BR "Tons de cinza"
 #define OPTION_VAL_WONDERSWAN_PT_BR NULL
 #define OPTION_VAL_WONDESWAN_COLOR_PT_BR NULL
 #define OPTION_VAL_SWANCRYSTAL_PT_BR NULL
@@ -5432,13 +5638,13 @@ struct retro_core_options_v2 options_pl = {
 #define OPTION_VAL_TI_83_PT_BR NULL
 #define OPTION_VAL_TRAVEL_WOOD_PT_BR NULL
 #define OPTION_VAL_VIRTUAL_BOY_PT_BR NULL
-#define WSWAN_GFX_COLORS_LABEL_PT_BR NULL
+#define WSWAN_GFX_COLORS_LABEL_PT_BR "Profundidade de cor (requer reinício)"
 #define WSWAN_GFX_COLORS_INFO_0_PT_BR NULL
-#define OPTION_VAL_16BIT_PT_BR NULL
-#define OPTION_VAL_24BIT_PT_BR NULL
-#define WSWAN_FRAMESKIP_LABEL_PT_BR NULL
-#define WSWAN_FRAMESKIP_INFO_0_PT_BR NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PT_BR NULL
+#define OPTION_VAL_16BIT_PT_BR "Milhares (16-bit)"
+#define OPTION_VAL_24BIT_PT_BR "Milhões (24-bit)"
+#define WSWAN_FRAMESKIP_LABEL_PT_BR "Pulo de quadro"
+#define WSWAN_FRAMESKIP_INFO_0_PT_BR "Ignora quadros para evitar o esvaziamento do buffer do áudio (pipocos no áudio). Melhora o desempenho ao custo da suavidade visual. A opção 'Auto' ignora os quadros quando for aconselhado pela interface. Já 'Manual' utiliza a configuração 'Limite do salto de quadros (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PT_BR "Limite de pulo de quadro (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PT_BR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_PT_BR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PT_BR NULL
@@ -6013,17 +6219,17 @@ struct retro_core_options_v2 options_ro = {
 
 /* RETRO_LANGUAGE_RU */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_RU NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_RU NULL
-#define OPTION_VAL_MANUAL_RU NULL
-#define OPTION_VAL_LANDSCAPE_RU NULL
-#define OPTION_VAL_PORTRAIT_RU NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_RU "Вращение экрана"
+#define WSWAN_ROTATE_DISPLAY_INFO_0_RU "Выбор ориентации экрана консоли. 'Портретная' может быть использована для правильного отображения вертикально ориентированных игр в ландшафтном режиме. 'Вручную' активирует вращение с помощью контроллера (кнопка по умолчанию: SELECT)."
+#define OPTION_VAL_MANUAL_RU "Вручную"
+#define OPTION_VAL_LANDSCAPE_RU "Ландшафтная"
+#define OPTION_VAL_PORTRAIT_RU "Портретная"
 #define WSWAN_ROTATE_KEYMAP_LABEL_RU NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_RU NULL
-#define OPTION_VAL_AUTO_RU NULL
-#define WSWAN_MONO_PALETTE_LABEL_RU NULL
+#define WSWAN_ROTATE_KEYMAP_INFO_0_RU "Выбор предпочитаемой раскладки кнопок. 'Авто' подстраивает раскладку кнопок согласно текущему повороту экрана."
+#define OPTION_VAL_AUTO_RU "Авто"
+#define WSWAN_MONO_PALETTE_LABEL_RU "Цветовая палитра"
 #define WSWAN_MONO_PALETTE_INFO_0_RU NULL
-#define OPTION_VAL_DEFAULT_RU NULL
+#define OPTION_VAL_DEFAULT_RU "Оттенки серого"
 #define OPTION_VAL_WONDERSWAN_RU NULL
 #define OPTION_VAL_WONDESWAN_COLOR_RU NULL
 #define OPTION_VAL_SWANCRYSTAL_RU NULL
@@ -6050,13 +6256,13 @@ struct retro_core_options_v2 options_ro = {
 #define OPTION_VAL_TI_83_RU NULL
 #define OPTION_VAL_TRAVEL_WOOD_RU NULL
 #define OPTION_VAL_VIRTUAL_BOY_RU NULL
-#define WSWAN_GFX_COLORS_LABEL_RU NULL
+#define WSWAN_GFX_COLORS_LABEL_RU "Глубина цвета (перезапуск)"
 #define WSWAN_GFX_COLORS_INFO_0_RU NULL
-#define OPTION_VAL_16BIT_RU NULL
-#define OPTION_VAL_24BIT_RU NULL
-#define WSWAN_FRAMESKIP_LABEL_RU NULL
-#define WSWAN_FRAMESKIP_INFO_0_RU NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_RU NULL
+#define OPTION_VAL_16BIT_RU "Тысячи (16 бит)"
+#define OPTION_VAL_24BIT_RU "Миллионы (24 бита)"
+#define WSWAN_FRAMESKIP_LABEL_RU "Пропуск кадров"
+#define WSWAN_FRAMESKIP_INFO_0_RU "Пропускать кадры, чтобы избежать опустошения аудиобуфера (треск). Улучшает производительность, но снижает плавность изображения. В режиме 'Авто' пропуск кадров регулируется фронтендом. В режиме 'Вручную' используется настройка 'Граница пропуска кадров (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_RU "Граница пропуска кадров (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_RU NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_RU NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_RU NULL
@@ -6840,14 +7046,14 @@ struct retro_core_options_v2 options_sr = {
 #define WSWAN_ROTATE_DISPLAY_LABEL_SV NULL
 #define WSWAN_ROTATE_DISPLAY_INFO_0_SV NULL
 #define OPTION_VAL_MANUAL_SV NULL
-#define OPTION_VAL_LANDSCAPE_SV NULL
-#define OPTION_VAL_PORTRAIT_SV NULL
+#define OPTION_VAL_LANDSCAPE_SV "Landskap"
+#define OPTION_VAL_PORTRAIT_SV "Porträtt"
 #define WSWAN_ROTATE_KEYMAP_LABEL_SV NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_SV NULL
-#define OPTION_VAL_AUTO_SV NULL
-#define WSWAN_MONO_PALETTE_LABEL_SV NULL
+#define OPTION_VAL_AUTO_SV "Automatiskt"
+#define WSWAN_MONO_PALETTE_LABEL_SV "Färgpalett"
 #define WSWAN_MONO_PALETTE_INFO_0_SV NULL
-#define OPTION_VAL_DEFAULT_SV NULL
+#define OPTION_VAL_DEFAULT_SV "Gråskala"
 #define OPTION_VAL_WONDERSWAN_SV NULL
 #define OPTION_VAL_WONDESWAN_COLOR_SV NULL
 #define OPTION_VAL_SWANCRYSTAL_SV NULL
@@ -7043,24 +7249,24 @@ struct retro_core_options_v2 options_sv = {
 
 /* RETRO_LANGUAGE_TR */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_TR NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_TR "Ekran Döndürme"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_TR NULL
-#define OPTION_VAL_MANUAL_TR NULL
-#define OPTION_VAL_LANDSCAPE_TR NULL
-#define OPTION_VAL_PORTRAIT_TR NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_TR "Düğme eşlemelerini döndür"
+#define OPTION_VAL_MANUAL_TR "El İle"
+#define OPTION_VAL_LANDSCAPE_TR "Yatay"
+#define OPTION_VAL_PORTRAIT_TR "Dikey"
+#define WSWAN_ROTATE_KEYMAP_LABEL_TR NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_TR NULL
-#define OPTION_VAL_AUTO_TR "otomatik"
-#define WSWAN_MONO_PALETTE_LABEL_TR NULL
-#define WSWAN_MONO_PALETTE_INFO_0_TR NULL
-#define OPTION_VAL_DEFAULT_TR NULL
+#define OPTION_VAL_AUTO_TR "Otomatik"
+#define WSWAN_MONO_PALETTE_LABEL_TR "Renk Paleti"
+#define WSWAN_MONO_PALETTE_INFO_0_TR "WonderSwan (Mono) oyunlarının renklendirmesini seçin. 'WS' paletleri, orijinal WonderSwan donanımının görüntüsünü taklit eder."
+#define OPTION_VAL_DEFAULT_TR "Gri Tonlama"
 #define OPTION_VAL_WONDERSWAN_TR NULL
-#define OPTION_VAL_WONDESWAN_COLOR_TR NULL
+#define OPTION_VAL_WONDESWAN_COLOR_TR "WS - WonderSwan Renk"
 #define OPTION_VAL_SWANCRYSTAL_TR NULL
 #define OPTION_VAL_GB_DMG_TR NULL
 #define OPTION_VAL_GB_POCKET_TR NULL
 #define OPTION_VAL_GB_LIGHT_TR NULL
-#define OPTION_VAL_BLOSSOM_PINK_TR NULL
+#define OPTION_VAL_BLOSSOM_PINK_TR "Blossom Pembe"
 #define OPTION_VAL_BUBBLES_BLUE_TR NULL
 #define OPTION_VAL_BUTTERCUP_GREEN_TR NULL
 #define OPTION_VAL_DIGIVICE_TR NULL
@@ -7080,16 +7286,16 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_TI_83_TR NULL
 #define OPTION_VAL_TRAVEL_WOOD_TR NULL
 #define OPTION_VAL_VIRTUAL_BOY_TR NULL
-#define WSWAN_GFX_COLORS_LABEL_TR NULL
-#define WSWAN_GFX_COLORS_INFO_0_TR NULL
-#define OPTION_VAL_16BIT_TR NULL
-#define OPTION_VAL_24BIT_TR NULL
-#define WSWAN_FRAMESKIP_LABEL_TR NULL
-#define WSWAN_FRAMESKIP_INFO_0_TR NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_TR NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_TR NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_TR NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_TR NULL
+#define WSWAN_GFX_COLORS_LABEL_TR "Renk Derinliği (Yeniden Başlatılmalı)"
+#define WSWAN_GFX_COLORS_INFO_0_TR "24 bit daha yavaştır ve tüm platformlarda mevcut değildir."
+#define OPTION_VAL_16BIT_TR "Binlerce (16-bit)"
+#define OPTION_VAL_24BIT_TR "Milyonlarca (24-bit)"
+#define WSWAN_FRAMESKIP_LABEL_TR "Kare Atlama"
+#define WSWAN_FRAMESKIP_INFO_0_TR "Ses ara belleğinin yetersiz çalışmasını (çatırtı) önlemek için kareleri atlayın. Görsel pürüzsüzlük pahasına performansı artırır. 'Otomatik', ön uç tarafından önerildiğinde çerçeveleri atlar. 'El ile', 'Kare Atlama Eşiği (%)' ayarını kullanır."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_TR "Kare Atlama Eşiği (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_TR "'Kare Atlama', 'El İle' olarak ayarlandığında, altındaki karelerin atlanacağı ses arabelleği doluluk eşiğini (yüzde) belirtir. Daha yüksek değerler, karelerin daha sık yavaşlamasına neden olarak bozulma riskini azaltır."
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_TR "Ses Çıkışı Örnek Oranı"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_TR "Daha yüksek değerler, performans pahasına ses kalitesini biraz artırır."
 
 struct retro_core_option_v2_category option_cats_tr[] = {
    { NULL, NULL, NULL },
@@ -7249,14 +7455,14 @@ struct retro_core_options_v2 options_tr = {
 
 /* RETRO_LANGUAGE_UK */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_UK NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_UK "Обертання екрану"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_UK NULL
-#define OPTION_VAL_MANUAL_UK NULL
+#define OPTION_VAL_MANUAL_UK "Ручний"
 #define OPTION_VAL_LANDSCAPE_UK NULL
 #define OPTION_VAL_PORTRAIT_UK NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_UK NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_UK NULL
-#define OPTION_VAL_AUTO_UK NULL
+#define OPTION_VAL_AUTO_UK "Авто"
 #define WSWAN_MONO_PALETTE_LABEL_UK NULL
 #define WSWAN_MONO_PALETTE_INFO_0_UK NULL
 #define OPTION_VAL_DEFAULT_UK NULL
@@ -7286,13 +7492,13 @@ struct retro_core_options_v2 options_tr = {
 #define OPTION_VAL_TI_83_UK NULL
 #define OPTION_VAL_TRAVEL_WOOD_UK NULL
 #define OPTION_VAL_VIRTUAL_BOY_UK NULL
-#define WSWAN_GFX_COLORS_LABEL_UK NULL
+#define WSWAN_GFX_COLORS_LABEL_UK "Глибина кольору (потрібен перезапуск)"
 #define WSWAN_GFX_COLORS_INFO_0_UK NULL
 #define OPTION_VAL_16BIT_UK NULL
 #define OPTION_VAL_24BIT_UK NULL
-#define WSWAN_FRAMESKIP_LABEL_UK NULL
-#define WSWAN_FRAMESKIP_INFO_0_UK NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_UK NULL
+#define WSWAN_FRAMESKIP_LABEL_UK "Пропуск кадру"
+#define WSWAN_FRAMESKIP_INFO_0_UK "Пропускати кадри, щоб уникнути спустошення буферу (тріскіт). Покращує швидкодію, погіршуючи плавність зображення. 'Авто' пропускає кадри, керуючись командами зовнішньої оболонки. 'Ручний' використовує налаштування 'Межа пропуску кадрів (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_UK "Межа пропуску кадрів (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_UK NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_UK NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_UK NULL
@@ -7457,12 +7663,12 @@ struct retro_core_options_v2 options_uk = {
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_VN NULL
 #define WSWAN_ROTATE_DISPLAY_INFO_0_VN NULL
-#define OPTION_VAL_MANUAL_VN NULL
+#define OPTION_VAL_MANUAL_VN "Thủ công"
 #define OPTION_VAL_LANDSCAPE_VN NULL
 #define OPTION_VAL_PORTRAIT_VN NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_VN NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_VN NULL
-#define OPTION_VAL_AUTO_VN NULL
+#define OPTION_VAL_AUTO_VN "Tự động"
 #define WSWAN_MONO_PALETTE_LABEL_VN NULL
 #define WSWAN_MONO_PALETTE_INFO_0_VN NULL
 #define OPTION_VAL_DEFAULT_VN NULL
@@ -7496,7 +7702,7 @@ struct retro_core_options_v2 options_uk = {
 #define WSWAN_GFX_COLORS_INFO_0_VN NULL
 #define OPTION_VAL_16BIT_VN NULL
 #define OPTION_VAL_24BIT_VN NULL
-#define WSWAN_FRAMESKIP_LABEL_VN NULL
+#define WSWAN_FRAMESKIP_LABEL_VN "Bỏ qua khung hình"
 #define WSWAN_FRAMESKIP_INFO_0_VN NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_VN NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_VN NULL
