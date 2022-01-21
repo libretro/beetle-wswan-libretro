@@ -5602,52 +5602,52 @@ struct retro_core_options_v2 options_pl = {
 /* RETRO_LANGUAGE_PT_BR */
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_PT_BR "Rotação de tela"
-#define WSWAN_ROTATE_DISPLAY_INFO_0_PT_BR NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_PT_BR "Seleciona a orientação da tela do console. \"Modo retrato\" pode ser usado para assegurar o layout correto de jogos voltados a modo retrato em uma exibição tradicional (modo paisagem). \"Manual\" ativa a rotação via controle (botão padrão: SELECT)."
 #define OPTION_VAL_MANUAL_PT_BR NULL
-#define OPTION_VAL_LANDSCAPE_PT_BR NULL
-#define OPTION_VAL_PORTRAIT_PT_BR NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_PT_BR NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_PT_BR NULL
+#define OPTION_VAL_LANDSCAPE_PT_BR "Modo paisagem"
+#define OPTION_VAL_PORTRAIT_PT_BR "Modo retrato"
+#define WSWAN_ROTATE_KEYMAP_LABEL_PT_BR "Rotação dos mapeamentos de botão"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_PT_BR "Seleciona o mapeamento de botão desejado. \"Automática\" ajusta o mapeamento de botão para combinar com a rotação da tela atual."
 #define OPTION_VAL_AUTO_PT_BR "Automática"
 #define WSWAN_MONO_PALETTE_LABEL_PT_BR "Paleta de cores"
-#define WSWAN_MONO_PALETTE_INFO_0_PT_BR NULL
-#define OPTION_VAL_DEFAULT_PT_BR "Tons de cinza"
-#define OPTION_VAL_WONDERSWAN_PT_BR NULL
-#define OPTION_VAL_WONDESWAN_COLOR_PT_BR NULL
-#define OPTION_VAL_SWANCRYSTAL_PT_BR NULL
+#define WSWAN_MONO_PALETTE_INFO_0_PT_BR "Seleciona a coloração dos jogos de WonderSwan (Mono). As paletas \"WS\" imitam a exibição do hardware original do WonderSwan."
+#define OPTION_VAL_DEFAULT_PT_BR "Nível de cinza"
+#define OPTION_VAL_WONDERSWAN_PT_BR "WS — WonderSwan"
+#define OPTION_VAL_WONDESWAN_COLOR_PT_BR "WS — WonderSwan Color"
+#define OPTION_VAL_SWANCRYSTAL_PT_BR "WS — SwanCrystal"
 #define OPTION_VAL_GB_DMG_PT_BR NULL
 #define OPTION_VAL_GB_POCKET_PT_BR NULL
 #define OPTION_VAL_GB_LIGHT_PT_BR NULL
-#define OPTION_VAL_BLOSSOM_PINK_PT_BR NULL
-#define OPTION_VAL_BUBBLES_BLUE_PT_BR NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_PT_BR NULL
+#define OPTION_VAL_BLOSSOM_PINK_PT_BR "Rosa — Florzinha"
+#define OPTION_VAL_BUBBLES_BLUE_PT_BR "Azul — Lindinha"
+#define OPTION_VAL_BUTTERCUP_GREEN_PT_BR "Verde — Docinho"
 #define OPTION_VAL_DIGIVICE_PT_BR NULL
 #define OPTION_VAL_GAME_COM_PT_BR NULL
 #define OPTION_VAL_GAMEKING_PT_BR NULL
 #define OPTION_VAL_GAME_MASTER_PT_BR NULL
-#define OPTION_VAL_GOLDEN_WILD_PT_BR NULL
-#define OPTION_VAL_GREENSCALE_PT_BR NULL
-#define OPTION_VAL_HOKAGE_ORANGE_PT_BR NULL
-#define OPTION_VAL_LABO_FAWN_PT_BR NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_PT_BR NULL
+#define OPTION_VAL_GOLDEN_WILD_PT_BR "Natureza Dourada"
+#define OPTION_VAL_GREENSCALE_PT_BR "Verdejante"
+#define OPTION_VAL_HOKAGE_ORANGE_PT_BR "Laranja — Hokage"
+#define OPTION_VAL_LABO_FAWN_PT_BR "Castanho — Labo"
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_PT_BR "Lendário Super Saiyajin"
 #define OPTION_VAL_MICROVISION_PT_BR NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_PT_BR NULL
-#define OPTION_VAL_ODYSSEY_GOLD_PT_BR NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_PT_BR NULL
-#define OPTION_VAL_SLIME_BLUE_PT_BR NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_PT_BR "Dourado — Million Live"
+#define OPTION_VAL_ODYSSEY_GOLD_PT_BR "Dourado — Odyssey"
+#define OPTION_VAL_SHINY_SKY_BLUE_PT_BR "Azul — Shiny Sky"
+#define OPTION_VAL_SLIME_BLUE_PT_BR "Azul — Slime"
 #define OPTION_VAL_TI_83_PT_BR NULL
-#define OPTION_VAL_TRAVEL_WOOD_PT_BR NULL
+#define OPTION_VAL_TRAVEL_WOOD_PT_BR "Madeira — Fotos de Viagem"
 #define OPTION_VAL_VIRTUAL_BOY_PT_BR NULL
 #define WSWAN_GFX_COLORS_LABEL_PT_BR "Profundidade de cor (requer reinício)"
-#define WSWAN_GFX_COLORS_INFO_0_PT_BR NULL
-#define OPTION_VAL_16BIT_PT_BR "Milhares (16-bit)"
-#define OPTION_VAL_24BIT_PT_BR "Milhões (24-bit)"
+#define WSWAN_GFX_COLORS_INFO_0_PT_BR "24 bits é mais lento e não está disponível em todas as plataformas."
+#define OPTION_VAL_16BIT_PT_BR "Milhares (16 bits)"
+#define OPTION_VAL_24BIT_PT_BR "Milhões (24 bits)"
 #define WSWAN_FRAMESKIP_LABEL_PT_BR "Pulo de quadro"
 #define WSWAN_FRAMESKIP_INFO_0_PT_BR "Ignora quadros para evitar o esvaziamento do buffer do áudio (pipocos no áudio). Melhora o desempenho ao custo da suavidade visual. A opção 'Auto' ignora os quadros quando for aconselhado pela interface. Já 'Manual' utiliza a configuração 'Limite do salto de quadros (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PT_BR "Limite de pulo de quadro (%)"
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PT_BR NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_PT_BR NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PT_BR NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PT_BR "Ao configurar \"Pulo de quadro\" como \"Manual\", especifica o limite do buffer de áudio em porcentagem, os quadros fora da porcentagem serão ignorados. Valores maiores reduzem o risco de engasgo por descartar quadros com mais frequência."
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_PT_BR "Taxa de amostragem da saída de som"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PT_BR "Valores maiores melhoram ligeiramente a qualidade do som em detrimento do desempenho."
 
 struct retro_core_option_v2_category option_cats_pt_br[] = {
    { NULL, NULL, NULL },
