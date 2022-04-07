@@ -16,6 +16,7 @@
  */
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "wswan.h"
 #include "sound.h"
@@ -331,20 +332,36 @@ uint8 WSwan_SoundRead(uint32 A)
    return(0);
 }
 
-int32 WSwan_SoundFlush(int16 *SoundBuf, const int32 MaxSoundFrames)
+int32 WSwan_SoundFlush(int16 **SoundBuf, int32 *SoundBufSize)
 {
+   int32 RequiredSize = 0;
    int32 FrameCount = 0;
 
    WSwan_SoundUpdate();
 
-   if(SoundBuf)
+   Blip_Buffer_end_frame(&sbuf[0], v30mz_timestamp);
+   Blip_Buffer_end_frame(&sbuf[1], v30mz_timestamp);
+
+   RequiredSize = Blip_Buffer_samples_avail(&sbuf[0]) << 1;
+   RequiredSize = (RequiredSize + 1) & ~1;
+
+   if (SoundBuf && *SoundBuf)
    {
-      int y;
-      for(y = 0; y < 2; y++)
+      /* Check if sound buffer needs to be resized */
+      if (*SoundBufSize < RequiredSize)
       {
-         Blip_Buffer_end_frame(&sbuf[y], v30mz_timestamp);
-         FrameCount = Blip_Buffer_read_samples(&sbuf[y], SoundBuf + y, MaxSoundFrames);
+         int16 *newBuf = (int16*)realloc(*SoundBuf,
+               RequiredSize * sizeof(int16));
+
+         if (newBuf)
+         {
+            *SoundBuf     = newBuf;
+            *SoundBufSize = RequiredSize;
+         }
       }
+
+      FrameCount = Blip_Buffer_read_samples(&sbuf[0], *SoundBuf    , *SoundBufSize);
+      FrameCount = Blip_Buffer_read_samples(&sbuf[1], *SoundBuf + 1, *SoundBufSize);
    }
 
    last_ts = 0;

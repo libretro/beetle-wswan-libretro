@@ -13,7 +13,7 @@ void WSwan_SoundReset(void);
 
 bool WSwan_SetSoundRate(uint32 rate);
 
-int32 WSwan_SoundFlush(int16 *SoundBuf, const int32 MaxSoundFrames);
+int32 WSwan_SoundFlush(int16 **SoundBuf, int32 *SoundBufSize);
 
 void WSwan_SoundKill(void);
 
