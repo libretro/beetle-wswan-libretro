@@ -177,6 +177,29 @@ static void retro_60hz_cache_audio_samples(int16_t *samples, int32_t frames)
    retro_60hz_audio.samples_buf_pos += samples_to_write;
 }
 
+static bool audio_low_pass_enabled      = false;
+static int64_t audio_low_pass_acc_left  = 0;
+static int64_t audio_low_pass_acc_right = 0;
+
+static void audio_low_pass_apply(int16_t *samples, int32_t frames)
+{
+   while (frames-- > 0)
+   {
+      int64_t drop_current_left;
+      int64_t drop_current_right;
+
+      /* Left channel */
+      drop_current_left        = ((*samples << 16) - audio_low_pass_acc_left) >> 3;
+      audio_low_pass_acc_left += drop_current_left;
+      *samples++               = (int16_t)((audio_low_pass_acc_left >> 16) & 0xFFFF);
+
+      /* Right channel */
+      drop_current_right        = ((*samples << 16) - audio_low_pass_acc_right) >> 3;
+      audio_low_pass_acc_right += drop_current_right;
+      *samples++                = (int16_t)((audio_low_pass_acc_right >> 16) & 0xFFFF);
+   }
+}
+
 /* Mono palettes */
 
 struct ws_mono_palette
@@ -436,6 +459,10 @@ static void Emulate(EmulateSpecStruct *espec,
 
    espec->SoundBufSize = WSwan_SoundFlush(&audio_samples_buf,
          &audio_samples_buf_size);
+
+   if (audio_low_pass_enabled)
+      audio_low_pass_apply(audio_samples_buf,
+            espec->SoundBufSize);
 
    espec->MasterCycles = v30mz_timestamp;
    v30mz_timestamp = 0;
@@ -890,6 +917,17 @@ static void check_variables(int startup)
       }
    }
 
+   var.key = "wswan_sound_low_pass";
+   var.value = NULL;
+
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VARIABLE, &var) && var.value)
+   {
+      if (!strcmp(var.value, "disabled"))
+         audio_low_pass_enabled = false;
+      else if (!strcmp(var.value, "enabled"))
+         audio_low_pass_enabled = true;
+   }
+
    if (startup)
    {
       var.key = "wswan_gfx_colors";
@@ -936,6 +974,9 @@ void retro_init(void)
    retro_audio_buff_underrun  = false;
    audio_latency              = 0;
    update_audio_latency       = false;
+   audio_low_pass_enabled     = false;
+   audio_low_pass_acc_left    = 0;
+   audio_low_pass_acc_right   = 0;
 
    check_system_specs();
    check_variables(true);
