@@ -211,6 +211,20 @@ struct retro_core_option_v2_definition option_defs_us[] = {
       },
       "44100",
    },
+   {
+      "wswan_sound_low_pass",
+      "Audio Filter",
+      NULL,
+      "Apply a low pass audio filter to 'soften' the sometimes harsh chiptunes produced by the WonderSwan.",
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
+   },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
 
