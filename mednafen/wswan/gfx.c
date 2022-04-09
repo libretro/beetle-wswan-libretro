@@ -65,7 +65,7 @@ static uint8 VideoMode;
 
 void WSwan_GfxInit(void)
 {
-   LayerEnabled = 7; // BG, FG, sprites
+   LayerEnabled = 7; /* BG, FG, sprites */
 }
 
 void WSwan_GfxWSCPaletteRAMWrite(uint32 ws_offset, uint8 data)
@@ -200,8 +200,9 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
 
    WSwan_CheckSoundDMA();
 
-   // Update sprite data table
-   // Note: it's at 142 actually but it doesn't "update" until next frame
+   /* Update sprite data table
+    * Note: it's at 142 actually 
+    * but it doesn't "update" until next frame */
    if(wsLine == 142)
    {
       SpriteCountCache[!FrameWhichActive] = SpriteCount;
@@ -217,14 +218,13 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
       FrameWhichActive = !FrameWhichActive;
       ret = true;
       WSwan_Interrupt(WSINT_VBLANK);
-      //printf("VBlank: %d\n", wsLine);
 
       if(VBCounter && (BTimerControl & 0x04))
       {
          VBCounter--;
          if(!VBCounter)
          {
-            if(BTimerControl & 0x08) // loop
+            if(BTimerControl & 0x08) /* loop */
                VBCounter = VBTimerPeriod;
             WSwan_Interrupt(WSINT_VBLANK_TIMER);
          }
@@ -237,7 +237,7 @@ bool wsExecuteLine(MDFN_Surface *surface, bool skip)
       HBCounter--;
       if(!HBCounter)
       {
-         // Loop mode?
+         /* Loop mode? */
          if(BTimerControl & 0x02)
             HBCounter = HBTimerPeriod;
          WSwan_Interrupt(WSINT_HBLANK_TIMER);
@@ -383,8 +383,8 @@ void wsScanline(uint16 *target, int depth)
          }
          adrbuf += 8;
          startindex=(startindex + 1)&31;
-      } // end for(t = 0 ...
-   } // End BG layer drawing
+      } /* end for(t = 0 ... */
+   } /* End BG layer drawing */
 
    if((DispControl & 0x02) && (LayerEnabled & 0x02))/*FG layer*/
    {
@@ -395,13 +395,13 @@ void wsScanline(uint16 *target, int depth)
       {
          memset(in_window, 0, sizeof(in_window));
 
-         if(windowtype == 0x20) // Display FG only inside window
+         if(windowtype == 0x20) /* Display FG only inside window */
          {
             if((wsLine >= FGy0) && (wsLine <= FGy1))
                for(j = FGx0; j <= FGx1 && j < 224; j++)
                   in_window[7 + j] = 1;
          }
-         else if(windowtype == 0x30) // Display FG only outside window
+         else if(windowtype == 0x30) /* Display FG only outside window */
          {
             for(j = 0; j < 224; j++)
             {
@@ -465,11 +465,11 @@ void wsScanline(uint16 *target, int depth)
          }
          adrbuf += 8;
          startindex=(startindex + 1)&31;
-      } // end for(t = 0 ...
+      } /* end for(t = 0 ... */
 
-   } // end FG drawing
+   } /* end FG drawing */
 
-   if((DispControl & 0x04) && SpriteCountCache[FrameWhichActive] && (LayerEnabled & 0x04))/*Sprites*/
+   if((DispControl & 0x04) && SpriteCountCache[FrameWhichActive] && (LayerEnabled & 0x04))/* Sprites */
    {
       int xs,ts,as,ys,ysx,h;
       bool in_window[256 + 8*2];
@@ -570,7 +570,7 @@ void wsScanline(uint16 *target, int depth)
                   {
                      if((as & 0x20) || !(b_bg[xs + x + 7] & 0x10))
                      {
-                        bool drawthis = 0;
+                        bool drawthis = false;
 
                         if(!(DispControl & 0x08))
                            drawthis = true;
@@ -580,10 +580,7 @@ void wsScanline(uint16 *target, int depth)
                            drawthis = true;
 
                         if(drawthis)
-                           //if((as & 0x10) || in_window[7 + xs + x])
-                        {
                            b_bg[xs + x + 7] = wsColors[wsMonoPal[8 + palette][wsTileRow[x]]] | (b_bg[xs + x + 7] & 0x10);
-                        }
                      }
                   }
 
@@ -591,7 +588,7 @@ void wsScanline(uint16 *target, int depth)
          }
       }
 
-   }	// End sprite drawing
+   }	/* End sprite drawing */
 
    if(wsVMode)
    {

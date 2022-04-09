@@ -202,7 +202,6 @@ uint8 WSwan_readport(uint32 number)
       return(WSwan_RTCRead(number));
    else switch(number)
    {
-      //default: printf("Read: %04x\n", number); break;
       case 0x40: return(DMASource >> 0);
       case 0x41: return(DMASource >> 8);
       case 0x42: return(DMASource >> 16);
@@ -270,8 +269,6 @@ void WSwan_writeport(uint32 IOPort, uint8 V)
       WSwan_RTCWrite(IOPort, V);
    else switch(IOPort)
    {
-      //default: printf("%04x %02x\n", IOPort, V); break;
-
       case 0x40: DMASource &= 0xFFFF00; DMASource |= (V << 0) & ~1; break;
       case 0x41: DMASource &= 0xFF00FF; DMASource |= (V << 8); break;
       case 0x42: DMASource &= 0x00FFFF; DMASource |= ((V & 0x0F) << 16); break;
@@ -295,7 +292,6 @@ void WSwan_writeport(uint32 IOPort, uint8 V)
       case 0x50: SoundDMALength &= 0x00FFFF; SoundDMALength |= ((V & 0xF) << 16); SoundDMALengthSaved = SoundDMALength; break;
       //case 0x51: break; // Unused?
       case 0x52: SoundDMAControl = V & ~0x20;
-                 //if(V & 0x80) printf("Sound DMA: %02x, %08x %08x\n", V, SoundDMASource, SoundDMALength);
                  break;
 
       case 0xB0:
