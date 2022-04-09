@@ -11,9 +11,6 @@
 #define MAKECOLOR_24(r, g, b, a) ((r << RED_SHIFT_24) | (g << GREEN_SHIFT_24) | (b << BLUE_SHIFT_24) | (a << ALPHA_SHIFT_24))
 
 /* 16bit color - RGB565 */
-#define RED_MASK_16  0xf800
-#define GREEN_MASK_16 0x7e0
-#define BLUE_MASK_16 0x1f
 #define RED_EXPAND_16 3
 #define GREEN_EXPAND_16 2
 #define BLUE_EXPAND_16 3
@@ -23,9 +20,6 @@
 #define MAKECOLOR_16(r, g, b, a) (((r >> RED_EXPAND_16) << RED_SHIFT_16) | ((g >> GREEN_EXPAND_16) << GREEN_SHIFT_16) | ((b >> BLUE_EXPAND_16) << BLUE_SHIFT_16))
 
 /* 16bit color - RGB555 */
-#define RED_MASK_15  0x7c00
-#define GREEN_MASK_15 0x3e0
-#define BLUE_MASK_15 0x1f
 #define RED_EXPAND_15 3
 #define GREEN_EXPAND_15 3
 #define BLUE_EXPAND_15 3
@@ -33,6 +27,15 @@
 #define GREEN_SHIFT_15 5
 #define BLUE_SHIFT_15 0
 #define MAKECOLOR_15(r, g, b, a) (((r >> RED_EXPAND_15) << RED_SHIFT_15) | ((g >> GREEN_EXPAND_15) << GREEN_SHIFT_15) | ((b >> BLUE_EXPAND_15) << BLUE_SHIFT_15))
+
+/* 16bit color - BGR555 */
+#define BLUE_EXPAND_15_1 3
+#define GREEN_EXPAND_15_1 3
+#define RED_EXPAND_15_1 3
+#define BLUE_SHIFT_15_1 10
+#define GREEN_SHIFT_15_1 5
+#define RED_SHIFT_15_1 0
+#define MAKECOLOR_15_1(r, g, b, a) (((r >> RED_EXPAND_15_1) << RED_SHIFT_15_1) | ((g >> GREEN_EXPAND_15_1) << GREEN_SHIFT_15_1) | ((b >> BLUE_EXPAND_15_1) << BLUE_SHIFT_15_1))
 
 #ifdef __cplusplus
 extern "C" {
