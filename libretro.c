@@ -429,22 +429,16 @@ static uint64_t video_frames, audio_frames;
 static void Emulate(EmulateSpecStruct *espec,
       int skip_frame, int update_sample_rate)
 {
-   static MDFN_Rect rects[FB_MAX_HEIGHT];
    uint16 butt_data;
-
-   rects[0].w = ~0;
 
    espec->surface          = surf;
    espec->DisplayRect.x    = 0;
    espec->DisplayRect.y    = 0;
    espec->DisplayRect.w    = 224;
    espec->DisplayRect.h    = 144;
-   espec->LineWidths       = rects;
    espec->skip             = skip_frame;
    espec->SoundBufSize     = 0;
-   espec->SoundBufSizeALMS = 0;
    espec->MasterCycles     = 0;
-   espec->MasterCyclesALMS = 0;
 
    if (update_sample_rate)
       WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
