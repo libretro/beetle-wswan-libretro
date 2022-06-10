@@ -386,8 +386,6 @@ static uint8 WSRCurrentSong;
 
 MDFNGI EmulatedWSwan =
 {
- MDFN_MASTERCLOCK_FIXED(3072000),
- 0,
  224,   /* lcm_width */
  144,   /* lcm_height */
 
@@ -572,7 +570,6 @@ static int Load(const uint8_t *data, size_t size)
    v30mz_init(WSwan_readmem20, WSwan_writemem20, WSwan_readport, WSwan_writeport);
    WSwan_MemoryInit(MDFN_GetSettingB("wswan.language"), wsc, SRAMSize, false); /* EEPROM and SRAM are loaded in this func. */
    WSwan_GfxInit();
-   EmulatedWSwan.fps = (uint32)((uint64)3072000 * 65536 * 256 / (159*256));
 
    WSwan_SoundInit();
 

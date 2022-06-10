@@ -40,8 +40,6 @@ typedef struct
 					// due to physical limitations.
 
 	const char *RotateName[3];	// 90, 180, 270
-	//const char *Rotate180Name;
-	//const char *Rotate270Name;
 } InputDeviceInputInfoStruct;
 
 typedef struct
@@ -114,21 +112,10 @@ typedef struct
 
 	// Number of frames currently in internal sound buffer.  Set by the system emulation code, to be read by the driver code.
 	int32 SoundBufSize;
-
-	// Number of cycles that this frame consumed, using MDFNGI::MasterClock as a time base.
-	// Set by emulation code.
-	int64 MasterCycles;
 } EmulateSpecStruct;
-
-#define MDFN_MASTERCLOCK_FIXED(n)	((int64)((double)(n) * (1LL << 32)))
 
 typedef struct
 {
- // Time base for EmulateSpecStruct::MasterCycles
- int64 MasterClock;
-
- uint32 fps; // frames per second * 65536 * 256, truncated
-
  int lcm_width;
  int lcm_height;
 
