@@ -58,15 +58,9 @@ static uint16 old_CS, old_IP;
    I.regs.w[SP]+=2; \
 }
 
-#ifdef WANT_DEBUGGER
- #define ADDBRANCHTRACE(x,y) { if(branch_trace_hook) branch_trace_hook(old_CS, old_IP, x, y, false); }
- #define ADDBRANCHTRACE_INT(x,y) { if(branch_trace_hook) branch_trace_hook(old_CS, old_IP, x,y, true); }
- #define SETOLDCSIP() { old_CS = I.sregs[PS]; old_IP = I.pc; }
-#else
- #define ADDBRANCHTRACE(x,y)	{ }
- #define ADDBRANCHTRACE_INT(x,y)	{ }
- #define SETOLDCSIP() {  }
-#endif
+#define ADDBRANCHTRACE(x,y)	{ }
+#define ADDBRANCHTRACE_INT(x,y)	{ }
+#define SETOLDCSIP() {  }
 
 typedef union
 {                   /* eight general registers */
@@ -103,16 +97,6 @@ static bool InHLT;
 
 static uint32 prefix_base;	/* base address of the latest prefix segment */
 static char seg_prefix;		/* prefix segment indicator */
-
-#ifdef WANT_DEBUGGER
-static void (*cpu_hook)(uint32) = NULL;
-static uint8 (*read_hook)(uint32) = NULL;
-static void (*write_hook)(uint32, uint8) = NULL;
-static uint8 (*port_read_hook)(uint32) = NULL;
-static void (*port_write_hook)(uint32, uint8) = NULL;
-static bool hookie_hickey = 0;
-static void (*branch_trace_hook)(uint16 from_CS, uint16 from_IP, uint16 to_CS, uint16 to_IP, bool interrupt) = NULL;
-#endif
 
 #include "v30mz-ea.inc"
 #include "v30mz-modrm.inc"
@@ -1039,41 +1023,6 @@ void v30mz_set_reg(int regnum, unsigned val)
    }
 }
 
-#ifdef WANT_DEBUGGER
-static void (*save_cpu_writemem20)(uint32,uint8);
-static uint8 (*save_cpu_readport)(uint32);
-static void (*save_cpu_writeport)(uint32, uint8);
-static uint8 (*save_cpu_readmem20)(uint32);
-
-static void test_cpu_writemem20(uint32 A, uint8 V)
-{
-   if(write_hook)
-      write_hook(A, V);
-}
-
-static uint8 test_cpu_readmem20(uint32 A)
-{
-   if(read_hook)
-      return(read_hook(A));
-   else
-      return(save_cpu_readmem20(A));
-}
-
-static void test_cpu_writeport(uint32 A, uint8 V)
-{
-   if(port_write_hook)
-      port_write_hook(A, V);
-}
-
-static uint8 test_cpu_readport(uint32 A)
-{
-   if(port_read_hook)
-      return(port_read_hook(A));
-   else
-      return(save_cpu_readport(A));
-}
-#endif
-
 void v30mz_execute(int cycles)
 {
    v30mz_ICount += cycles;
@@ -1089,10 +1038,6 @@ void v30mz_execute(int cycles)
          if(tmp > 0)
             CLK(tmp);
 
-#ifdef WANT_DEBUGGER
-         if(cpu_hook)
-            cpu_hook(I.pc);
-#endif
          return;
       }
    }
@@ -1102,47 +1047,6 @@ void v30mz_execute(int cycles)
       SETOLDCSIP();
 
       WSwan_InterruptCheck();
-
-#ifdef WANT_DEBUGGER
-      if(hookie_hickey)
-      {
-         uint32 save_timestamp = v30mz_timestamp;
-         int32 save_ICount = v30mz_ICount;
-         v30mz_regs_t save_I = I;
-         uint32 save_prefix_base = prefix_base;
-         char save_seg_prefix = seg_prefix;
-         void (*save_branch_trace_hook)(uint16 from_CS, uint16 from_IP, uint16 to_CS, uint16 to_IP, bool interrupt) = branch_trace_hook;
-
-         branch_trace_hook = NULL;
-
-         save_cpu_writemem20 = cpu_writemem20;
-         save_cpu_readport = cpu_readport;
-         save_cpu_writeport = cpu_writeport;
-         save_cpu_readmem20 = cpu_readmem20;
-
-         cpu_writemem20 = test_cpu_writemem20;
-         cpu_readmem20 = test_cpu_readmem20;
-         cpu_writeport = test_cpu_writeport;
-         cpu_readport = test_cpu_readport;
-
-         DoOP(FETCHOP);
-
-         branch_trace_hook = save_branch_trace_hook;
-         v30mz_timestamp = save_timestamp;
-         v30mz_ICount = save_ICount;
-         I = save_I;
-         prefix_base = save_prefix_base;
-         seg_prefix = save_seg_prefix;
-         cpu_readmem20 = save_cpu_readmem20;
-         cpu_writemem20 = save_cpu_writemem20;
-         cpu_readport = save_cpu_readport;
-         cpu_writeport = save_cpu_writeport;
-         InHLT = false;
-      }
-
-      if(cpu_hook)
-         cpu_hook(I.pc);
-#endif
 
       DoOP(FETCHOP);
    }

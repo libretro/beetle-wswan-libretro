@@ -424,7 +424,6 @@ static void Reset(void)
 }
 
 static uint8 *chee;
-static uint64_t video_frames, audio_frames;
 
 static void Emulate(EmulateSpecStruct *espec,
       int skip_frame, int update_sample_rate)
@@ -438,7 +437,6 @@ static void Emulate(EmulateSpecStruct *espec,
    espec->DisplayRect.h    = 144;
    espec->skip             = skip_frame;
    espec->SoundBufSize     = 0;
-   espec->MasterCycles     = 0;
 
    if (update_sample_rate)
       WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
@@ -458,11 +456,7 @@ static void Emulate(EmulateSpecStruct *espec,
       audio_low_pass_apply(audio_samples_buf,
             espec->SoundBufSize);
 
-   espec->MasterCycles = v30mz_timestamp;
    v30mz_timestamp = 0;
-
-   video_frames++;
-   audio_frames += espec->SoundBufSize;
 }
 
 typedef struct
@@ -1460,14 +1454,6 @@ void retro_deinit(void)
 
    retro_60hz_deinit();
    retro_60hz_enabled = false;
-
-   if (log_cb)
-   {
-      log_cb(RETRO_LOG_INFO, "[%s]: Samples / Frame: %.5f\n",
-            MEDNAFEN_CORE_NAME, (double)audio_frames / video_frames);
-      log_cb(RETRO_LOG_INFO, "[%s]: Estimated FPS: %.5f\n",
-            MEDNAFEN_CORE_NAME, (double)video_frames * RETRO_SAMPLE_RATE / audio_frames);
-   }
 
    libretro_supports_bitmasks = false;
 }

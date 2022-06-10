@@ -48,11 +48,6 @@ void WSwan_GfxWSCPaletteRAMWrite(uint32 ws_offset, uint8 data);
 
 void WSwan_SetLayerEnableMask(uint64 mask);
 
-#ifdef WANT_DEBUGGER
-void WSwan_GfxSetGraphicsDecode(MDFN_Surface *surface, int line, int which, int xscroll, int yscroll, int pbn);
-uint32 WSwan_GfxGetRegister(const std::string &oname, std::string *special);
-#endif
-
 #ifdef __cplusplus
 }
 #endif

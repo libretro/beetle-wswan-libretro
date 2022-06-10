@@ -90,45 +90,6 @@ void WSwan_InterruptReset(void)
    RecalcInterrupt();
 }
 
-#ifdef WANT_DEBUGGER
-static const char *PrettyINames[8] = { "Serial Send", "Key Press", "RTC Alarm", "Serial Recv", "Line Hit", "VBlank Timer", "VBlank", "HBlank Timer" };
-
-uint32 WSwan_InterruptGetRegister(const unsigned int id, char *special, const uint32 special_len)
-{
-   switch(id)
-   {
-      case INT_GSREG_ISTATUS:
-         return IStatus;
-      case INT_GSREG_IENABLE:
-         return IEnable;
-      case INT_GSREG_IVECTORBASE:
-         return IVectorBase;
-   }
-
-   return 0;
-}
-
-void WSwan_InterruptSetRegister(const unsigned int id, uint32 value)
-{
-   switch(id)
-   {
-      case INT_GSREG_ISTATUS:
-         IStatus = value;
-         break;
-
-      case INT_GSREG_IENABLE:
-         IEnable = value;
-         break;
-
-      case INT_GSREG_IVECTORBASE:
-         IVectorBase = value;
-         break;
-   }
-
-   RecalcInterrupt();
-}
-#endif
-
 int WSwan_InterruptStateAction(StateMem *sm, int load, int data_only)
 {
    SFORMAT StateRegs[] =
