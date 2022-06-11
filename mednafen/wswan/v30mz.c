@@ -38,8 +38,6 @@
 
 #include "../state_inline.h"
 
-static uint16 old_CS, old_IP;
-
 #define PUSH(val) \
 { \
    I.regs.w[SP] -= 2; \
@@ -57,10 +55,6 @@ static uint16 old_CS, old_IP;
    ReadWord((((I.sregs[SS]<<4)+I.regs.w[SP]))); \
    I.regs.w[SP]+=2; \
 }
-
-#define ADDBRANCHTRACE(x,y)	{ }
-#define ADDBRANCHTRACE_INT(x,y)	{ }
-#define SETOLDCSIP() {  }
 
 typedef union
 {                   /* eight general registers */
@@ -187,7 +181,6 @@ void v30mz_int(uint32 vector, bool IgnoreIF)
       PUSH(I.pc);
       I.pc = (uint16)dest_off;
       I.sregs[PS] = (uint16)dest_seg;
-      ADDBRANCHTRACE_INT(I.sregs[PS], I.pc);
       CLK(32);
    }
 }
@@ -210,7 +203,6 @@ static void nec_interrupt(unsigned int_num)
    PUSH(I.pc);
    I.pc = (uint16)dest_off;
    I.sregs[PS] = (uint16)dest_seg;
-   ADDBRANCHTRACE(I.sregs[PS], I.pc);
 }
 
 static bool CheckInHLT(void)
@@ -606,7 +598,7 @@ static void DoOP(uint8 opcode)
          // AKA CVTWL
          OP( 0x99, i_cwd       ) { I.regs.w[DW] = (I.regs.b[AH] & 0x80) ? 0xffff : 0;	CLK(1);	} OP_EPILOGUE;
 
-         OP( 0x9a, i_call_far  ) { uint32 tmp, tmp2;	FETCHuint16(tmp); FETCHuint16(tmp2); PUSH(I.sregs[PS]); PUSH(I.pc); I.pc = (uint16)tmp; I.sregs[PS] = (uint16)tmp2; ADDBRANCHTRACE(I.sregs[PS], I.pc); CLK(10); } OP_EPILOGUE;
+         OP( 0x9a, i_call_far  ) { uint32 tmp, tmp2;	FETCHuint16(tmp); FETCHuint16(tmp2); PUSH(I.sregs[PS]); PUSH(I.pc); I.pc = (uint16)tmp; I.sregs[PS] = (uint16)tmp2; CLK(10); } OP_EPILOGUE;
          OP( 0x9b, i_poll      ) {  } OP_EPILOGUE;
          OP( 0x9c, i_pushf     ) { i_real_pushf(); } OP_EPILOGUE;
          OP( 0x9d, i_popf      ) { i_real_popf();  } OP_EPILOGUE;
@@ -687,8 +679,8 @@ static void DoOP(uint8 opcode)
             }
          } OP_EPILOGUE;
 
-         OP( 0xc2, i_ret_d16  ) { uint32 count = FETCH; count += FETCH << 8; POP(I.pc); I.regs.w[SP]+=count; CLK(6); ADDBRANCHTRACE(I.sregs[PS], I.pc); } OP_EPILOGUE;
-         OP( 0xc3, i_ret      ) { POP(I.pc); CLK(6); ADDBRANCHTRACE(I.sregs[PS], I.pc); } OP_EPILOGUE;
+         OP( 0xc2, i_ret_d16  ) { uint32 count = FETCH; count += FETCH << 8; POP(I.pc); I.regs.w[SP]+=count; CLK(6);  } OP_EPILOGUE;
+         OP( 0xc3, i_ret      ) { POP(I.pc); CLK(6);  } OP_EPILOGUE;
          OP( 0xc4, i_les_dw   ) { GetModRM; uint16 tmp = GetRMWord(ModRM); RegWord(ModRM)=tmp; I.sregs[DS1] = GetnextRMWord; CLK(6); } OP_EPILOGUE;
          OP( 0xc5, i_lds_dw   ) { GetModRM; uint16 tmp = GetRMWord(ModRM); RegWord(ModRM)=tmp; I.sregs[DS0] = GetnextRMWord; CLK(6); } OP_EPILOGUE;
          OP( 0xc6, i_mov_bd8  ) { GetModRM; PutImmRMByte(ModRM); CLK(1); } OP_EPILOGUE;
@@ -721,12 +713,12 @@ static void DoOP(uint8 opcode)
             CLK(2);
          } OP_EPILOGUE;
 
-         OP( 0xca, i_retf_d16  ) { uint32 count = FETCH; count += FETCH << 8; POP(I.pc); POP(I.sregs[PS]); I.regs.w[SP]+=count; CLK(9); ADDBRANCHTRACE(I.sregs[PS], I.pc); } OP_EPILOGUE;
-         OP( 0xcb, i_retf      ) { POP(I.pc); POP(I.sregs[PS]); CLK(8); ADDBRANCHTRACE(I.sregs[PS], I.pc); } OP_EPILOGUE;
+         OP( 0xca, i_retf_d16  ) { uint32 count = FETCH; count += FETCH << 8; POP(I.pc); POP(I.sregs[PS]); I.regs.w[SP]+=count; CLK(9);  } OP_EPILOGUE;
+         OP( 0xcb, i_retf      ) { POP(I.pc); POP(I.sregs[PS]); CLK(8);  } OP_EPILOGUE;
          OP( 0xcc, i_int3      ) { nec_interrupt(3); CLK(9); } OP_EPILOGUE;
          OP( 0xcd, i_int       ) { nec_interrupt(FETCH); CLK(10); } OP_EPILOGUE;
          OP( 0xce, i_into      ) { if (FLAG_O) { nec_interrupt(4); CLK(13); } else CLK(6); } OP_EPILOGUE;
-         OP( 0xcf, i_iret      ) { POP(I.pc); POP(I.sregs[PS]); i_real_popf(); CLK(10); ADDBRANCHTRACE(I.sregs[PS], I.pc); } OP_EPILOGUE;
+         OP( 0xcf, i_iret      ) { POP(I.pc); POP(I.sregs[PS]); i_real_popf(); CLK(10);  } OP_EPILOGUE;
 
          OP( 0xd0, i_rotshft_b ) {
             uint32 src, dst; GetModRM; src = (uint32)GetRMByte(ModRM); dst=src;
@@ -812,19 +804,19 @@ static void DoOP(uint8 opcode)
       case 0xdf:
          { GetModRM; CLK(1); } OP_EPILOGUE;
 
-         OP( 0xe0, i_loopne ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if (!ZF && I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(6); ADDBRANCHTRACE(I.sregs[PS], I.pc); } else CLK(3); } OP_EPILOGUE;
-         OP( 0xe1, i_loope  ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if ( ZF && I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(6); ADDBRANCHTRACE(I.sregs[PS], I.pc); } else CLK(3); } OP_EPILOGUE;
-         OP( 0xe2, i_loop   ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if (I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(5); ADDBRANCHTRACE(I.sregs[PS], I.pc); } else CLK(2); } OP_EPILOGUE;
-         OP( 0xe3, i_jcxz   ) { int8 disp = (int8)FETCH; if (I.regs.w[CW] == 0) { I.pc = (uint16)(I.pc+disp);  CLK(4); ADDBRANCHTRACE(I.sregs[PS], I.pc); } else CLK(1); } OP_EPILOGUE;
+         OP( 0xe0, i_loopne ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if (!ZF && I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(6);  } else CLK(3); } OP_EPILOGUE;
+         OP( 0xe1, i_loope  ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if ( ZF && I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(6);  } else CLK(3); } OP_EPILOGUE;
+         OP( 0xe2, i_loop   ) { int8 disp = (int8)FETCH; I.regs.w[CW]--; if (I.regs.w[CW]) { I.pc = (uint16)(I.pc+disp);  CLK(5);  } else CLK(2); } OP_EPILOGUE;
+         OP( 0xe3, i_jcxz   ) { int8 disp = (int8)FETCH; if (I.regs.w[CW] == 0) { I.pc = (uint16)(I.pc+disp);  CLK(4);  } else CLK(1); } OP_EPILOGUE;
          OP( 0xe4, i_inal   ) { uint8 port = FETCH; I.regs.b[AL] = read_port(port); CLK(6);				     	} OP_EPILOGUE;
          OP( 0xe5, i_inax   ) { uint8 port = FETCH; I.regs.b[AL] = read_port(port); I.regs.b[AH] = read_port(port+1); CLK(6); 	} OP_EPILOGUE;
          OP( 0xe6, i_outal  ) { uint8 port = FETCH; write_port(port, I.regs.b[AL]); CLK(6);				     	} OP_EPILOGUE;
          OP( 0xe7, i_outax  ) { uint8 port = FETCH; write_port(port, I.regs.b[AL]); write_port(port+1, I.regs.b[AH]); CLK(6);	} OP_EPILOGUE;
 
-         OP( 0xe8, i_call_d16 ) { uint32 tmp; FETCHuint16(tmp); PUSH(I.pc); I.pc = (uint16)(I.pc+(int16)tmp); ADDBRANCHTRACE(I.sregs[PS], I.pc); CLK(5); } OP_EPILOGUE;
-         OP( 0xe9, i_jmp_d16  ) { uint32 tmp; FETCHuint16(tmp); I.pc = (uint16)(I.pc+(int16)tmp); ADDBRANCHTRACE(I.sregs[PS], I.pc); CLK(4); } OP_EPILOGUE;
-         OP( 0xea, i_jmp_far  ) { uint32 tmp,tmp1; FETCHuint16(tmp); FETCHuint16(tmp1); I.sregs[PS] = (uint16)tmp1; I.pc = (uint16)tmp; ; ADDBRANCHTRACE(I.sregs[PS], I.pc); CLK(7);  } OP_EPILOGUE;
-         OP( 0xeb, i_jmp_d8   ) { int tmp = (int)((int8)FETCH); CLK(4);I.pc = (uint16)(I.pc+tmp); ADDBRANCHTRACE(I.sregs[PS], I.pc); } OP_EPILOGUE;
+         OP( 0xe8, i_call_d16 ) { uint32 tmp; FETCHuint16(tmp); PUSH(I.pc); I.pc = (uint16)(I.pc+(int16)tmp); CLK(5); } OP_EPILOGUE;
+         OP( 0xe9, i_jmp_d16  ) { uint32 tmp; FETCHuint16(tmp); I.pc = (uint16)(I.pc+(int16)tmp); CLK(4); } OP_EPILOGUE;
+         OP( 0xea, i_jmp_far  ) { uint32 tmp,tmp1; FETCHuint16(tmp); FETCHuint16(tmp1); I.sregs[PS] = (uint16)tmp1; I.pc = (uint16)tmp; CLK(7);  } OP_EPILOGUE;
+         OP( 0xeb, i_jmp_d8   ) { int tmp = (int)((int8)FETCH); CLK(4);I.pc = (uint16)(I.pc+tmp); } OP_EPILOGUE;
 
          OP( 0xec, i_inaldx   ) { I.regs.b[AL] = read_port(I.regs.w[DW]); CLK(6);} OP_EPILOGUE;
          OP( 0xed, i_inaxdx   ) { uint32 port = I.regs.w[DW];	I.regs.b[AL] = read_port(port);	I.regs.b[AH] = read_port(port+1); CLK(6); } OP_EPILOGUE;
@@ -948,10 +940,10 @@ static void DoOP(uint8 opcode)
             switch(ModRM & 0x38) {
                case 0x00: tmp1 = tmp+1; I.OverVal = (tmp==0x7fff); SetAF(tmp1,tmp,1); SetSZPF_Word(tmp1); PutbackRMWord(ModRM,(uint16)tmp1); CLKM(3,1); break; /* INC */
                case 0x08: tmp1 = tmp-1; I.OverVal = (tmp==0x8000); SetAF(tmp1,tmp,1); SetSZPF_Word(tmp1); PutbackRMWord(ModRM,(uint16)tmp1); CLKM(3,1); break; /* DEC */
-               case 0x10: PUSH(I.pc);	I.pc = (uint16)tmp; ADDBRANCHTRACE(I.sregs[PS], I.pc); CLKM(6,5); break; /* CALL */
-               case 0x18: tmp1 = I.sregs[PS]; I.sregs[PS] = GetnextRMWord; PUSH(tmp1); PUSH(I.pc); I.pc = tmp; ADDBRANCHTRACE(I.sregs[PS], I.pc); CLKM(12,1); break; /* CALL FAR */
-               case 0x20: I.pc = tmp; ADDBRANCHTRACE(I.sregs[PS], I.pc); CLKM(5,4); break; /* JMP */
-               case 0x28: I.pc = tmp; I.sregs[PS] = GetnextRMWord; ADDBRANCHTRACE(I.sregs[PS], I.pc); CLKM(10,1); break; /* JMP FAR */
+               case 0x10: PUSH(I.pc);	I.pc = (uint16)tmp; CLKM(6,5); break; /* CALL */
+               case 0x18: tmp1 = I.sregs[PS]; I.sregs[PS] = GetnextRMWord; PUSH(tmp1); PUSH(I.pc); I.pc = tmp; CLKM(12,1); break; /* CALL FAR */
+               case 0x20: I.pc = tmp; CLKM(5,4); break; /* JMP */
+               case 0x28: I.pc = tmp; I.sregs[PS] = GetnextRMWord; CLKM(10,1); break; /* JMP FAR */
                case 0x30: PUSH(tmp); CLKM(2,1); break;
             }
          } OP_EPILOGUE;
@@ -1029,7 +1021,6 @@ void v30mz_execute(int cycles)
 
    if(InHLT)
    {
-      SETOLDCSIP();
       WSwan_InterruptCheck();
       if(InHLT)
       {
@@ -1044,7 +1035,6 @@ void v30mz_execute(int cycles)
 
    while(v30mz_ICount > 0) 
    {
-      SETOLDCSIP();
 
       WSwan_InterruptCheck();
 
@@ -1074,12 +1064,12 @@ int v30mz_StateAction(StateMem *sm, int load, int data_only)
    PSW = CompressFlags();
 
    if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "V30", false))
-      return(0);
+      return 0;
 
    if(load)
    {
       ExpandFlags(PSW);
    }
 
-   return(1);
+   return 1;
 }

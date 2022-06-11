@@ -166,7 +166,6 @@ typedef enum
 	{										\
 		I.pc = (uint16)(I.pc+tmp);			\
 		CLK(3);	\
-		ADDBRANCHTRACE(I.sregs[PS], I.pc);		\
 		return;								\
 	}
 
