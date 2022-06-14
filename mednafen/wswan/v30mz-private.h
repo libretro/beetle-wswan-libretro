@@ -117,7 +117,6 @@ typedef enum
 
 #define _REAL_CLK(cycles) { v30mz_ICount -= cycles; v30mz_timestamp += cycles; }
 #define CLK _REAL_CLK
-//#define CLK(cycles) { _REAL_CLK(cycles); if(ws_CheckDMA(cycles)) _REAL_CLK(1); }
 
 #define CLKM(mcount, ccount) { if(ModRM >=0xc0 ) { CLK(ccount);} else {CLK(mcount);} }
 

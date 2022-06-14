@@ -31,11 +31,6 @@ static void RecalcInterrupt(void)
    }
 }
 
-void WSwan_InterruptDebugForce(unsigned int level)
-{
-   v30mz_int((IVectorBase + level) * 4, true);
-}
-
 void WSwan_Interrupt(int which)
 {
    if(IEnable & (1 << which))

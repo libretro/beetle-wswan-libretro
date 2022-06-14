@@ -28,8 +28,8 @@ void linearFree(void* mem);
 #define MEDNAFEN_CORE_VERSION "v0.9.35.1"
 #define MEDNAFEN_CORE_EXTENSIONS "ws|wsc|pc2"
 #define MEDNAFEN_CORE_TIMING_FPS (3072000.0 / (159.0 * 256.0))
-#define MEDNAFEN_CORE_GEOMETRY_BASE_W (EmulatedWSwan.nominal_width)
-#define MEDNAFEN_CORE_GEOMETRY_BASE_H (EmulatedWSwan.nominal_height)
+#define MEDNAFEN_CORE_GEOMETRY_BASE_W 224
+#define MEDNAFEN_CORE_GEOMETRY_BASE_H 144
 #define MEDNAFEN_CORE_GEOMETRY_MAX_W 224
 #define MEDNAFEN_CORE_GEOMETRY_MAX_H 144
 #define MEDNAFEN_CORE_GEOMETRY_ASPECT_RATIO (14.0 / 9.0)
@@ -384,21 +384,6 @@ uint16 WSButtonStatus;
 
 static uint8 WSRCurrentSong;
 
-MDFNGI EmulatedWSwan =
-{
- 224,   /* lcm_width */
- 144,   /* lcm_height */
-
- 224,	  /* Nominal width */
- 144,	  /* Nominal height */
-
- 224,	  /* Framebuffer width */
- 144,	  /* Framebuffer height */
-
- 2,     /* Number of output sound channels */
-};
-
-
 static void Reset(void)
 {
    int		u0;
@@ -429,8 +414,6 @@ static void Emulate(EmulateSpecStruct *espec,
    uint16 butt_data;
 
    espec->surface          = surf;
-   espec->DisplayRect.x    = 0;
-   espec->DisplayRect.y    = 0;
    espec->DisplayRect.w    = 224;
    espec->DisplayRect.h    = 144;
    espec->skip             = skip_frame;
@@ -562,8 +545,10 @@ static int Load(const uint8_t *data, size_t size)
       wsCartROM[0xfffec]=0x20;
    }
 
+#if 0
    if(header[6] & 0x1)
       EmulatedWSwan.rotated = MDFN_ROTATE90;
+#endif
 
    MDFNMP_Init(16384, (1 << 20) / 1024);
 

@@ -43,7 +43,7 @@ extern "C" {
 
 typedef struct
 {
- int32_t x, y, w, h;
+ int32_t w, h;
 } MDFN_Rect;
 
 typedef struct
