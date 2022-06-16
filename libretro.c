@@ -209,7 +209,7 @@ struct ws_mono_palette
    uint32 end;
 };
 
-struct ws_mono_palette ws_mono_palettes[] = {
+static struct ws_mono_palette ws_mono_palettes[] = {
    { "default",                0x000000, 0xFFFFFF },
    { "wonderswan",             0x3E3D20, 0x9B9D66 },
    { "wondeswan_color",        0x1B201E, 0xD7D49D },
@@ -382,11 +382,9 @@ uint32		rom_size;
 
 uint16 WSButtonStatus;
 
-static uint8 WSRCurrentSong;
-
 static void Reset(void)
 {
-   int		u0;
+   int u0;
 
    v30mz_reset();				/* Reset CPU */
    WSwan_MemoryReset();
@@ -406,13 +404,11 @@ static void Reset(void)
    v30mz_set_reg(NEC_SP,0x2000);
 }
 
-static uint8 *chee;
+static uint8 *chee = NULL;
 
 static void Emulate(EmulateSpecStruct *espec,
       int skip_frame, int update_sample_rate)
 {
-   uint16 butt_data;
-
    espec->surface          = surf;
    espec->DisplayRect.w    = 224;
    espec->DisplayRect.h    = 144;
@@ -422,9 +418,7 @@ static void Emulate(EmulateSpecStruct *espec,
    if (update_sample_rate)
       WSwan_SetSoundRate(RETRO_SAMPLE_RATE);
 
-   butt_data = chee[0] | (chee[1] << 8);
-
-   WSButtonStatus = butt_data;
+   WSButtonStatus          = chee[0] | (chee[1] << 8);
 
    MDFNMP_ApplyPeriodicCheats();
 
@@ -440,6 +434,7 @@ static void Emulate(EmulateSpecStruct *espec,
    v30mz_timestamp = 0;
 }
 
+#if 0
 typedef struct
 {
  const uint8 id;
@@ -491,6 +486,7 @@ static const DLEntry Developers[] =
  { 0x33, "Wiz" },
  { 0x36, "Capcom" }
 };
+#endif
 
 static uint32 SRAMSize;
 
@@ -501,7 +497,7 @@ static int Load(const uint8_t *data, size_t size)
    uint8 header[10];
 
    if(size < 65536)
-      return(0);
+      return 0;
 
    real_rom_size = (size + 0xFFFF) & ~0xFFFF;
    pow_size      = next_pow2(real_rom_size);
@@ -562,7 +558,7 @@ static int Load(const uint8_t *data, size_t size)
 
    Reset();
 
-   return(1);
+   return 1;
 }
 
 static void CloseGame(void)
@@ -578,36 +574,24 @@ static void CloseGame(void)
    }
 }
 
-static void SetInput(int port, const char *type, void *ptr)
-{
- if(!port) chee = (uint8 *)ptr;
-}
-
 int StateAction(StateMem *sm, int load, int data_only)
 {
    if(!v30mz_StateAction(sm, load, data_only))
-      return(0);
-
+      return 0;
    /* Call MemoryStateAction before others StateActions... */
    if(!WSwan_MemoryStateAction(sm, load, data_only))
-      return(0);
-
+      return 0;
    if(!WSwan_GfxStateAction(sm, load, data_only))
-      return(0);
-
+      return 0;
    if(!WSwan_RTCStateAction(sm, load, data_only))
-      return(0);
-
+      return 0;
    if(!WSwan_InterruptStateAction(sm, load, data_only))
-      return(0);
-
+      return 0;
    if(!WSwan_SoundStateAction(sm, load, data_only))
-      return(0);
-
+      return 0;
    if(!WSwan_EEPROMStateAction(sm, load, data_only))
-      return(0);
-
-   return(1);
+      return 0;
+   return 1;
 }
 
 static void DoSimpleCommand(int cmd)
@@ -966,16 +950,6 @@ bool retro_load_game_special(unsigned a, const struct retro_game_info *b, size_t
    return false;
 }
 
-static void set_volume (uint32_t *ptr, unsigned number)
-{
-   switch(number)
-   {
-      default:
-         *ptr = number;
-         break;
-   }
-}
-
 #define MAX_PLAYERS 1
 #define MAX_BUTTONS 11
 static uint16_t input_buf;
@@ -1010,8 +984,7 @@ bool retro_load_game(const struct retro_game_info *info)
          (const uint8_t*)info->data, info->size))
       goto error;
 
-   SetInput(0, "gamepad", &input_buf);
-
+   chee = (uint8 *)&input_buf;
    surf = (MDFN_Surface*)calloc(1, sizeof(*surf));
    
    if (!surf)
@@ -1442,7 +1415,7 @@ void retro_deinit(void)
 
 unsigned retro_get_region(void)
 {
-   return RETRO_REGION_NTSC; /* FIXME: Regions for other cores. */
+   return RETRO_REGION_NTSC; /* No real regions of sorts for this handheld, so just set to NTSC. */
 }
 
 unsigned retro_api_version(void)
@@ -1581,6 +1554,3 @@ size_t retro_get_memory_size(unsigned type)
 
 void retro_cheat_reset(void) { }
 void retro_cheat_set(unsigned a, bool b, const char *c) { }
-
-void MDFND_MidSync(const EmulateSpecStruct *a) { }
-void MDFN_MidLineUpdate(EmulateSpecStruct *espec, int y) { }
