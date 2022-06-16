@@ -331,9 +331,7 @@ static INLINE void i_real_scasw(void)
 
 static void DoOP(uint8 opcode)
 {
-   //#define OP(num,func_name) static void func_name(void)
 #define OP(num, func_name) case num: 
-#define OP_RANGE(num1, num2, func_name) case num1 ... num2:
 #define OP_EPILOGUE break
 
    switch(opcode)
