@@ -23,7 +23,7 @@
 #include "../mednafen-types.h"
 #include "wswan-memory.h"
 
-uint8	tiles[256][256][2][8];
+static uint8	tiles[256][256][2][8];
 uint8	wsTCache[512*64];			
 uint8	wsTCache2[512*64];			
 uint8	wsTCacheFlipped[512*64];

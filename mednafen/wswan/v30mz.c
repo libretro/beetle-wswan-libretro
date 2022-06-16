@@ -79,6 +79,18 @@ static uint8 (*cpu_readport)(uint32) = NULL;
 static void (*cpu_writeport)(uint32, uint8) = NULL;
 static uint8 (*cpu_readmem20)(uint32) = NULL;
 
+static INLINE uint8 PhysRead8(uint32 addr)
+{
+ return cpu_readmem20(addr);
+}
+
+static INLINE uint16 PhysRead16(uint32 addr)
+{
+ uint16 ret = cpu_readmem20(addr);
+ ret |= cpu_readmem20(addr + 1) << 8;
+ return ret;
+}
+
 /***************************************************************************/
 /* cpu state                                                               */
 /***************************************************************************/
@@ -90,7 +102,7 @@ static v30mz_regs_t I;
 static bool InHLT;
 
 static uint32 prefix_base;	/* base address of the latest prefix segment */
-static char seg_prefix;		/* prefix segment indicator */
+static int8 seg_prefix;		/* prefix segment indicator */
 
 #include "v30mz-ea.inc"
 #include "v30mz-modrm.inc"
@@ -319,9 +331,7 @@ static INLINE void i_real_scasw(void)
 
 static void DoOP(uint8 opcode)
 {
-   //#define OP(num,func_name) static void func_name(void)
 #define OP(num, func_name) case num: 
-#define OP_RANGE(num1, num2, func_name) case num1 ... num2:
 #define OP_EPILOGUE break
 
    switch(opcode)
