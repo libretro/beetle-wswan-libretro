@@ -605,46 +605,6 @@ static void DoSimpleCommand(int cmd)
    }
 }
 
-static const InputDeviceInputInfoStruct IDII[] =
-{
- { "up-x", "UP ↑, X Cursors", 0, IDIT_BUTTON, "down-x",				{ "right-x", "down-x", "left-x" } },
- { "right-x", "RIGHT →, X Cursors", 3, IDIT_BUTTON, "left-x",			{ "down-x", "left-x", "up-x" } },
- { "down-x", "DOWN ↓, X Cursors", 1, IDIT_BUTTON, "up-x", 			{ "left-x", "up-x", "right-x" } },
- { "left-x", "LEFT ←, X Cursors", 2, IDIT_BUTTON, "right-x",			{ "up-x", "right-x", "down-x" } },
-
- { "up-y", "UP ↑, Y Cur: MUST NOT = X CURSORS", 4, IDIT_BUTTON, "down-y",	{ "right-y", "down-y", "left-y" } },
- { "right-y", "RIGHT →, Y Cur: MUST NOT = X CURSORS", 7, IDIT_BUTTON, "left-y",	{ "down-y", "left-y", "up-y" } },
- { "down-y", "DOWN ↓, Y Cur: MUST NOT = X CURSORS", 5, IDIT_BUTTON, "up-y",	{ "left-y", "up-y", "right-y" } },
- { "left-y", "LEFT ←, Y Cur: MUST NOT = X CURSORS", 6, IDIT_BUTTON, "right-y",	{ "up-y", "right-y", "down-y" } },
-
- { "start", "Start", 8, IDIT_BUTTON, NULL },
- { "a", "A", 10, IDIT_BUTTON_CAN_RAPID,  NULL },
- { "b", "B", 9, IDIT_BUTTON_CAN_RAPID, NULL },
-};
-
-static InputDeviceInfoStruct InputDeviceInfo[] =
-{
- {
-  "gamepad",
-  "Gamepad",
-  NULL,
-  NULL,
-  sizeof(IDII) / sizeof(InputDeviceInputInfoStruct),
-  IDII,
- }
-};
-
-static const InputPortInfoStruct PortInfo[] =
-{
- { "builtin", "Built-In", sizeof(InputDeviceInfo) / sizeof(InputDeviceInfoStruct), InputDeviceInfo, "gamepad" }
-};
-
-static InputInfoStruct InputInfo =
-{
- sizeof(PortInfo) / sizeof(InputPortInfoStruct),
- PortInfo
-};
-
 static bool update_audio = false;
 static bool update_video = false;
 
