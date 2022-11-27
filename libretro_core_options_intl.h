@@ -84,8 +84,12 @@ extern "C" {
 #define WSWAN_FRAMESKIP_INFO_0_AR NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_AR NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_AR NULL
+#define WSWAN_60HZ_MODE_LABEL_AR NULL
+#define WSWAN_60HZ_MODE_INFO_0_AR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_AR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_AR NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_AR "تصفية الصوت"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_AR NULL
 
 struct retro_core_option_v2_category option_cats_ar[] = {
    { NULL, NULL, NULL },
@@ -218,6 +222,20 @@ struct retro_core_option_v2_definition option_defs_ar[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_AR,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_AR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_AR,
       NULL,
@@ -229,12 +247,23 @@ struct retro_core_option_v2_definition option_defs_ar[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_AR,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_AR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -290,8 +319,12 @@ struct retro_core_options_v2 options_ar = {
 #define WSWAN_FRAMESKIP_INFO_0_AST NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_AST NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_AST NULL
+#define WSWAN_60HZ_MODE_LABEL_AST NULL
+#define WSWAN_60HZ_MODE_INFO_0_AST NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_AST NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_AST NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_AST NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_AST NULL
 
 struct retro_core_option_v2_category option_cats_ast[] = {
    { NULL, NULL, NULL },
@@ -424,6 +457,20 @@ struct retro_core_option_v2_definition option_defs_ast[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_AST,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_AST,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_AST,
       NULL,
@@ -435,12 +482,23 @@ struct retro_core_option_v2_definition option_defs_ast[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_AST,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_AST,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -458,7 +516,7 @@ struct retro_core_options_v2 options_ast = {
 #define OPTION_VAL_PORTRAIT_CA NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_CA NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_CA NULL
-#define OPTION_VAL_AUTO_CA NULL
+#define OPTION_VAL_AUTO_CA "Automàtic"
 #define WSWAN_MONO_PALETTE_LABEL_CA NULL
 #define WSWAN_MONO_PALETTE_INFO_0_CA NULL
 #define OPTION_VAL_DEFAULT_CA NULL
@@ -496,8 +554,12 @@ struct retro_core_options_v2 options_ast = {
 #define WSWAN_FRAMESKIP_INFO_0_CA NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CA NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CA NULL
+#define WSWAN_60HZ_MODE_LABEL_CA NULL
+#define WSWAN_60HZ_MODE_INFO_0_CA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_CA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CA NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_CA NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_CA NULL
 
 struct retro_core_option_v2_category option_cats_ca[] = {
    { NULL, NULL, NULL },
@@ -630,6 +692,20 @@ struct retro_core_option_v2_definition option_defs_ca[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_CA,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_CA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_CA,
       NULL,
@@ -641,12 +717,23 @@ struct retro_core_option_v2_definition option_defs_ca[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_CA,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_CA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -702,8 +789,12 @@ struct retro_core_options_v2 options_ca = {
 #define WSWAN_FRAMESKIP_INFO_0_CHS "跳过帧以避免运行下的音频缓冲区(崩溃)。提高性能以牺牲视觉性能。 “自动”跳板帧在前端建议时。“手动”使用了“Frameskip 阈值(%)”设置。"
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHS "跳帧阈值(%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHS "当'Frameskip'设置为“手动”时，这将指定音频缓冲区占用阈值(百分比)，低于此值的帧将被跳过。 较高的值会导致帧更频繁地丢失，从而降低破碎的风险。"
+#define WSWAN_60HZ_MODE_LABEL_CHS NULL
+#define WSWAN_60HZ_MODE_INFO_0_CHS NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_CHS "声音输出采样率"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CHS "较高的数值略微提高了音质，牺牲了性能。"
+#define WSWAN_SOUND_LOW_PASS_LABEL_CHS "音频过滤器"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_CHS NULL
 
 struct retro_core_option_v2_category option_cats_chs[] = {
    { NULL, NULL, NULL },
@@ -836,6 +927,20 @@ struct retro_core_option_v2_definition option_defs_chs[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_CHS,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_CHS,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_CHS,
       NULL,
@@ -847,12 +952,23 @@ struct retro_core_option_v2_definition option_defs_chs[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_CHS,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_CHS,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -863,17 +979,17 @@ struct retro_core_options_v2 options_chs = {
 
 /* RETRO_LANGUAGE_CHT */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_CHT NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_CHT "螢幕旋轉"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_CHT NULL
-#define OPTION_VAL_MANUAL_CHT NULL
+#define OPTION_VAL_MANUAL_CHT "手動"
 #define OPTION_VAL_LANDSCAPE_CHT NULL
 #define OPTION_VAL_PORTRAIT_CHT NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_CHT NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_CHT NULL
 #define OPTION_VAL_AUTO_CHT "自動"
-#define WSWAN_MONO_PALETTE_LABEL_CHT NULL
+#define WSWAN_MONO_PALETTE_LABEL_CHT "配色"
 #define WSWAN_MONO_PALETTE_INFO_0_CHT NULL
-#define OPTION_VAL_DEFAULT_CHT NULL
+#define OPTION_VAL_DEFAULT_CHT "灰階"
 #define OPTION_VAL_WONDERSWAN_CHT NULL
 #define OPTION_VAL_WONDESWAN_COLOR_CHT NULL
 #define OPTION_VAL_SWANCRYSTAL_CHT NULL
@@ -881,7 +997,7 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_GB_POCKET_CHT NULL
 #define OPTION_VAL_GB_LIGHT_CHT NULL
 #define OPTION_VAL_BLOSSOM_PINK_CHT NULL
-#define OPTION_VAL_BUBBLES_BLUE_CHT NULL
+#define OPTION_VAL_BUBBLES_BLUE_CHT "泡泡藍"
 #define OPTION_VAL_BUTTERCUP_GREEN_CHT NULL
 #define OPTION_VAL_DIGIVICE_CHT NULL
 #define OPTION_VAL_GAME_COM_CHT NULL
@@ -889,27 +1005,31 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_GAME_MASTER_CHT NULL
 #define OPTION_VAL_GOLDEN_WILD_CHT NULL
 #define OPTION_VAL_GREENSCALE_CHT NULL
-#define OPTION_VAL_HOKAGE_ORANGE_CHT NULL
+#define OPTION_VAL_HOKAGE_ORANGE_CHT "火影橘"
 #define OPTION_VAL_LABO_FAWN_CHT NULL
 #define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_CHT NULL
 #define OPTION_VAL_MICROVISION_CHT NULL
 #define OPTION_VAL_MILLION_LIVE_GOLD_CHT NULL
 #define OPTION_VAL_ODYSSEY_GOLD_CHT NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_CHT NULL
-#define OPTION_VAL_SLIME_BLUE_CHT NULL
+#define OPTION_VAL_SHINY_SKY_BLUE_CHT "閃亮藍"
+#define OPTION_VAL_SLIME_BLUE_CHT "史萊姆藍"
 #define OPTION_VAL_TI_83_CHT NULL
 #define OPTION_VAL_TRAVEL_WOOD_CHT NULL
-#define OPTION_VAL_VIRTUAL_BOY_CHT NULL
+#define OPTION_VAL_VIRTUAL_BOY_CHT "虛擬男孩紅"
 #define WSWAN_GFX_COLORS_LABEL_CHT NULL
 #define WSWAN_GFX_COLORS_INFO_0_CHT NULL
 #define OPTION_VAL_16BIT_CHT NULL
 #define OPTION_VAL_24BIT_CHT NULL
-#define WSWAN_FRAMESKIP_LABEL_CHT NULL
-#define WSWAN_FRAMESKIP_INFO_0_CHT NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHT NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHT NULL
+#define WSWAN_FRAMESKIP_LABEL_CHT "跳幀"
+#define WSWAN_FRAMESKIP_INFO_0_CHT "設定跳幀以避免音頻緩衝區不足(產生破音)。以視覺平畫度為代價提高效能。<自動> 由前端系統控制跳幀。<手動> 使用「跳幀閾值 (%)」設定。"
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHT "跳幀上限 (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHT "設定「跳幀」為 <手動> 時音頻緩衝區使用上限(%)，低於上限的影格將被跳過。設定過高會導致頻繁丟失影格，過低則是出現破音。"
+#define WSWAN_60HZ_MODE_LABEL_CHT NULL
+#define WSWAN_60HZ_MODE_INFO_0_CHT NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_CHT NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CHT NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_CHT "音訊過濾器"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_CHT NULL
 
 struct retro_core_option_v2_category option_cats_cht[] = {
    { NULL, NULL, NULL },
@@ -1042,6 +1162,20 @@ struct retro_core_option_v2_definition option_defs_cht[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_CHT,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_CHT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_CHT,
       NULL,
@@ -1053,12 +1187,23 @@ struct retro_core_option_v2_definition option_defs_cht[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_CHT,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_CHT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -1069,20 +1214,20 @@ struct retro_core_options_v2 options_cht = {
 
 /* RETRO_LANGUAGE_CS */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_CS NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_CS NULL
-#define OPTION_VAL_MANUAL_CS NULL
-#define OPTION_VAL_LANDSCAPE_CS NULL
-#define OPTION_VAL_PORTRAIT_CS NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_CS NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_CS NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_CS "Otáčení Displeje"
+#define WSWAN_ROTATE_DISPLAY_INFO_0_CS "Vyberte orientaci konzole. 'Portrét' lze použít k dosažení správného rozložení her orientovaných na výšku na klasickém displeji (Krajina). 'Ruční' umožňuje otáčení přes ovladač (výchozí tlačítko: SELECT)."
+#define OPTION_VAL_MANUAL_CS "Ruční"
+#define OPTION_VAL_LANDSCAPE_CS "Krajina"
+#define OPTION_VAL_PORTRAIT_CS "Portrét"
+#define WSWAN_ROTATE_KEYMAP_LABEL_CS "Mapování Otočných Tlačítek"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_CS "Vyberte preferované mapování tlačítek. 'Auto' upraví mapování tlačítek tak, aby odpovídalo aktuálnímu natočení displeje."
 #define OPTION_VAL_AUTO_CS NULL
-#define WSWAN_MONO_PALETTE_LABEL_CS NULL
-#define WSWAN_MONO_PALETTE_INFO_0_CS NULL
+#define WSWAN_MONO_PALETTE_LABEL_CS "Paleta Barev"
+#define WSWAN_MONO_PALETTE_INFO_0_CS "Výběr barevného odlišení her WonderSwan (Mono). Palety 'WS' napodobují zobrazení původního hardwaru WonderSwan."
 #define OPTION_VAL_DEFAULT_CS NULL
 #define OPTION_VAL_WONDERSWAN_CS NULL
 #define OPTION_VAL_WONDESWAN_COLOR_CS NULL
-#define OPTION_VAL_SWANCRYSTAL_CS NULL
+#define OPTION_VAL_SWANCRYSTAL_CS "WS – SwanCrystal"
 #define OPTION_VAL_GB_DMG_CS NULL
 #define OPTION_VAL_GB_POCKET_CS NULL
 #define OPTION_VAL_GB_LIGHT_CS NULL
@@ -1105,17 +1250,21 @@ struct retro_core_options_v2 options_cht = {
 #define OPTION_VAL_SLIME_BLUE_CS NULL
 #define OPTION_VAL_TI_83_CS NULL
 #define OPTION_VAL_TRAVEL_WOOD_CS NULL
-#define OPTION_VAL_VIRTUAL_BOY_CS NULL
-#define WSWAN_GFX_COLORS_LABEL_CS NULL
-#define WSWAN_GFX_COLORS_INFO_0_CS NULL
-#define OPTION_VAL_16BIT_CS NULL
-#define OPTION_VAL_24BIT_CS NULL
-#define WSWAN_FRAMESKIP_LABEL_CS NULL
-#define WSWAN_FRAMESKIP_INFO_0_CS NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CS NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CS NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_CS NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CS NULL
+#define OPTION_VAL_VIRTUAL_BOY_CS "Virtuální Chlapec"
+#define WSWAN_GFX_COLORS_LABEL_CS "Hloubka Barev (Vyžaduje Restart)"
+#define WSWAN_GFX_COLORS_INFO_0_CS "24 bitů je pomalejších a nejsou k dispozici na všech platformách."
+#define OPTION_VAL_16BIT_CS "Tisíce (16 bitů)"
+#define OPTION_VAL_24BIT_CS "Miliony (24 bitů)"
+#define WSWAN_FRAMESKIP_LABEL_CS "Přeskočení Snímku"
+#define WSWAN_FRAMESKIP_INFO_0_CS "Přeskočení snímků, aby se zabránilo nedostatečnému využití vyrovnávací paměti zvuku (praskání). Zlepšuje výkon na úkor vizuální plynulosti. Funkce 'Auto' přeskakuje snímky, pokud to doporučí frontend. 'Ruční' využívá nastavení 'Práh přeskakování snímků (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CS "Hraniční Hodnota Přeskočení Snímku (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CS "Pokud je položka 'Přeskočení Snímku' nastavena na hodnotu 'Ruční', určuje práh obsazení vyrovnávací paměti zvuku (v procentech), pod kterým budou snímky přeskočeny. Vyšší hodnoty snižují riziko praskání tím, že způsobují častější vynechávání snímků."
+#define WSWAN_60HZ_MODE_LABEL_CS NULL
+#define WSWAN_60HZ_MODE_INFO_0_CS NULL
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_CS "Výstupní Zvuková Vzorkovací Frekvence"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CS "Vyšší hodnoty mírně zlepšují kvalitu zvuku na úkor výkonu."
+#define WSWAN_SOUND_LOW_PASS_LABEL_CS "Audio Filtr"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_CS NULL
 
 struct retro_core_option_v2_category option_cats_cs[] = {
    { NULL, NULL, NULL },
@@ -1248,6 +1397,20 @@ struct retro_core_option_v2_definition option_defs_cs[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_CS,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_CS,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_CS,
       NULL,
@@ -1259,12 +1422,23 @@ struct retro_core_option_v2_definition option_defs_cs[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_CS,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_CS,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -1320,8 +1494,12 @@ struct retro_core_options_v2 options_cs = {
 #define WSWAN_FRAMESKIP_INFO_0_CY NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CY NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CY NULL
+#define WSWAN_60HZ_MODE_LABEL_CY NULL
+#define WSWAN_60HZ_MODE_INFO_0_CY NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_CY NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CY NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_CY NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_CY NULL
 
 struct retro_core_option_v2_category option_cats_cy[] = {
    { NULL, NULL, NULL },
@@ -1454,6 +1632,20 @@ struct retro_core_option_v2_definition option_defs_cy[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_CY,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_CY,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_CY,
       NULL,
@@ -1465,12 +1657,23 @@ struct retro_core_option_v2_definition option_defs_cy[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_CY,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_CY,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -1526,8 +1729,12 @@ struct retro_core_options_v2 options_cy = {
 #define WSWAN_FRAMESKIP_INFO_0_DA NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_DA NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_DA NULL
+#define WSWAN_60HZ_MODE_LABEL_DA NULL
+#define WSWAN_60HZ_MODE_INFO_0_DA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_DA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_DA NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_DA NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_DA NULL
 
 struct retro_core_option_v2_category option_cats_da[] = {
    { NULL, NULL, NULL },
@@ -1660,6 +1867,20 @@ struct retro_core_option_v2_definition option_defs_da[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_DA,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_DA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_DA,
       NULL,
@@ -1671,12 +1892,23 @@ struct retro_core_option_v2_definition option_defs_da[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_DA,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_DA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -1687,53 +1919,57 @@ struct retro_core_options_v2 options_da = {
 
 /* RETRO_LANGUAGE_DE */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_DE "Bildschirmrotation"
-#define WSWAN_ROTATE_DISPLAY_INFO_0_DE NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_DE "Bildschirmausrichtung"
+#define WSWAN_ROTATE_DISPLAY_INFO_0_DE "Die Ausrichtung des Konsolenbildschirms auswählen. \"Hochformat\" kann verwendet werden, um das korrekte Layout von Hochformat-orientierten Spielen auf einer herkömmlichen (Querformats-) Anzeige zu erreichen. \"Manuel\" ermöglicht die Rotation über den Controller (Standard-Taste: SELECT)."
 #define OPTION_VAL_MANUAL_DE "Manuell"
-#define OPTION_VAL_LANDSCAPE_DE NULL
-#define OPTION_VAL_PORTRAIT_DE NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_DE NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_DE NULL
+#define OPTION_VAL_LANDSCAPE_DE "Querformat"
+#define OPTION_VAL_PORTRAIT_DE "Hochformat"
+#define WSWAN_ROTATE_KEYMAP_LABEL_DE "Tastenzuordnungen rotieren"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_DE "Bevorzugte Tastenzuordnung wählen. \"Automatisch\" passt die Tastenzuordnung an die aktuelle Bildschirmausrichtung an."
 #define OPTION_VAL_AUTO_DE "Automatisch"
 #define WSWAN_MONO_PALETTE_LABEL_DE "Farbpalette"
-#define WSWAN_MONO_PALETTE_INFO_0_DE NULL
+#define WSWAN_MONO_PALETTE_INFO_0_DE "Farbgebung von WonderSwan (Mono) Spielen wählen. \"WS\"-Paletten immitieren die original WonderSwan-Hardware."
 #define OPTION_VAL_DEFAULT_DE "Graustufen"
 #define OPTION_VAL_WONDERSWAN_DE NULL
 #define OPTION_VAL_WONDESWAN_COLOR_DE NULL
 #define OPTION_VAL_SWANCRYSTAL_DE NULL
-#define OPTION_VAL_GB_DMG_DE NULL
+#define OPTION_VAL_GB_DMG_DE "Game Boy original"
 #define OPTION_VAL_GB_POCKET_DE NULL
 #define OPTION_VAL_GB_LIGHT_DE NULL
-#define OPTION_VAL_BLOSSOM_PINK_DE NULL
-#define OPTION_VAL_BUBBLES_BLUE_DE NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_DE NULL
+#define OPTION_VAL_BLOSSOM_PINK_DE "Blossom-Rosa"
+#define OPTION_VAL_BUBBLES_BLUE_DE "Bubbles-Blau"
+#define OPTION_VAL_BUTTERCUP_GREEN_DE "Buttercup-Grün"
 #define OPTION_VAL_DIGIVICE_DE NULL
 #define OPTION_VAL_GAME_COM_DE NULL
 #define OPTION_VAL_GAMEKING_DE NULL
 #define OPTION_VAL_GAME_MASTER_DE NULL
 #define OPTION_VAL_GOLDEN_WILD_DE NULL
-#define OPTION_VAL_GREENSCALE_DE NULL
-#define OPTION_VAL_HOKAGE_ORANGE_DE NULL
-#define OPTION_VAL_LABO_FAWN_DE NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_DE NULL
+#define OPTION_VAL_GREENSCALE_DE "Grüne Farbgebung"
+#define OPTION_VAL_HOKAGE_ORANGE_DE "Hokage-Orange"
+#define OPTION_VAL_LABO_FAWN_DE "Labo-Kitz"
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_DE "Legendärer Super-Saiyajin"
 #define OPTION_VAL_MICROVISION_DE NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_DE NULL
-#define OPTION_VAL_ODYSSEY_GOLD_DE NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_DE NULL
-#define OPTION_VAL_SLIME_BLUE_DE NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_DE "Million-Live-Gold"
+#define OPTION_VAL_ODYSSEY_GOLD_DE "Odyssey-Gold"
+#define OPTION_VAL_SHINY_SKY_BLUE_DE "Shiny-Sky-Blau"
+#define OPTION_VAL_SLIME_BLUE_DE "Schleim-Blau"
 #define OPTION_VAL_TI_83_DE NULL
-#define OPTION_VAL_TRAVEL_WOOD_DE NULL
+#define OPTION_VAL_TRAVEL_WOOD_DE "Reiseholz"
 #define OPTION_VAL_VIRTUAL_BOY_DE NULL
 #define WSWAN_GFX_COLORS_LABEL_DE "Farbtiefe (Neustart erforderlich)"
-#define WSWAN_GFX_COLORS_INFO_0_DE NULL
+#define WSWAN_GFX_COLORS_INFO_0_DE "24 Bit ist langsamer und nicht auf allen Plattformen verfügbar."
 #define OPTION_VAL_16BIT_DE "Tausende (16 Bit)"
 #define OPTION_VAL_24BIT_DE "Millionen (24 Bit)"
 #define WSWAN_FRAMESKIP_LABEL_DE NULL
-#define WSWAN_FRAMESKIP_INFO_0_DE "Überspringen Sie Frames um zu vermeiden, dass Audio-Puffer unterlaufen (Knistern). Verbessert die Leistung auf Kosten der visuellen Glätte. 'Auto' überspringt Frames wenn vom Frontend empfohlen wird. 'Manuell' verwendet die Einstellung 'Frameskip Grenzwert (%)'."
+#define WSWAN_FRAMESKIP_INFO_0_DE "Frames überspringen, um ein Unterlaufen des Audiopuffers (Knistern) zu vermeiden. Verbessert die Leistung auf Kosten der visuellen Glätte. 'Auto' überspringt Frames, wenn vom Frontend empfohlen. 'Manual' verwendet die Einstellung 'Frameskip Grenzwert (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_DE "Frameskip Grenzwert (%)"
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_DE NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_DE NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_DE NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_DE "Gibt den Audiopuffer-Belegungsschwellenwert (Prozent) an, unter dem Frames übersprungen werden, wenn \"Frameskip\" auf \"Manuell\" eingestellt ist. Höhere Werte verringern das Risiko von Knistern, da Frames häufiger weggelassen werden."
+#define WSWAN_60HZ_MODE_LABEL_DE NULL
+#define WSWAN_60HZ_MODE_INFO_0_DE NULL
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_DE "Audioausgabe-Abtastrate"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_DE "Höhere Werte verbessern die Klangqualität leicht auf Kosten der Leistung."
+#define WSWAN_SOUND_LOW_PASS_LABEL_DE "Audiofilter"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_DE NULL
 
 struct retro_core_option_v2_category option_cats_de[] = {
    { NULL, NULL, NULL },
@@ -1866,6 +2102,20 @@ struct retro_core_option_v2_definition option_defs_de[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_DE,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_DE,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_DE,
       NULL,
@@ -1877,12 +2127,23 @@ struct retro_core_option_v2_definition option_defs_de[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_DE,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_DE,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -1938,8 +2199,12 @@ struct retro_core_options_v2 options_de = {
 #define WSWAN_FRAMESKIP_INFO_0_EL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_EL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_EL NULL
+#define WSWAN_60HZ_MODE_LABEL_EL NULL
+#define WSWAN_60HZ_MODE_INFO_0_EL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_EL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_EL NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_EL "Φίλτρα Ήχου"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_EL NULL
 
 struct retro_core_option_v2_category option_cats_el[] = {
    { NULL, NULL, NULL },
@@ -2072,6 +2337,20 @@ struct retro_core_option_v2_definition option_defs_el[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_EL,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_EL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_EL,
       NULL,
@@ -2083,18 +2362,264 @@ struct retro_core_option_v2_definition option_defs_el[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_EL,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_EL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
 struct retro_core_options_v2 options_el = {
    option_cats_el,
    option_defs_el
+};
+
+/* RETRO_LANGUAGE_EN */
+
+#define WSWAN_ROTATE_DISPLAY_LABEL_EN NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_EN "Choose the orientation of the console screen. 'Portrait' can be used to achieve the correct layout of portrait oriented games on a conventional (landscape) display. 'Manual' enables rotation with the controller (default button: SELECT)."
+#define OPTION_VAL_MANUAL_EN NULL
+#define OPTION_VAL_LANDSCAPE_EN NULL
+#define OPTION_VAL_PORTRAIT_EN NULL
+#define WSWAN_ROTATE_KEYMAP_LABEL_EN NULL
+#define WSWAN_ROTATE_KEYMAP_INFO_0_EN NULL
+#define OPTION_VAL_AUTO_EN NULL
+#define WSWAN_MONO_PALETTE_LABEL_EN "Colour Palette"
+#define WSWAN_MONO_PALETTE_INFO_0_EN "Choose the colurisation of WonderSwan (Mono) games. 'WS' palettes mimic the display of the original WonderSwan hardware."
+#define OPTION_VAL_DEFAULT_EN "Greyscale"
+#define OPTION_VAL_WONDERSWAN_EN NULL
+#define OPTION_VAL_WONDESWAN_COLOR_EN "WS - WonderSwan Colour"
+#define OPTION_VAL_SWANCRYSTAL_EN NULL
+#define OPTION_VAL_GB_DMG_EN NULL
+#define OPTION_VAL_GB_POCKET_EN NULL
+#define OPTION_VAL_GB_LIGHT_EN NULL
+#define OPTION_VAL_BLOSSOM_PINK_EN NULL
+#define OPTION_VAL_BUBBLES_BLUE_EN NULL
+#define OPTION_VAL_BUTTERCUP_GREEN_EN NULL
+#define OPTION_VAL_DIGIVICE_EN NULL
+#define OPTION_VAL_GAME_COM_EN NULL
+#define OPTION_VAL_GAMEKING_EN NULL
+#define OPTION_VAL_GAME_MASTER_EN NULL
+#define OPTION_VAL_GOLDEN_WILD_EN NULL
+#define OPTION_VAL_GREENSCALE_EN NULL
+#define OPTION_VAL_HOKAGE_ORANGE_EN NULL
+#define OPTION_VAL_LABO_FAWN_EN NULL
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_EN NULL
+#define OPTION_VAL_MICROVISION_EN NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_EN NULL
+#define OPTION_VAL_ODYSSEY_GOLD_EN NULL
+#define OPTION_VAL_SHINY_SKY_BLUE_EN NULL
+#define OPTION_VAL_SLIME_BLUE_EN NULL
+#define OPTION_VAL_TI_83_EN NULL
+#define OPTION_VAL_TRAVEL_WOOD_EN NULL
+#define OPTION_VAL_VIRTUAL_BOY_EN NULL
+#define WSWAN_GFX_COLORS_LABEL_EN "Colour Depth (Restart Required)"
+#define WSWAN_GFX_COLORS_INFO_0_EN NULL
+#define OPTION_VAL_16BIT_EN NULL
+#define OPTION_VAL_24BIT_EN NULL
+#define WSWAN_FRAMESKIP_LABEL_EN "Frame-skip"
+#define WSWAN_FRAMESKIP_INFO_0_EN "Skip frames to avoid audio buffer under-run (crackling). Improves performance at the expense of visual smoothness. 'Auto' skips frames when advised by the front-end. 'Manual' utilizes the 'Frame-skip Threshold (%)' setting."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_EN "Frame-skip Threshold (%)"
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_EN "When 'Frame-skip' is set to 'Manual', this specifies the audio buffer occupancy threshold (percentage) below which frames will be skipped. Higher values reduce the risk of crackling by causing frames to be dropped more frequently."
+#define WSWAN_60HZ_MODE_LABEL_EN NULL
+#define WSWAN_60HZ_MODE_INFO_0_EN NULL
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_EN NULL
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_EN NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_EN NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_EN NULL
+
+struct retro_core_option_v2_category option_cats_en[] = {
+   { NULL, NULL, NULL },
+};
+struct retro_core_option_v2_definition option_defs_en[] = {
+   {
+      "wswan_rotate_display",
+      WSWAN_ROTATE_DISPLAY_LABEL_EN,
+      NULL,
+      WSWAN_ROTATE_DISPLAY_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "manual",    OPTION_VAL_MANUAL_EN },
+         { "landscape", OPTION_VAL_LANDSCAPE_EN },
+         { "portrait",  OPTION_VAL_PORTRAIT_EN },
+         { NULL, NULL },
+      },
+      "manual",
+   },
+   {
+      "wswan_rotate_keymap",
+      WSWAN_ROTATE_KEYMAP_LABEL_EN,
+      NULL,
+      WSWAN_ROTATE_KEYMAP_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "auto",     OPTION_VAL_AUTO_EN },
+         { "disabled", OPTION_VAL_LANDSCAPE_EN },
+         { "enabled",  OPTION_VAL_PORTRAIT_EN },
+         { NULL, NULL},
+      },
+      "auto",
+   },
+   {
+      "wswan_mono_palette",
+      WSWAN_MONO_PALETTE_LABEL_EN,
+      NULL,
+      WSWAN_MONO_PALETTE_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "default",                OPTION_VAL_DEFAULT_EN },
+         { "wonderswan",             OPTION_VAL_WONDERSWAN_EN },
+         { "wondeswan_color",        OPTION_VAL_WONDESWAN_COLOR_EN },
+         { "swancrystal",            OPTION_VAL_SWANCRYSTAL_EN },
+         { "gb_dmg",                 OPTION_VAL_GB_DMG_EN },
+         { "gb_pocket",              OPTION_VAL_GB_POCKET_EN },
+         { "gb_light",               OPTION_VAL_GB_LIGHT_EN },
+         { "blossom_pink",           OPTION_VAL_BLOSSOM_PINK_EN },
+         { "bubbles_blue",           OPTION_VAL_BUBBLES_BLUE_EN },
+         { "buttercup_green",        OPTION_VAL_BUTTERCUP_GREEN_EN },
+         { "digivice",               OPTION_VAL_DIGIVICE_EN },
+         { "game_com",               OPTION_VAL_GAME_COM_EN },
+         { "gameking",               OPTION_VAL_GAMEKING_EN },
+         { "game_master",            OPTION_VAL_GAME_MASTER_EN },
+         { "golden_wild",            OPTION_VAL_GOLDEN_WILD_EN },
+         { "greenscale",             OPTION_VAL_GREENSCALE_EN },
+         { "hokage_orange",          OPTION_VAL_HOKAGE_ORANGE_EN },
+         { "labo_fawn",              OPTION_VAL_LABO_FAWN_EN },
+         { "legendary_super_saiyan", OPTION_VAL_LEGENDARY_SUPER_SAIYAN_EN },
+         { "microvision",            OPTION_VAL_MICROVISION_EN },
+         { "million_live_gold",      OPTION_VAL_MILLION_LIVE_GOLD_EN },
+         { "odyssey_gold",           OPTION_VAL_ODYSSEY_GOLD_EN },
+         { "shiny_sky_blue",         OPTION_VAL_SHINY_SKY_BLUE_EN },
+         { "slime_blue",             OPTION_VAL_SLIME_BLUE_EN },
+         { "ti_83",                  OPTION_VAL_TI_83_EN },
+         { "travel_wood",            OPTION_VAL_TRAVEL_WOOD_EN },
+         { "virtual_boy",            OPTION_VAL_VIRTUAL_BOY_EN },
+         { NULL, NULL },
+      },
+      "default"
+   },
+   {
+      "wswan_gfx_colors",
+      WSWAN_GFX_COLORS_LABEL_EN,
+      NULL,
+      WSWAN_GFX_COLORS_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "16bit", OPTION_VAL_16BIT_EN },
+         { "24bit", OPTION_VAL_24BIT_EN },
+         { NULL, NULL },
+      },
+      "16bit"
+   },
+   {
+      "wswan_frameskip",
+      WSWAN_FRAMESKIP_LABEL_EN,
+      NULL,
+      WSWAN_FRAMESKIP_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "auto",     OPTION_VAL_AUTO_EN },
+         { "manual",   OPTION_VAL_MANUAL_EN },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "wswan_frameskip_threshold",
+      WSWAN_FRAMESKIP_THRESHOLD_LABEL_EN,
+      NULL,
+      WSWAN_FRAMESKIP_THRESHOLD_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "15", NULL },
+         { "18", NULL },
+         { "21", NULL },
+         { "24", NULL },
+         { "27", NULL },
+         { "30", NULL },
+         { "33", NULL },
+         { "36", NULL },
+         { "39", NULL },
+         { "42", NULL },
+         { "45", NULL },
+         { "48", NULL },
+         { "51", NULL },
+         { "54", NULL },
+         { "57", NULL },
+         { "60", NULL },
+         { NULL, NULL },
+      },
+      "33"
+   },
+   {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_EN,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
+      "wswan_sound_sample_rate",
+      WSWAN_SOUND_SAMPLE_RATE_LABEL_EN,
+      NULL,
+      WSWAN_SOUND_SAMPLE_RATE_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "11025",  NULL },
+         { "22050",  NULL },
+         { "44100",  NULL },
+         { "48000",  NULL },
+         { NULL, NULL },
+      },
+      "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_EN,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_EN,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
+   },
+   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
+};
+struct retro_core_options_v2 options_en = {
+   option_cats_en,
+   option_defs_en
 };
 
 /* RETRO_LANGUAGE_EO */
@@ -2144,8 +2669,12 @@ struct retro_core_options_v2 options_el = {
 #define WSWAN_FRAMESKIP_INFO_0_EO NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_EO NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_EO NULL
+#define WSWAN_60HZ_MODE_LABEL_EO NULL
+#define WSWAN_60HZ_MODE_INFO_0_EO NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_EO NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_EO NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_EO NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_EO NULL
 
 struct retro_core_option_v2_category option_cats_eo[] = {
    { NULL, NULL, NULL },
@@ -2278,6 +2807,20 @@ struct retro_core_option_v2_definition option_defs_eo[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_EO,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_EO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_EO,
       NULL,
@@ -2289,12 +2832,23 @@ struct retro_core_option_v2_definition option_defs_eo[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_EO,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_EO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -2350,8 +2904,12 @@ struct retro_core_options_v2 options_eo = {
 #define WSWAN_FRAMESKIP_INFO_0_ES "Omite fotogramas para no saturar el búfer de audio (chasquidos en el sonido). Mejora el rendimiento a costa de perder fluidez visual. Selección automática omite fotogramas según lo aconseje el front-end. El valor Manual utiliza el ajuste Umbral de omisión de fotogramas (%)."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_ES "Umbral de omisión de fotogramas (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_ES "Cuando la omisión de fotogramas esté configurada como Manual, este ajuste especifica el umbral de ocupación del búfer de audio (en porcentaje) por debajo del cual se omitirán fotogramas si el valor. Un valor más elevado reduce el riesgo de chasquidos omitiendo fotogramas con una mayor frecuencia."
+#define WSWAN_60HZ_MODE_LABEL_ES NULL
+#define WSWAN_60HZ_MODE_INFO_0_ES NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_ES "Frecuencia de muestreo de salida de audio"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_ES "Un valor más alto mejorará levemente la calidad del sonido, a costa del rendimiento."
+#define WSWAN_SOUND_LOW_PASS_LABEL_ES "Filtro de audio"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_ES NULL
 
 struct retro_core_option_v2_category option_cats_es[] = {
    { NULL, NULL, NULL },
@@ -2484,6 +3042,20 @@ struct retro_core_option_v2_definition option_defs_es[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_ES,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_ES,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_ES,
       NULL,
@@ -2495,12 +3067,23 @@ struct retro_core_option_v2_definition option_defs_es[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_ES,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_ES,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -2511,14 +3094,14 @@ struct retro_core_options_v2 options_es = {
 
 /* RETRO_LANGUAGE_FA */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_FA NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_FA "چرخش نمایشگر"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_FA NULL
-#define OPTION_VAL_MANUAL_FA NULL
+#define OPTION_VAL_MANUAL_FA "دستی"
 #define OPTION_VAL_LANDSCAPE_FA NULL
 #define OPTION_VAL_PORTRAIT_FA NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_FA NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_FA NULL
-#define OPTION_VAL_AUTO_FA NULL
+#define OPTION_VAL_AUTO_FA "خودکار"
 #define WSWAN_MONO_PALETTE_LABEL_FA NULL
 #define WSWAN_MONO_PALETTE_INFO_0_FA NULL
 #define OPTION_VAL_DEFAULT_FA NULL
@@ -2548,16 +3131,20 @@ struct retro_core_options_v2 options_es = {
 #define OPTION_VAL_TI_83_FA NULL
 #define OPTION_VAL_TRAVEL_WOOD_FA NULL
 #define OPTION_VAL_VIRTUAL_BOY_FA NULL
-#define WSWAN_GFX_COLORS_LABEL_FA NULL
+#define WSWAN_GFX_COLORS_LABEL_FA "عمق رنگ (نیازمند بازآغاز)"
 #define WSWAN_GFX_COLORS_INFO_0_FA NULL
-#define OPTION_VAL_16BIT_FA NULL
-#define OPTION_VAL_24BIT_FA NULL
-#define WSWAN_FRAMESKIP_LABEL_FA NULL
-#define WSWAN_FRAMESKIP_INFO_0_FA NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FA NULL
+#define OPTION_VAL_16BIT_FA "هزار (۱۶-بیتی)"
+#define OPTION_VAL_24BIT_FA "میلیون (۲۴-بیتی)"
+#define WSWAN_FRAMESKIP_LABEL_FA "پرش فریم"
+#define WSWAN_FRAMESKIP_INFO_0_FA "برای جلوگیری از اجرا شدن بافر صوتی (ترق زدن) از فریم‌ها پرش کنید. عملکرد را در ازای صاف‌بودن تصویر بهبود می‌بخشد. حالت «خودکار»هنگام توصیهٔ پیشانه از روی فریم‌ها می‌پرد. حالت «دستی» تنظیم «آستانهٔ پرش فریم (٪)» را فعال می‌کند."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FA "آستانهٔ پرش فریم (٪)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_FA NULL
+#define WSWAN_60HZ_MODE_LABEL_FA NULL
+#define WSWAN_60HZ_MODE_INFO_0_FA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_FA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_FA NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_FA "پالایهٔ صدا"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_FA NULL
 
 struct retro_core_option_v2_category option_cats_fa[] = {
    { NULL, NULL, NULL },
@@ -2690,6 +3277,20 @@ struct retro_core_option_v2_definition option_defs_fa[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_FA,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_FA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_FA,
       NULL,
@@ -2701,12 +3302,23 @@ struct retro_core_option_v2_definition option_defs_fa[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_FA,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_FA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -2720,8 +3332,8 @@ struct retro_core_options_v2 options_fa = {
 #define WSWAN_ROTATE_DISPLAY_LABEL_FI "Näytön kierto"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_FI NULL
 #define OPTION_VAL_MANUAL_FI "Manuaalinen"
-#define OPTION_VAL_LANDSCAPE_FI NULL
-#define OPTION_VAL_PORTRAIT_FI NULL
+#define OPTION_VAL_LANDSCAPE_FI "Vaaka-asento"
+#define OPTION_VAL_PORTRAIT_FI "Pystyasento"
 #define WSWAN_ROTATE_KEYMAP_LABEL_FI NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_FI NULL
 #define OPTION_VAL_AUTO_FI "Automaattinen"
@@ -2755,15 +3367,19 @@ struct retro_core_options_v2 options_fa = {
 #define OPTION_VAL_TRAVEL_WOOD_FI NULL
 #define OPTION_VAL_VIRTUAL_BOY_FI NULL
 #define WSWAN_GFX_COLORS_LABEL_FI "Värisyvyys (Uudelleenkäynnistys vaaditaan)"
-#define WSWAN_GFX_COLORS_INFO_0_FI NULL
+#define WSWAN_GFX_COLORS_INFO_0_FI "24-bittinen on hitaampi eikä se ole saatavilla kaikilla alustoilla."
 #define OPTION_VAL_16BIT_FI "Tuhansissa (16-bit)"
 #define OPTION_VAL_24BIT_FI "Miljoonissa (24-bittinen)"
 #define WSWAN_FRAMESKIP_LABEL_FI "Kuvanohitus"
 #define WSWAN_FRAMESKIP_INFO_0_FI "Ohita kuvia välttääksesi äänipuskurin ali ajon (säröily). Parantaa suorituskykyä visuaalisen tasaisuuden kustannuksella. \"Automaatti\" ohittaa kehykset käyttöliittymän asetusten mukaan. \"Manuaalinen\" käyttää \"Kuvienohituksen arvo (%)\" -asetusta."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FI "Kuvienohituksen arvo (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_FI NULL
+#define WSWAN_60HZ_MODE_LABEL_FI NULL
+#define WSWAN_60HZ_MODE_INFO_0_FI NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_FI NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_FI NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_FI "Äänisuodatin"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_FI NULL
 
 struct retro_core_option_v2_category option_cats_fi[] = {
    { NULL, NULL, NULL },
@@ -2896,6 +3512,20 @@ struct retro_core_option_v2_definition option_defs_fi[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_FI,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_FI,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_FI,
       NULL,
@@ -2907,12 +3537,23 @@ struct retro_core_option_v2_definition option_defs_fi[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_FI,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_FI,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -2968,8 +3609,12 @@ struct retro_core_options_v2 options_fi = {
 #define WSWAN_FRAMESKIP_INFO_0_FR "Sauter des images pour éviter que le tampon audio ne soit sous-exécuté (crépitements). Améliore les performances au détriment de la fluidité visuelle. 'Auto' saute des images lorsque l'interface le conseille. 'Manuel' utilise le paramètre 'Seuil de saut d'images (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FR "Seuil de saut d'images (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_FR "Lorsque 'Saut d'images' est réglé sur 'Manuel', cette option spécifie le seuil d'occupation du tampon audio (pourcentage) en dessous duquel des images seront sautées. Des valeurs plus élevées réduisent le risque de crépitements en faisant sauter des images plus fréquemment."
+#define WSWAN_60HZ_MODE_LABEL_FR NULL
+#define WSWAN_60HZ_MODE_INFO_0_FR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_FR "Fréquence d'échantillonnage de sortie audio"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_FR "Des valeurs plus élevées améliorent légèrement la qualité sonore au détriment des performances."
+#define WSWAN_SOUND_LOW_PASS_LABEL_FR "Filtre audio"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_FR NULL
 
 struct retro_core_option_v2_category option_cats_fr[] = {
    { NULL, NULL, NULL },
@@ -3102,6 +3747,20 @@ struct retro_core_option_v2_definition option_defs_fr[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_FR,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_FR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_FR,
       NULL,
@@ -3113,12 +3772,23 @@ struct retro_core_option_v2_definition option_defs_fr[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_FR,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_FR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -3174,8 +3844,12 @@ struct retro_core_options_v2 options_fr = {
 #define WSWAN_FRAMESKIP_INFO_0_GL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_GL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_GL NULL
+#define WSWAN_60HZ_MODE_LABEL_GL NULL
+#define WSWAN_60HZ_MODE_INFO_0_GL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_GL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_GL NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_GL NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_GL NULL
 
 struct retro_core_option_v2_category option_cats_gl[] = {
    { NULL, NULL, NULL },
@@ -3308,6 +3982,20 @@ struct retro_core_option_v2_definition option_defs_gl[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_GL,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_GL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_GL,
       NULL,
@@ -3319,12 +4007,23 @@ struct retro_core_option_v2_definition option_defs_gl[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_GL,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_GL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -3380,8 +4079,12 @@ struct retro_core_options_v2 options_gl = {
 #define WSWAN_FRAMESKIP_INFO_0_HE NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_HE NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_HE NULL
+#define WSWAN_60HZ_MODE_LABEL_HE NULL
+#define WSWAN_60HZ_MODE_INFO_0_HE NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_HE NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_HE NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_HE NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_HE NULL
 
 struct retro_core_option_v2_category option_cats_he[] = {
    { NULL, NULL, NULL },
@@ -3514,6 +4217,20 @@ struct retro_core_option_v2_definition option_defs_he[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_HE,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_HE,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_HE,
       NULL,
@@ -3525,12 +4242,23 @@ struct retro_core_option_v2_definition option_defs_he[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_HE,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_HE,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -3539,17 +4267,252 @@ struct retro_core_options_v2 options_he = {
    option_defs_he
 };
 
+/* RETRO_LANGUAGE_HR */
+
+#define WSWAN_ROTATE_DISPLAY_LABEL_HR NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_HR NULL
+#define OPTION_VAL_MANUAL_HR NULL
+#define OPTION_VAL_LANDSCAPE_HR NULL
+#define OPTION_VAL_PORTRAIT_HR NULL
+#define WSWAN_ROTATE_KEYMAP_LABEL_HR NULL
+#define WSWAN_ROTATE_KEYMAP_INFO_0_HR NULL
+#define OPTION_VAL_AUTO_HR NULL
+#define WSWAN_MONO_PALETTE_LABEL_HR NULL
+#define WSWAN_MONO_PALETTE_INFO_0_HR NULL
+#define OPTION_VAL_DEFAULT_HR NULL
+#define OPTION_VAL_WONDERSWAN_HR NULL
+#define OPTION_VAL_WONDESWAN_COLOR_HR NULL
+#define OPTION_VAL_SWANCRYSTAL_HR NULL
+#define OPTION_VAL_GB_DMG_HR NULL
+#define OPTION_VAL_GB_POCKET_HR NULL
+#define OPTION_VAL_GB_LIGHT_HR NULL
+#define OPTION_VAL_BLOSSOM_PINK_HR NULL
+#define OPTION_VAL_BUBBLES_BLUE_HR NULL
+#define OPTION_VAL_BUTTERCUP_GREEN_HR NULL
+#define OPTION_VAL_DIGIVICE_HR NULL
+#define OPTION_VAL_GAME_COM_HR NULL
+#define OPTION_VAL_GAMEKING_HR NULL
+#define OPTION_VAL_GAME_MASTER_HR NULL
+#define OPTION_VAL_GOLDEN_WILD_HR NULL
+#define OPTION_VAL_GREENSCALE_HR NULL
+#define OPTION_VAL_HOKAGE_ORANGE_HR NULL
+#define OPTION_VAL_LABO_FAWN_HR NULL
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_HR NULL
+#define OPTION_VAL_MICROVISION_HR NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_HR NULL
+#define OPTION_VAL_ODYSSEY_GOLD_HR NULL
+#define OPTION_VAL_SHINY_SKY_BLUE_HR NULL
+#define OPTION_VAL_SLIME_BLUE_HR NULL
+#define OPTION_VAL_TI_83_HR NULL
+#define OPTION_VAL_TRAVEL_WOOD_HR NULL
+#define OPTION_VAL_VIRTUAL_BOY_HR NULL
+#define WSWAN_GFX_COLORS_LABEL_HR NULL
+#define WSWAN_GFX_COLORS_INFO_0_HR NULL
+#define OPTION_VAL_16BIT_HR NULL
+#define OPTION_VAL_24BIT_HR NULL
+#define WSWAN_FRAMESKIP_LABEL_HR NULL
+#define WSWAN_FRAMESKIP_INFO_0_HR NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_HR NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_HR NULL
+#define WSWAN_60HZ_MODE_LABEL_HR NULL
+#define WSWAN_60HZ_MODE_INFO_0_HR NULL
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_HR NULL
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_HR NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_HR NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_HR NULL
+
+struct retro_core_option_v2_category option_cats_hr[] = {
+   { NULL, NULL, NULL },
+};
+struct retro_core_option_v2_definition option_defs_hr[] = {
+   {
+      "wswan_rotate_display",
+      WSWAN_ROTATE_DISPLAY_LABEL_HR,
+      NULL,
+      WSWAN_ROTATE_DISPLAY_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "manual",    OPTION_VAL_MANUAL_HR },
+         { "landscape", OPTION_VAL_LANDSCAPE_HR },
+         { "portrait",  OPTION_VAL_PORTRAIT_HR },
+         { NULL, NULL },
+      },
+      "manual",
+   },
+   {
+      "wswan_rotate_keymap",
+      WSWAN_ROTATE_KEYMAP_LABEL_HR,
+      NULL,
+      WSWAN_ROTATE_KEYMAP_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "auto",     OPTION_VAL_AUTO_HR },
+         { "disabled", OPTION_VAL_LANDSCAPE_HR },
+         { "enabled",  OPTION_VAL_PORTRAIT_HR },
+         { NULL, NULL},
+      },
+      "auto",
+   },
+   {
+      "wswan_mono_palette",
+      WSWAN_MONO_PALETTE_LABEL_HR,
+      NULL,
+      WSWAN_MONO_PALETTE_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "default",                OPTION_VAL_DEFAULT_HR },
+         { "wonderswan",             OPTION_VAL_WONDERSWAN_HR },
+         { "wondeswan_color",        OPTION_VAL_WONDESWAN_COLOR_HR },
+         { "swancrystal",            OPTION_VAL_SWANCRYSTAL_HR },
+         { "gb_dmg",                 OPTION_VAL_GB_DMG_HR },
+         { "gb_pocket",              OPTION_VAL_GB_POCKET_HR },
+         { "gb_light",               OPTION_VAL_GB_LIGHT_HR },
+         { "blossom_pink",           OPTION_VAL_BLOSSOM_PINK_HR },
+         { "bubbles_blue",           OPTION_VAL_BUBBLES_BLUE_HR },
+         { "buttercup_green",        OPTION_VAL_BUTTERCUP_GREEN_HR },
+         { "digivice",               OPTION_VAL_DIGIVICE_HR },
+         { "game_com",               OPTION_VAL_GAME_COM_HR },
+         { "gameking",               OPTION_VAL_GAMEKING_HR },
+         { "game_master",            OPTION_VAL_GAME_MASTER_HR },
+         { "golden_wild",            OPTION_VAL_GOLDEN_WILD_HR },
+         { "greenscale",             OPTION_VAL_GREENSCALE_HR },
+         { "hokage_orange",          OPTION_VAL_HOKAGE_ORANGE_HR },
+         { "labo_fawn",              OPTION_VAL_LABO_FAWN_HR },
+         { "legendary_super_saiyan", OPTION_VAL_LEGENDARY_SUPER_SAIYAN_HR },
+         { "microvision",            OPTION_VAL_MICROVISION_HR },
+         { "million_live_gold",      OPTION_VAL_MILLION_LIVE_GOLD_HR },
+         { "odyssey_gold",           OPTION_VAL_ODYSSEY_GOLD_HR },
+         { "shiny_sky_blue",         OPTION_VAL_SHINY_SKY_BLUE_HR },
+         { "slime_blue",             OPTION_VAL_SLIME_BLUE_HR },
+         { "ti_83",                  OPTION_VAL_TI_83_HR },
+         { "travel_wood",            OPTION_VAL_TRAVEL_WOOD_HR },
+         { "virtual_boy",            OPTION_VAL_VIRTUAL_BOY_HR },
+         { NULL, NULL },
+      },
+      "default"
+   },
+   {
+      "wswan_gfx_colors",
+      WSWAN_GFX_COLORS_LABEL_HR,
+      NULL,
+      WSWAN_GFX_COLORS_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "16bit", OPTION_VAL_16BIT_HR },
+         { "24bit", OPTION_VAL_24BIT_HR },
+         { NULL, NULL },
+      },
+      "16bit"
+   },
+   {
+      "wswan_frameskip",
+      WSWAN_FRAMESKIP_LABEL_HR,
+      NULL,
+      WSWAN_FRAMESKIP_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "auto",     OPTION_VAL_AUTO_HR },
+         { "manual",   OPTION_VAL_MANUAL_HR },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "wswan_frameskip_threshold",
+      WSWAN_FRAMESKIP_THRESHOLD_LABEL_HR,
+      NULL,
+      WSWAN_FRAMESKIP_THRESHOLD_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "15", NULL },
+         { "18", NULL },
+         { "21", NULL },
+         { "24", NULL },
+         { "27", NULL },
+         { "30", NULL },
+         { "33", NULL },
+         { "36", NULL },
+         { "39", NULL },
+         { "42", NULL },
+         { "45", NULL },
+         { "48", NULL },
+         { "51", NULL },
+         { "54", NULL },
+         { "57", NULL },
+         { "60", NULL },
+         { NULL, NULL },
+      },
+      "33"
+   },
+   {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_HR,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
+      "wswan_sound_sample_rate",
+      WSWAN_SOUND_SAMPLE_RATE_LABEL_HR,
+      NULL,
+      WSWAN_SOUND_SAMPLE_RATE_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "11025",  NULL },
+         { "22050",  NULL },
+         { "44100",  NULL },
+         { "48000",  NULL },
+         { NULL, NULL },
+      },
+      "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_HR,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_HR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
+   },
+   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
+};
+struct retro_core_options_v2 options_hr = {
+   option_cats_hr,
+   option_defs_hr
+};
+
 /* RETRO_LANGUAGE_HU */
 
-#define WSWAN_ROTATE_DISPLAY_LABEL_HU NULL
+#define WSWAN_ROTATE_DISPLAY_LABEL_HU "Kijelző elforgatás"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_HU NULL
 #define OPTION_VAL_MANUAL_HU "Kézi"
 #define OPTION_VAL_LANDSCAPE_HU NULL
 #define OPTION_VAL_PORTRAIT_HU NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_HU NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_HU NULL
-#define OPTION_VAL_AUTO_HU NULL
-#define WSWAN_MONO_PALETTE_LABEL_HU NULL
+#define OPTION_VAL_AUTO_HU "Automatikus"
+#define WSWAN_MONO_PALETTE_LABEL_HU "Színpaletta"
 #define WSWAN_MONO_PALETTE_INFO_0_HU NULL
 #define OPTION_VAL_DEFAULT_HU NULL
 #define OPTION_VAL_WONDERSWAN_HU NULL
@@ -3578,16 +4541,20 @@ struct retro_core_options_v2 options_he = {
 #define OPTION_VAL_TI_83_HU NULL
 #define OPTION_VAL_TRAVEL_WOOD_HU NULL
 #define OPTION_VAL_VIRTUAL_BOY_HU NULL
-#define WSWAN_GFX_COLORS_LABEL_HU NULL
+#define WSWAN_GFX_COLORS_LABEL_HU "Színmélység (újraindítás szükséges)"
 #define WSWAN_GFX_COLORS_INFO_0_HU NULL
-#define OPTION_VAL_16BIT_HU NULL
-#define OPTION_VAL_24BIT_HU NULL
-#define WSWAN_FRAMESKIP_LABEL_HU NULL
-#define WSWAN_FRAMESKIP_INFO_0_HU NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_HU NULL
+#define OPTION_VAL_16BIT_HU "Több ezer (16 bites)"
+#define OPTION_VAL_24BIT_HU "Több millió (24 bites)"
+#define WSWAN_FRAMESKIP_LABEL_HU "Képkocka kihagyás"
+#define WSWAN_FRAMESKIP_INFO_0_HU "A hangbuffer kiürülése (recsegés) elkerülésére képkockák eldobása. Javít a teljesítményen a vizuális folyamatosság kárára. Az \"Automatikus\" beállítás akkor dob képkockát, ha a frontend azt javasolja. A \"Kézi\" a \"Képkocka kihagyás határértéke (%)\" beállítást használja."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_HU "Képkocka kihagyás határértéke (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_HU NULL
+#define WSWAN_60HZ_MODE_LABEL_HU NULL
+#define WSWAN_60HZ_MODE_INFO_0_HU NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_HU NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_HU NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_HU "Hangszűrő"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_HU NULL
 
 struct retro_core_option_v2_category option_cats_hu[] = {
    { NULL, NULL, NULL },
@@ -3720,6 +4687,20 @@ struct retro_core_option_v2_definition option_defs_hu[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_HU,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_HU,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_HU,
       NULL,
@@ -3731,12 +4712,23 @@ struct retro_core_option_v2_definition option_defs_hu[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_HU,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_HU,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -3748,13 +4740,13 @@ struct retro_core_options_v2 options_hu = {
 /* RETRO_LANGUAGE_ID */
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_ID NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_ID NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_ID "Pilih orientasi layar konsol. 'Menegak' bisa untuk membetulkan tata letak permainan yang berlayar menegak pada tampilan layar mendatar (landscape). 'Manual' mengakifkan perputaran lewat stik kendali (tombol bawaan: SELECT)."
 #define OPTION_VAL_MANUAL_ID NULL
-#define OPTION_VAL_LANDSCAPE_ID NULL
-#define OPTION_VAL_PORTRAIT_ID NULL
+#define OPTION_VAL_LANDSCAPE_ID "Mendatar"
+#define OPTION_VAL_PORTRAIT_ID "Menegak"
 #define WSWAN_ROTATE_KEYMAP_LABEL_ID NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_ID NULL
-#define OPTION_VAL_AUTO_ID NULL
+#define OPTION_VAL_AUTO_ID "Otomatis"
 #define WSWAN_MONO_PALETTE_LABEL_ID NULL
 #define WSWAN_MONO_PALETTE_INFO_0_ID NULL
 #define OPTION_VAL_DEFAULT_ID NULL
@@ -3791,9 +4783,13 @@ struct retro_core_options_v2 options_hu = {
 #define WSWAN_FRAMESKIP_LABEL_ID NULL
 #define WSWAN_FRAMESKIP_INFO_0_ID NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_ID NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_ID NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_ID "Saat 'Lewati Bingkai' diatur ke 'Manual', (persentase) ambang batas hunian penyangga audio di bawah akan menentukan bingkai mana yang dilewati. Nilai yang lebih tinggi mengurangi risiko keretakan dengan cara membuat laju bingkai sering anjlok."
+#define WSWAN_60HZ_MODE_LABEL_ID NULL
+#define WSWAN_60HZ_MODE_INFO_0_ID NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_ID NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_ID NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_ID NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_ID NULL
 
 struct retro_core_option_v2_category option_cats_id[] = {
    { NULL, NULL, NULL },
@@ -3926,6 +4922,20 @@ struct retro_core_option_v2_definition option_defs_id[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_ID,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_ID,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_ID,
       NULL,
@@ -3937,12 +4947,23 @@ struct retro_core_option_v2_definition option_defs_id[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_ID,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_ID,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -3998,8 +5019,12 @@ struct retro_core_options_v2 options_id = {
 #define WSWAN_FRAMESKIP_INFO_0_IT "Salta i fotogrammi per evitare la sottoesecuzione del buffer audio (crackling). Migliora le prestazioni a scapito della fluidità visiva. 'Auto' salta i quadri quando consigliato dal frontend. 'Manuale' utilizza l'impostazione 'Frameskip Threshold (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_IT "Soglia salto fotogrammi (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_IT "Quando 'Frameskip' è impostato a 'Manuale', specifica la soglia di occupazione del buffer audio (percentuale) al di sotto della quale i quadri verranno saltati. Valori più elevati riducono il rischio di rompere causando un calo più frequente dei fotogrammi."
+#define WSWAN_60HZ_MODE_LABEL_IT NULL
+#define WSWAN_60HZ_MODE_INFO_0_IT NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_IT "Campionatura Uscita Suono"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_IT "Valori più elevati migliorano leggermente la qualità del suono a scapito delle prestazioni."
+#define WSWAN_SOUND_LOW_PASS_LABEL_IT "Filtro Audio"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_IT NULL
 
 struct retro_core_option_v2_category option_cats_it[] = {
    { NULL, NULL, NULL },
@@ -4132,6 +5157,20 @@ struct retro_core_option_v2_definition option_defs_it[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_IT,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_IT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_IT,
       NULL,
@@ -4143,12 +5182,23 @@ struct retro_core_option_v2_definition option_defs_it[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_IT,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_IT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -4167,7 +5217,7 @@ struct retro_core_options_v2 options_it = {
 #define WSWAN_ROTATE_KEYMAP_LABEL_JA NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_JA NULL
 #define OPTION_VAL_AUTO_JA "自動"
-#define WSWAN_MONO_PALETTE_LABEL_JA NULL
+#define WSWAN_MONO_PALETTE_LABEL_JA "カラーパレット"
 #define WSWAN_MONO_PALETTE_INFO_0_JA NULL
 #define OPTION_VAL_DEFAULT_JA NULL
 #define OPTION_VAL_WONDERSWAN_JA NULL
@@ -4204,8 +5254,12 @@ struct retro_core_options_v2 options_it = {
 #define WSWAN_FRAMESKIP_INFO_0_JA "フレームをスキップしてオーディオバッファアンダーラン (音割れ) を回避します。視覚的な滑らかさを犠牲にしてパフォーマンスを向上させます。 「自動」は、フロントエンドにアドバイスされたときにフレームをスキップします。「マニュアル」は、「フレームスキップ閾値 (%)」設定を使用します。"
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_JA "フレームスキップ閾値 (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_JA NULL
+#define WSWAN_60HZ_MODE_LABEL_JA NULL
+#define WSWAN_60HZ_MODE_INFO_0_JA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_JA NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_JA NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_JA "オーディオフィルタ"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_JA NULL
 
 struct retro_core_option_v2_category option_cats_ja[] = {
    { NULL, NULL, NULL },
@@ -4338,6 +5392,20 @@ struct retro_core_option_v2_definition option_defs_ja[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_JA,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_JA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_JA,
       NULL,
@@ -4349,12 +5417,23 @@ struct retro_core_option_v2_definition option_defs_ja[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_JA,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_JA,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -4410,8 +5489,12 @@ struct retro_core_options_v2 options_ja = {
 #define WSWAN_FRAMESKIP_INFO_0_KO "오디오 버퍼 언더런(소리깨짐) 을 줄이기 위해 프레임 건너뛰기를 합니다. 시각적인 부드러움을 포기하는 대신 성능이 향상됩니다. '자동'은 프론트엔드의 추천값으로 실행되고 '사용자 설정'은 '프레임 스킵 임계값(%)' 설정을 이용해 실행됩니다."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_KO "프레임 스킵 임계값 (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_KO "'프레임 스킵'이 '수동'일 경우 프레임 스킵을 수행할 오디오 버퍼 점유 임계점(퍼센트)을 설정합니다. 값이 높을수록 프레임을 자주 스킵하여 소리 깨짐 현상을 줄일 수 있습니다."
+#define WSWAN_60HZ_MODE_LABEL_KO NULL
+#define WSWAN_60HZ_MODE_INFO_0_KO NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_KO "소리 출력 샘플 레이트"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_KO "높은 값은 음질을 약간 향상시키지만 높은 성능을 필요로 합니다."
+#define WSWAN_SOUND_LOW_PASS_LABEL_KO "오디오 필터"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_KO NULL
 
 struct retro_core_option_v2_category option_cats_ko[] = {
    { NULL, NULL, NULL },
@@ -4544,6 +5627,20 @@ struct retro_core_option_v2_definition option_defs_ko[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_KO,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_KO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_KO,
       NULL,
@@ -4555,12 +5652,23 @@ struct retro_core_option_v2_definition option_defs_ko[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_KO,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_KO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -4616,8 +5724,12 @@ struct retro_core_options_v2 options_ko = {
 #define WSWAN_FRAMESKIP_INFO_0_MT NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_MT NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_MT NULL
+#define WSWAN_60HZ_MODE_LABEL_MT NULL
+#define WSWAN_60HZ_MODE_INFO_0_MT NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_MT NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_MT NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_MT NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_MT NULL
 
 struct retro_core_option_v2_category option_cats_mt[] = {
    { NULL, NULL, NULL },
@@ -4750,6 +5862,20 @@ struct retro_core_option_v2_definition option_defs_mt[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_MT,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_MT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_MT,
       NULL,
@@ -4761,12 +5887,23 @@ struct retro_core_option_v2_definition option_defs_mt[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_MT,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_MT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -4822,8 +5959,12 @@ struct retro_core_options_v2 options_mt = {
 #define WSWAN_FRAMESKIP_INFO_0_NL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_NL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_NL NULL
+#define WSWAN_60HZ_MODE_LABEL_NL NULL
+#define WSWAN_60HZ_MODE_INFO_0_NL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_NL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_NL NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_NL NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_NL NULL
 
 struct retro_core_option_v2_category option_cats_nl[] = {
    { NULL, NULL, NULL },
@@ -4956,6 +6097,20 @@ struct retro_core_option_v2_definition option_defs_nl[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_NL,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_NL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_NL,
       NULL,
@@ -4967,12 +6122,23 @@ struct retro_core_option_v2_definition option_defs_nl[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_NL,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_NL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -5028,8 +6194,12 @@ struct retro_core_options_v2 options_nl = {
 #define WSWAN_FRAMESKIP_INFO_0_NO NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_NO NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_NO NULL
+#define WSWAN_60HZ_MODE_LABEL_NO NULL
+#define WSWAN_60HZ_MODE_INFO_0_NO NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_NO NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_NO NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_NO NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_NO NULL
 
 struct retro_core_option_v2_category option_cats_no[] = {
    { NULL, NULL, NULL },
@@ -5162,6 +6332,20 @@ struct retro_core_option_v2_definition option_defs_no[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_NO,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_NO,
       NULL,
@@ -5173,12 +6357,23 @@ struct retro_core_option_v2_definition option_defs_no[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_NO,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_NO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -5234,8 +6429,12 @@ struct retro_core_options_v2 options_no = {
 #define WSWAN_FRAMESKIP_INFO_0_OC NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_OC NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_OC NULL
+#define WSWAN_60HZ_MODE_LABEL_OC NULL
+#define WSWAN_60HZ_MODE_INFO_0_OC NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_OC NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_OC NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_OC NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_OC NULL
 
 struct retro_core_option_v2_category option_cats_oc[] = {
    { NULL, NULL, NULL },
@@ -5368,6 +6567,20 @@ struct retro_core_option_v2_definition option_defs_oc[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_OC,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_OC,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_OC,
       NULL,
@@ -5379,12 +6592,23 @@ struct retro_core_option_v2_definition option_defs_oc[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_OC,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_OC,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -5440,8 +6664,12 @@ struct retro_core_options_v2 options_oc = {
 #define WSWAN_FRAMESKIP_INFO_0_PL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PL "Próg pominięcia ramki (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PL NULL
+#define WSWAN_60HZ_MODE_LABEL_PL NULL
+#define WSWAN_60HZ_MODE_INFO_0_PL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_PL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PL NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_PL "Filtr audio"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_PL NULL
 
 struct retro_core_option_v2_category option_cats_pl[] = {
    { NULL, NULL, NULL },
@@ -5574,6 +6802,20 @@ struct retro_core_option_v2_definition option_defs_pl[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_PL,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_PL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_PL,
       NULL,
@@ -5585,12 +6827,23 @@ struct retro_core_option_v2_definition option_defs_pl[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_PL,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_PL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -5646,8 +6899,12 @@ struct retro_core_options_v2 options_pl = {
 #define WSWAN_FRAMESKIP_INFO_0_PT_BR "Ignora quadros para evitar o esvaziamento do buffer do áudio (pipocos no áudio). Melhora o desempenho ao custo da suavidade visual. A opção 'Auto' ignora os quadros quando for aconselhado pela interface. Já 'Manual' utiliza a configuração 'Limite do salto de quadros (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PT_BR "Limite de pulo de quadro (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PT_BR "Ao configurar \"Pulo de quadro\" como \"Manual\", especifica o limite do buffer de áudio em porcentagem, os quadros fora da porcentagem serão ignorados. Valores maiores reduzem o risco de engasgo por descartar quadros com mais frequência."
+#define WSWAN_60HZ_MODE_LABEL_PT_BR NULL
+#define WSWAN_60HZ_MODE_INFO_0_PT_BR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_PT_BR "Taxa de amostragem da saída de som"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PT_BR "Valores maiores melhoram ligeiramente a qualidade do som em detrimento do desempenho."
+#define WSWAN_SOUND_LOW_PASS_LABEL_PT_BR "Filtro de áudio"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_PT_BR NULL
 
 struct retro_core_option_v2_category option_cats_pt_br[] = {
    { NULL, NULL, NULL },
@@ -5780,6 +7037,20 @@ struct retro_core_option_v2_definition option_defs_pt_br[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_PT_BR,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_PT_BR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_PT_BR,
       NULL,
@@ -5791,12 +7062,23 @@ struct retro_core_option_v2_definition option_defs_pt_br[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_PT_BR,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_PT_BR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -5814,7 +7096,7 @@ struct retro_core_options_v2 options_pt_br = {
 #define OPTION_VAL_PORTRAIT_PT_PT NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_PT_PT NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_PT_PT NULL
-#define OPTION_VAL_AUTO_PT_PT NULL
+#define OPTION_VAL_AUTO_PT_PT "Automático"
 #define WSWAN_MONO_PALETTE_LABEL_PT_PT NULL
 #define WSWAN_MONO_PALETTE_INFO_0_PT_PT NULL
 #define OPTION_VAL_DEFAULT_PT_PT NULL
@@ -5852,8 +7134,12 @@ struct retro_core_options_v2 options_pt_br = {
 #define WSWAN_FRAMESKIP_INFO_0_PT_PT NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PT_PT NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PT_PT NULL
+#define WSWAN_60HZ_MODE_LABEL_PT_PT NULL
+#define WSWAN_60HZ_MODE_INFO_0_PT_PT NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_PT_PT NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PT_PT NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_PT_PT "Filtro de som"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_PT_PT NULL
 
 struct retro_core_option_v2_category option_cats_pt_pt[] = {
    { NULL, NULL, NULL },
@@ -5986,6 +7272,20 @@ struct retro_core_option_v2_definition option_defs_pt_pt[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_PT_PT,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_PT_PT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_PT_PT,
       NULL,
@@ -5997,12 +7297,23 @@ struct retro_core_option_v2_definition option_defs_pt_pt[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_PT_PT,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_PT_PT,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -6058,8 +7369,12 @@ struct retro_core_options_v2 options_pt_pt = {
 #define WSWAN_FRAMESKIP_INFO_0_RO NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_RO NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_RO NULL
+#define WSWAN_60HZ_MODE_LABEL_RO NULL
+#define WSWAN_60HZ_MODE_INFO_0_RO NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_RO NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_RO NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_RO NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_RO NULL
 
 struct retro_core_option_v2_category option_cats_ro[] = {
    { NULL, NULL, NULL },
@@ -6192,6 +7507,20 @@ struct retro_core_option_v2_definition option_defs_ro[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_RO,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_RO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_RO,
       NULL,
@@ -6203,12 +7532,23 @@ struct retro_core_option_v2_definition option_defs_ro[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_RO,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_RO,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -6264,8 +7604,12 @@ struct retro_core_options_v2 options_ro = {
 #define WSWAN_FRAMESKIP_INFO_0_RU "Пропускать кадры, чтобы избежать опустошения аудиобуфера (треск). Улучшает производительность, но снижает плавность изображения. В режиме 'Авто' пропуск кадров регулируется фронтендом. В режиме 'Вручную' используется настройка 'Граница пропуска кадров (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_RU "Граница пропуска кадров (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_RU NULL
+#define WSWAN_60HZ_MODE_LABEL_RU NULL
+#define WSWAN_60HZ_MODE_INFO_0_RU NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_RU NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_RU NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_RU "Аудиофильтр"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_RU NULL
 
 struct retro_core_option_v2_category option_cats_ru[] = {
    { NULL, NULL, NULL },
@@ -6398,6 +7742,20 @@ struct retro_core_option_v2_definition option_defs_ru[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_RU,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_RU,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_RU,
       NULL,
@@ -6409,12 +7767,23 @@ struct retro_core_option_v2_definition option_defs_ru[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_RU,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_RU,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -6470,8 +7839,12 @@ struct retro_core_options_v2 options_ru = {
 #define WSWAN_FRAMESKIP_INFO_0_SI NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_SI NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_SI NULL
+#define WSWAN_60HZ_MODE_LABEL_SI NULL
+#define WSWAN_60HZ_MODE_INFO_0_SI NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_SI NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_SI NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_SI NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_SI NULL
 
 struct retro_core_option_v2_category option_cats_si[] = {
    { NULL, NULL, NULL },
@@ -6604,6 +7977,20 @@ struct retro_core_option_v2_definition option_defs_si[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_SI,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_SI,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_SI,
       NULL,
@@ -6615,12 +8002,23 @@ struct retro_core_option_v2_definition option_defs_si[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_SI,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_SI,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -6676,8 +8074,12 @@ struct retro_core_options_v2 options_si = {
 #define WSWAN_FRAMESKIP_INFO_0_SK NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_SK NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_SK NULL
+#define WSWAN_60HZ_MODE_LABEL_SK NULL
+#define WSWAN_60HZ_MODE_INFO_0_SK NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_SK NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_SK NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_SK "Zvukový filter"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_SK NULL
 
 struct retro_core_option_v2_category option_cats_sk[] = {
    { NULL, NULL, NULL },
@@ -6810,6 +8212,20 @@ struct retro_core_option_v2_definition option_defs_sk[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_SK,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_SK,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_SK,
       NULL,
@@ -6821,12 +8237,23 @@ struct retro_core_option_v2_definition option_defs_sk[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_SK,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_SK,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -6882,8 +8309,12 @@ struct retro_core_options_v2 options_sk = {
 #define WSWAN_FRAMESKIP_INFO_0_SR NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_SR NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_SR NULL
+#define WSWAN_60HZ_MODE_LABEL_SR NULL
+#define WSWAN_60HZ_MODE_INFO_0_SR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_SR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_SR NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_SR NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_SR NULL
 
 struct retro_core_option_v2_category option_cats_sr[] = {
    { NULL, NULL, NULL },
@@ -7016,6 +8447,20 @@ struct retro_core_option_v2_definition option_defs_sr[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_SR,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_SR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_SR,
       NULL,
@@ -7027,12 +8472,23 @@ struct retro_core_option_v2_definition option_defs_sr[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_SR,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_SR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -7088,8 +8544,12 @@ struct retro_core_options_v2 options_sr = {
 #define WSWAN_FRAMESKIP_INFO_0_SV NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_SV NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_SV NULL
+#define WSWAN_60HZ_MODE_LABEL_SV NULL
+#define WSWAN_60HZ_MODE_INFO_0_SV NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_SV NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_SV NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_SV "Ljudfilter"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_SV NULL
 
 struct retro_core_option_v2_category option_cats_sv[] = {
    { NULL, NULL, NULL },
@@ -7222,6 +8682,20 @@ struct retro_core_option_v2_definition option_defs_sv[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_SV,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_SV,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_SV,
       NULL,
@@ -7233,12 +8707,23 @@ struct retro_core_option_v2_definition option_defs_sv[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_SV,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_SV,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -7250,12 +8735,12 @@ struct retro_core_options_v2 options_sv = {
 /* RETRO_LANGUAGE_TR */
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_TR "Ekran Döndürme"
-#define WSWAN_ROTATE_DISPLAY_INFO_0_TR NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_TR "Konsol ekranının yönünü seçin. 'Portre', geleneksel (manzara) bir ekranda portre odaklı oyunların doğru düzenini elde etmek için kullanılabilir. 'El İle', kontrolcü aracılığıyla dönüşü etkinleştirir (varsayılan düğme: SEÇ)."
 #define OPTION_VAL_MANUAL_TR "El İle"
 #define OPTION_VAL_LANDSCAPE_TR "Yatay"
 #define OPTION_VAL_PORTRAIT_TR "Dikey"
-#define WSWAN_ROTATE_KEYMAP_LABEL_TR NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_TR NULL
+#define WSWAN_ROTATE_KEYMAP_LABEL_TR "Düğme Eşlemelerini Döndür"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_TR "Tercih edilen düğme eşlemesini seçin. 'Otomatik', düğme eşlemesini mevcut ekran dönüşüyle ​​eşleşecek şekilde ayarlar."
 #define OPTION_VAL_AUTO_TR "Otomatik"
 #define WSWAN_MONO_PALETTE_LABEL_TR "Renk Paleti"
 #define WSWAN_MONO_PALETTE_INFO_0_TR "WonderSwan (Mono) oyunlarının renklendirmesini seçin. 'WS' paletleri, orijinal WonderSwan donanımının görüntüsünü taklit eder."
@@ -7267,24 +8752,24 @@ struct retro_core_options_v2 options_sv = {
 #define OPTION_VAL_GB_POCKET_TR NULL
 #define OPTION_VAL_GB_LIGHT_TR NULL
 #define OPTION_VAL_BLOSSOM_PINK_TR "Blossom Pembe"
-#define OPTION_VAL_BUBBLES_BLUE_TR NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_TR NULL
-#define OPTION_VAL_DIGIVICE_TR NULL
+#define OPTION_VAL_BUBBLES_BLUE_TR "Kabarcıklı Mavi"
+#define OPTION_VAL_BUTTERCUP_GREEN_TR "Düğün Çiçeği Yeşil"
+#define OPTION_VAL_DIGIVICE_TR "Dijital"
 #define OPTION_VAL_GAME_COM_TR NULL
 #define OPTION_VAL_GAMEKING_TR NULL
 #define OPTION_VAL_GAME_MASTER_TR NULL
-#define OPTION_VAL_GOLDEN_WILD_TR NULL
-#define OPTION_VAL_GREENSCALE_TR NULL
-#define OPTION_VAL_HOKAGE_ORANGE_TR NULL
+#define OPTION_VAL_GOLDEN_WILD_TR "Vahşi Altın"
+#define OPTION_VAL_GREENSCALE_TR "Yeşil Ton"
+#define OPTION_VAL_HOKAGE_ORANGE_TR "Hokage Turuncu"
 #define OPTION_VAL_LABO_FAWN_TR NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_TR NULL
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_TR "Efsanevi Süper Saiyan"
 #define OPTION_VAL_MICROVISION_TR NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_TR NULL
-#define OPTION_VAL_ODYSSEY_GOLD_TR NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_TR NULL
-#define OPTION_VAL_SLIME_BLUE_TR NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_TR "Milyon Canlı Altın"
+#define OPTION_VAL_ODYSSEY_GOLD_TR "Odyssey Altın"
+#define OPTION_VAL_SHINY_SKY_BLUE_TR "Parlak Gök Mavisi"
+#define OPTION_VAL_SLIME_BLUE_TR "Balçık Mavisi"
 #define OPTION_VAL_TI_83_TR NULL
-#define OPTION_VAL_TRAVEL_WOOD_TR NULL
+#define OPTION_VAL_TRAVEL_WOOD_TR "Seyahat Ahşap"
 #define OPTION_VAL_VIRTUAL_BOY_TR NULL
 #define WSWAN_GFX_COLORS_LABEL_TR "Renk Derinliği (Yeniden Başlatılmalı)"
 #define WSWAN_GFX_COLORS_INFO_0_TR "24 bit daha yavaştır ve tüm platformlarda mevcut değildir."
@@ -7294,8 +8779,12 @@ struct retro_core_options_v2 options_sv = {
 #define WSWAN_FRAMESKIP_INFO_0_TR "Ses ara belleğinin yetersiz çalışmasını (çatırtı) önlemek için kareleri atlayın. Görsel pürüzsüzlük pahasına performansı artırır. 'Otomatik', ön uç tarafından önerildiğinde çerçeveleri atlar. 'El ile', 'Kare Atlama Eşiği (%)' ayarını kullanır."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_TR "Kare Atlama Eşiği (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_TR "'Kare Atlama', 'El İle' olarak ayarlandığında, altındaki karelerin atlanacağı ses arabelleği doluluk eşiğini (yüzde) belirtir. Daha yüksek değerler, karelerin daha sık yavaşlamasına neden olarak bozulma riskini azaltır."
+#define WSWAN_60HZ_MODE_LABEL_TR NULL
+#define WSWAN_60HZ_MODE_INFO_0_TR NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_TR "Ses Çıkışı Örnek Oranı"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_TR "Daha yüksek değerler, performans pahasına ses kalitesini biraz artırır."
+#define WSWAN_SOUND_LOW_PASS_LABEL_TR "Ses Filtresi"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_TR NULL
 
 struct retro_core_option_v2_category option_cats_tr[] = {
    { NULL, NULL, NULL },
@@ -7428,6 +8917,20 @@ struct retro_core_option_v2_definition option_defs_tr[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_TR,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_TR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_TR,
       NULL,
@@ -7439,12 +8942,23 @@ struct retro_core_option_v2_definition option_defs_tr[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_TR,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_TR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -7463,7 +8977,7 @@ struct retro_core_options_v2 options_tr = {
 #define WSWAN_ROTATE_KEYMAP_LABEL_UK NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_UK NULL
 #define OPTION_VAL_AUTO_UK "Авто"
-#define WSWAN_MONO_PALETTE_LABEL_UK NULL
+#define WSWAN_MONO_PALETTE_LABEL_UK "Кольорова палітра"
 #define WSWAN_MONO_PALETTE_INFO_0_UK NULL
 #define OPTION_VAL_DEFAULT_UK NULL
 #define OPTION_VAL_WONDERSWAN_UK NULL
@@ -7500,8 +9014,12 @@ struct retro_core_options_v2 options_tr = {
 #define WSWAN_FRAMESKIP_INFO_0_UK "Пропускати кадри, щоб уникнути спустошення буферу (тріскіт). Покращує швидкодію, погіршуючи плавність зображення. 'Авто' пропускає кадри, керуючись командами зовнішньої оболонки. 'Ручний' використовує налаштування 'Межа пропуску кадрів (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_UK "Межа пропуску кадрів (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_UK NULL
+#define WSWAN_60HZ_MODE_LABEL_UK NULL
+#define WSWAN_60HZ_MODE_INFO_0_UK NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_UK NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_UK NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_UK "Аудіофільтр"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_UK NULL
 
 struct retro_core_option_v2_category option_cats_uk[] = {
    { NULL, NULL, NULL },
@@ -7634,6 +9152,20 @@ struct retro_core_option_v2_definition option_defs_uk[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_UK,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_UK,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_UK,
       NULL,
@@ -7645,12 +9177,23 @@ struct retro_core_option_v2_definition option_defs_uk[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_UK,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_UK,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -7663,12 +9206,12 @@ struct retro_core_options_v2 options_uk = {
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_VAL NULL
 #define WSWAN_ROTATE_DISPLAY_INFO_0_VAL NULL
-#define OPTION_VAL_MANUAL_VAL NULL
+#define OPTION_VAL_MANUAL_VAL "Selecció manual"
 #define OPTION_VAL_LANDSCAPE_VAL NULL
 #define OPTION_VAL_PORTRAIT_VAL NULL
 #define WSWAN_ROTATE_KEYMAP_LABEL_VAL NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_VAL NULL
-#define OPTION_VAL_AUTO_VAL NULL
+#define OPTION_VAL_AUTO_VAL "Selecció automàtica"
 #define WSWAN_MONO_PALETTE_LABEL_VAL NULL
 #define WSWAN_MONO_PALETTE_INFO_0_VAL NULL
 #define OPTION_VAL_DEFAULT_VAL NULL
@@ -7706,8 +9249,12 @@ struct retro_core_options_v2 options_uk = {
 #define WSWAN_FRAMESKIP_INFO_0_VAL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_VAL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_VAL NULL
+#define WSWAN_60HZ_MODE_LABEL_VAL NULL
+#define WSWAN_60HZ_MODE_INFO_0_VAL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_VAL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_VAL NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_VAL NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_VAL NULL
 
 struct retro_core_option_v2_category option_cats_val[] = {
    { NULL, NULL, NULL },
@@ -7840,6 +9387,20 @@ struct retro_core_option_v2_definition option_defs_val[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_VAL,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_VAL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_VAL,
       NULL,
@@ -7851,12 +9412,23 @@ struct retro_core_option_v2_definition option_defs_val[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_VAL,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_VAL,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
@@ -7875,7 +9447,7 @@ struct retro_core_options_v2 options_val = {
 #define WSWAN_ROTATE_KEYMAP_LABEL_VN NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_VN NULL
 #define OPTION_VAL_AUTO_VN "Tự động"
-#define WSWAN_MONO_PALETTE_LABEL_VN NULL
+#define WSWAN_MONO_PALETTE_LABEL_VN "Bảng màu"
 #define WSWAN_MONO_PALETTE_INFO_0_VN NULL
 #define OPTION_VAL_DEFAULT_VN NULL
 #define OPTION_VAL_WONDERSWAN_VN NULL
@@ -7909,11 +9481,15 @@ struct retro_core_options_v2 options_val = {
 #define OPTION_VAL_16BIT_VN NULL
 #define OPTION_VAL_24BIT_VN NULL
 #define WSWAN_FRAMESKIP_LABEL_VN "Bỏ qua khung hình"
-#define WSWAN_FRAMESKIP_INFO_0_VN NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_VN NULL
+#define WSWAN_FRAMESKIP_INFO_0_VN "Bỏ qua khung hình để tránh bộ đệm âm thanh chạy dưới mức (tiếng kêu lách tách). Cải thiện hiệu suất với độ mượt mà của hình ảnh. 'Tự động' bỏ qua khung khi giao diện người dùng thông báo. 'Thủ công' sử dụng cài đặt 'Ngưỡng khung hình (%)'."
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_VN "Ngưỡng bỏ qua khung hình (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_VN NULL
+#define WSWAN_60HZ_MODE_LABEL_VN NULL
+#define WSWAN_60HZ_MODE_INFO_0_VN NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_VN NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_VN NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_VN "Âm thanh Filter Danh mục"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_VN NULL
 
 struct retro_core_option_v2_category option_cats_vn[] = {
    { NULL, NULL, NULL },
@@ -8046,6 +9622,20 @@ struct retro_core_option_v2_definition option_defs_vn[] = {
       "33"
    },
    {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_VN,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_VN,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
       "wswan_sound_sample_rate",
       WSWAN_SOUND_SAMPLE_RATE_LABEL_VN,
       NULL,
@@ -8057,12 +9647,23 @@ struct retro_core_option_v2_definition option_defs_vn[] = {
          { "22050",  NULL },
          { "44100",  NULL },
          { "48000",  NULL },
-         { "96000",  NULL },
-         { "192000", NULL },
-         { "384000", NULL },
          { NULL, NULL },
       },
       "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_VN,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_VN,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
    },
    { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
 };
