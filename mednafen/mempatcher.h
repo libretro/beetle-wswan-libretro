@@ -10,8 +10,6 @@ typedef struct __SUBCHEAT
 	int compare; // < 0 on no compare
 } SUBCHEAT;
 
-extern bool SubCheatsOn;
-
 #ifdef __cplusplus
 extern "C" {
 #endif

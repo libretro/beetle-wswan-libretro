@@ -49,19 +49,14 @@ typedef struct __CHEATF
 } CHEATF;
 
 static std::vector<CHEATF> cheats;
-static int savecheats;
-static uint32 resultsbytelen = 1;
-static bool resultsbigendian = 0;
 static bool CheatsActive = true;
 
-bool SubCheatsOn = 0;
-std::vector<SUBCHEAT> SubCheats[8];
+static std::vector<SUBCHEAT> SubCheats[8];
 
 static void RebuildSubCheats(void)
 {
  std::vector<CHEATF>::iterator chit;
 
- SubCheatsOn = 0;
  for(int x = 0; x < 8; x++)
   SubCheats[x].clear();
 
@@ -88,7 +83,6 @@ static void RebuildSubCheats(void)
     else
      tmpsub.compare = -1;
     SubCheats[(chit->addr + x) & 0x7].push_back(tmpsub);
-    SubCheatsOn = 1;
    }
   }
  }
@@ -185,8 +179,6 @@ int MDFNI_AddCheat(const char *name, uint32 addr, uint64 val, uint64 compare, ch
       return(0);
    }
 
-   savecheats = 1;
-
    MDFNMP_RemoveReadPatches();
    RebuildSubCheats();
    MDFNMP_InstallReadPatches();
@@ -198,8 +190,6 @@ int MDFNI_DelCheat(uint32 which)
 {
    free(cheats[which].name);
    cheats.erase(cheats.begin() + which);
-
-   savecheats=1;
 
    MDFNMP_RemoveReadPatches();
    RebuildSubCheats();
@@ -438,7 +428,6 @@ int MDFNI_SetCheat(uint32 which, const char *name, uint32 a, uint64 v, uint64 co
    next->bigendian = bigendian;
 
    RebuildSubCheats();
-   savecheats=1;
 
    return(1);
 }
@@ -447,7 +436,6 @@ int MDFNI_SetCheat(uint32 which, const char *name, uint32 a, uint64 v, uint64 co
 int MDFNI_ToggleCheat(uint32 which)
 {
  cheats[which].status = !cheats[which].status;
- savecheats = 1;
  RebuildSubCheats();
 
  return(cheats[which].status);
