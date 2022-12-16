@@ -982,12 +982,12 @@ struct retro_core_options_v2 options_chs = {
 #define WSWAN_ROTATE_DISPLAY_LABEL_CHT "螢幕旋轉"
 #define WSWAN_ROTATE_DISPLAY_INFO_0_CHT NULL
 #define OPTION_VAL_MANUAL_CHT "手動"
-#define OPTION_VAL_LANDSCAPE_CHT NULL
-#define OPTION_VAL_PORTRAIT_CHT NULL
+#define OPTION_VAL_LANDSCAPE_CHT "橫向"
+#define OPTION_VAL_PORTRAIT_CHT "直向"
 #define WSWAN_ROTATE_KEYMAP_LABEL_CHT NULL
 #define WSWAN_ROTATE_KEYMAP_INFO_0_CHT NULL
 #define OPTION_VAL_AUTO_CHT "自動"
-#define WSWAN_MONO_PALETTE_LABEL_CHT "配色"
+#define WSWAN_MONO_PALETTE_LABEL_CHT "影像配色"
 #define WSWAN_MONO_PALETTE_INFO_0_CHT NULL
 #define OPTION_VAL_DEFAULT_CHT "灰階"
 #define OPTION_VAL_WONDERSWAN_CHT NULL
@@ -1021,7 +1021,7 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_16BIT_CHT NULL
 #define OPTION_VAL_24BIT_CHT NULL
 #define WSWAN_FRAMESKIP_LABEL_CHT "跳幀"
-#define WSWAN_FRAMESKIP_INFO_0_CHT "設定跳幀以避免音頻緩衝區不足(產生破音)。以視覺平畫度為代價提高效能。<自動> 由前端系統控制跳幀。<手動> 使用「跳幀閾值 (%)」設定。"
+#define WSWAN_FRAMESKIP_INFO_0_CHT "設定跳幀用以避免音訊緩衝區不足(產生破音)。用影像流暢度為代價提高效能。\n設定 <自動> 由前端系統控制跳幀。設定 <手動> 由「跳幀上限 (%)」控制跳幀。"
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHT "跳幀上限 (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHT "設定「跳幀」為 <手動> 時音頻緩衝區使用上限(%)，低於上限的影格將被跳過。設定過高會導致頻繁丟失影格，過低則是出現破音。"
 #define WSWAN_60HZ_MODE_LABEL_CHT NULL
@@ -1259,12 +1259,12 @@ struct retro_core_options_v2 options_cht = {
 #define WSWAN_FRAMESKIP_INFO_0_CS "Přeskočení snímků, aby se zabránilo nedostatečnému využití vyrovnávací paměti zvuku (praskání). Zlepšuje výkon na úkor vizuální plynulosti. Funkce 'Auto' přeskakuje snímky, pokud to doporučí frontend. 'Ruční' využívá nastavení 'Práh přeskakování snímků (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CS "Hraniční Hodnota Přeskočení Snímku (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CS "Pokud je položka 'Přeskočení Snímku' nastavena na hodnotu 'Ruční', určuje práh obsazení vyrovnávací paměti zvuku (v procentech), pod kterým budou snímky přeskočeny. Vyšší hodnoty snižují riziko praskání tím, že způsobují častější vynechávání snímků."
-#define WSWAN_60HZ_MODE_LABEL_CS NULL
-#define WSWAN_60HZ_MODE_INFO_0_CS NULL
+#define WSWAN_60HZ_MODE_LABEL_CS "60Hz režim"
+#define WSWAN_60HZ_MODE_INFO_0_CS "Aktualizujte displej na 60 Hz místo nativní obnovovací frekvence 75 Hz zařízení WonderSwan tak, že budete ignorovat každý pátý snímek. Snižuje plynulost videa, ale zabraňuje trhání na displejích, které nativně nepodporují více než 60 Hz."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_CS "Výstupní Zvuková Vzorkovací Frekvence"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CS "Vyšší hodnoty mírně zlepšují kvalitu zvuku na úkor výkonu."
 #define WSWAN_SOUND_LOW_PASS_LABEL_CS "Audio Filtr"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_CS NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_CS "Použijte zvukový filtr s dolní propustí, abyste \"zjemnili\" někdy ostré chiptuny produkované zařízením WonderSwan."
 
 struct retro_core_option_v2_category option_cats_cs[] = {
    { NULL, NULL, NULL },
@@ -1964,12 +1964,12 @@ struct retro_core_options_v2 options_da = {
 #define WSWAN_FRAMESKIP_INFO_0_DE "Frames überspringen, um ein Unterlaufen des Audiopuffers (Knistern) zu vermeiden. Verbessert die Leistung auf Kosten der visuellen Glätte. 'Auto' überspringt Frames, wenn vom Frontend empfohlen. 'Manual' verwendet die Einstellung 'Frameskip Grenzwert (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_DE "Frameskip Grenzwert (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_DE "Gibt den Audiopuffer-Belegungsschwellenwert (Prozent) an, unter dem Frames übersprungen werden, wenn \"Frameskip\" auf \"Manuell\" eingestellt ist. Höhere Werte verringern das Risiko von Knistern, da Frames häufiger weggelassen werden."
-#define WSWAN_60HZ_MODE_LABEL_DE NULL
-#define WSWAN_60HZ_MODE_INFO_0_DE NULL
+#define WSWAN_60HZ_MODE_LABEL_DE "60Hz Modus"
+#define WSWAN_60HZ_MODE_INFO_0_DE "Aktualisiert die Anzeige um 60Hz anstelle der nativen 75Hz WonderSwan Aktualisierungsrate, während jedes fünfte Frame verworfen wird. Reduziert die Videoglättung, aber vermeidet Tearing bei Bildschirmen, die den nativen Betrieb über 60Hz nicht unterstützen."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_DE "Audioausgabe-Abtastrate"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_DE "Höhere Werte verbessern die Klangqualität leicht auf Kosten der Leistung."
 #define WSWAN_SOUND_LOW_PASS_LABEL_DE "Audiofilter"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_DE NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_DE "Fügt einen Tiefpass-Audiofilter hinzu, um die manchmal harten Chiptunes des WonderSwan zu 'weichen'."
 
 struct retro_core_option_v2_category option_cats_de[] = {
    { NULL, NULL, NULL },
@@ -2904,12 +2904,12 @@ struct retro_core_options_v2 options_eo = {
 #define WSWAN_FRAMESKIP_INFO_0_ES "Omite fotogramas para no saturar el búfer de audio (chasquidos en el sonido). Mejora el rendimiento a costa de perder fluidez visual. Selección automática omite fotogramas según lo aconseje el front-end. El valor Manual utiliza el ajuste Umbral de omisión de fotogramas (%)."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_ES "Umbral de omisión de fotogramas (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_ES "Cuando la omisión de fotogramas esté configurada como Manual, este ajuste especifica el umbral de ocupación del búfer de audio (en porcentaje) por debajo del cual se omitirán fotogramas si el valor. Un valor más elevado reduce el riesgo de chasquidos omitiendo fotogramas con una mayor frecuencia."
-#define WSWAN_60HZ_MODE_LABEL_ES NULL
-#define WSWAN_60HZ_MODE_INFO_0_ES NULL
+#define WSWAN_60HZ_MODE_LABEL_ES "Modo a 60 Hz"
+#define WSWAN_60HZ_MODE_INFO_0_ES "Actualiza la imagen a 60 Hz en lugar de a la frecuencia de actualización nativa de WonderSwan (75 Hz) omitiendo un fotograma de cada cinco. Reducirá la fluidez de vídeo, pero evitará fragmentaciones de imagen en aquellos monitores que no sean compatibles con frecuencias superiores a 60 Hz."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_ES "Frecuencia de muestreo de salida de audio"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_ES "Un valor más alto mejorará levemente la calidad del sonido, a costa del rendimiento."
 #define WSWAN_SOUND_LOW_PASS_LABEL_ES "Filtro de audio"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_ES NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_ES "Aplica un filtro de audio de paso bajo para «suavizar» el a veces molesto sonido que produce la WonderSwan."
 
 struct retro_core_option_v2_category option_cats_es[] = {
    { NULL, NULL, NULL },
@@ -3609,12 +3609,12 @@ struct retro_core_options_v2 options_fi = {
 #define WSWAN_FRAMESKIP_INFO_0_FR "Sauter des images pour éviter que le tampon audio ne soit sous-exécuté (crépitements). Améliore les performances au détriment de la fluidité visuelle. 'Auto' saute des images lorsque l'interface le conseille. 'Manuel' utilise le paramètre 'Seuil de saut d'images (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_FR "Seuil de saut d'images (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_FR "Lorsque 'Saut d'images' est réglé sur 'Manuel', cette option spécifie le seuil d'occupation du tampon audio (pourcentage) en dessous duquel des images seront sautées. Des valeurs plus élevées réduisent le risque de crépitements en faisant sauter des images plus fréquemment."
-#define WSWAN_60HZ_MODE_LABEL_FR NULL
-#define WSWAN_60HZ_MODE_INFO_0_FR NULL
+#define WSWAN_60HZ_MODE_LABEL_FR "Mode 60 Hz"
+#define WSWAN_60HZ_MODE_INFO_0_FR "Mettre à jour l'affichage à 60 Hz au lieu de la fréquence de rafraîchissement native de la WonderSwan à 75 Hz en ignorant chaque cinquième image. Réduit la fluidité de la vidéo, mais évite les saccades sur les écrans qui ne prennent pas en charge plus de 60 Hz nativement."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_FR "Fréquence d'échantillonnage de sortie audio"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_FR "Des valeurs plus élevées améliorent légèrement la qualité sonore au détriment des performances."
 #define WSWAN_SOUND_LOW_PASS_LABEL_FR "Filtre audio"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_FR NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_FR "Appliquer un filtre audio passe-bas pour 'adoucir' les chiptunes parfois durs produits par la WonderSwan."
 
 struct retro_core_option_v2_category option_cats_fr[] = {
    { NULL, NULL, NULL },
@@ -4505,16 +4505,16 @@ struct retro_core_options_v2 options_hr = {
 /* RETRO_LANGUAGE_HU */
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_HU "Kijelző elforgatás"
-#define WSWAN_ROTATE_DISPLAY_INFO_0_HU NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_HU "A konzol képernyőjének tájolása. Az Álló móddal érhető el az álló módú játékok helyes tájolása egy hagyományos (fekvő) kijelzőn. A Kézi mód engedélyezi a forgatást a kontrolleren (alapértelmezett gomb: Select)."
 #define OPTION_VAL_MANUAL_HU "Kézi"
-#define OPTION_VAL_LANDSCAPE_HU NULL
-#define OPTION_VAL_PORTRAIT_HU NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_HU NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_HU NULL
+#define OPTION_VAL_LANDSCAPE_HU "Fekvő"
+#define OPTION_VAL_PORTRAIT_HU "Álló"
+#define WSWAN_ROTATE_KEYMAP_LABEL_HU "Gombkiosztás elforgatása"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_HU "A kívánt gombkiosztás. Az automatikus a kijelző aktuális elforgatásához igazodik."
 #define OPTION_VAL_AUTO_HU "Automatikus"
 #define WSWAN_MONO_PALETTE_LABEL_HU "Színpaletta"
-#define WSWAN_MONO_PALETTE_INFO_0_HU NULL
-#define OPTION_VAL_DEFAULT_HU NULL
+#define WSWAN_MONO_PALETTE_INFO_0_HU "A WonderSwan (Mono) játékok színezése. A \"WS\" paletták az eredeti WonderSwan hardver kijelzőjét utánozzák."
+#define OPTION_VAL_DEFAULT_HU "Szürkeárnyalatos"
 #define OPTION_VAL_WONDERSWAN_HU NULL
 #define OPTION_VAL_WONDESWAN_COLOR_HU NULL
 #define OPTION_VAL_SWANCRYSTAL_HU NULL
@@ -4542,19 +4542,19 @@ struct retro_core_options_v2 options_hr = {
 #define OPTION_VAL_TRAVEL_WOOD_HU NULL
 #define OPTION_VAL_VIRTUAL_BOY_HU NULL
 #define WSWAN_GFX_COLORS_LABEL_HU "Színmélység (újraindítás szükséges)"
-#define WSWAN_GFX_COLORS_INFO_0_HU NULL
+#define WSWAN_GFX_COLORS_INFO_0_HU "A 24 bites lassabb, és nem elérhető minden platformon."
 #define OPTION_VAL_16BIT_HU "Több ezer (16 bites)"
 #define OPTION_VAL_24BIT_HU "Több millió (24 bites)"
 #define WSWAN_FRAMESKIP_LABEL_HU "Képkocka kihagyás"
 #define WSWAN_FRAMESKIP_INFO_0_HU "A hangbuffer kiürülése (recsegés) elkerülésére képkockák eldobása. Javít a teljesítményen a vizuális folyamatosság kárára. Az \"Automatikus\" beállítás akkor dob képkockát, ha a frontend azt javasolja. A \"Kézi\" a \"Képkocka kihagyás határértéke (%)\" beállítást használja."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_HU "Képkocka kihagyás határértéke (%)"
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_HU NULL
-#define WSWAN_60HZ_MODE_LABEL_HU NULL
-#define WSWAN_60HZ_MODE_INFO_0_HU NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_HU NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_HU NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_HU "Ha a \"Képkocka kihagyás\" \"Kézi\" értékre van állítva, ez határozza meg a hangpuffer telítettségi határát (százalékban), amely alatt képkockákat dob el. Nagyobb érték csökkenti a recsegés kockázatát azáltal, hogy gyakrabban dob el képkockát."
+#define WSWAN_60HZ_MODE_LABEL_HU "60 Hz-es mód"
+#define WSWAN_60HZ_MODE_INFO_0_HU "A kijelző frissítése 60 Hz-el a WonderSwan eredeti 75 Hz-es gyakorisága helyett, minden ötödik képkocka eldobásával. Csökkenti a kép folyamatosságát, de elkerüli a képszakadást olyan kijelzőkön, amelyek nem támoganak 60 Hz-nél nagyobb frissítést."
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_HU "Hangkimenet mintavételi frekvenciája"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_HU "Nagyobb értékek enyhén javítják a hangminőséget a teljesítmény rovására."
 #define WSWAN_SOUND_LOW_PASS_LABEL_HU "Hangszűrő"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_HU NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_HU "Aluláteresztő hangszűrő engedélyezése, a WonderSwan játékok néha \"nyers\" chiptune hangjának tompításához."
 
 struct retro_core_option_v2_category option_cats_hu[] = {
    { NULL, NULL, NULL },
@@ -5019,12 +5019,12 @@ struct retro_core_options_v2 options_id = {
 #define WSWAN_FRAMESKIP_INFO_0_IT "Salta i fotogrammi per evitare la sottoesecuzione del buffer audio (crackling). Migliora le prestazioni a scapito della fluidità visiva. 'Auto' salta i quadri quando consigliato dal frontend. 'Manuale' utilizza l'impostazione 'Frameskip Threshold (%)'."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_IT "Soglia salto fotogrammi (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_IT "Quando 'Frameskip' è impostato a 'Manuale', specifica la soglia di occupazione del buffer audio (percentuale) al di sotto della quale i quadri verranno saltati. Valori più elevati riducono il rischio di rompere causando un calo più frequente dei fotogrammi."
-#define WSWAN_60HZ_MODE_LABEL_IT NULL
-#define WSWAN_60HZ_MODE_INFO_0_IT NULL
+#define WSWAN_60HZ_MODE_LABEL_IT "Modalità 60Hz"
+#define WSWAN_60HZ_MODE_INFO_0_IT "Aggiornare il display a 60Hz invece della frequenza di aggiornamento nativa di 75Hz WonderSwan cadendo ogni quinto fotogramma. Riduce la fluidità del video, ma evita la lacerazione dello schermo su display che non supportano l'operazione nativa sopra i 60Hz."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_IT "Campionatura Uscita Suono"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_IT "Valori più elevati migliorano leggermente la qualità del suono a scapito delle prestazioni."
 #define WSWAN_SOUND_LOW_PASS_LABEL_IT "Filtro Audio"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_IT NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_IT "Applica un filtro audio passa-basso per ammorbidire i chiptunes talvolta duri prodotti dal WonderSwan."
 
 struct retro_core_option_v2_category option_cats_it[] = {
    { NULL, NULL, NULL },
@@ -5219,7 +5219,7 @@ struct retro_core_options_v2 options_it = {
 #define OPTION_VAL_AUTO_JA "自動"
 #define WSWAN_MONO_PALETTE_LABEL_JA "カラーパレット"
 #define WSWAN_MONO_PALETTE_INFO_0_JA NULL
-#define OPTION_VAL_DEFAULT_JA NULL
+#define OPTION_VAL_DEFAULT_JA "グレースケール"
 #define OPTION_VAL_WONDERSWAN_JA NULL
 #define OPTION_VAL_WONDESWAN_COLOR_JA NULL
 #define OPTION_VAL_SWANCRYSTAL_JA NULL
@@ -5489,12 +5489,12 @@ struct retro_core_options_v2 options_ja = {
 #define WSWAN_FRAMESKIP_INFO_0_KO "오디오 버퍼 언더런(소리깨짐) 을 줄이기 위해 프레임 건너뛰기를 합니다. 시각적인 부드러움을 포기하는 대신 성능이 향상됩니다. '자동'은 프론트엔드의 추천값으로 실행되고 '사용자 설정'은 '프레임 스킵 임계값(%)' 설정을 이용해 실행됩니다."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_KO "프레임 스킵 임계값 (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_KO "'프레임 스킵'이 '수동'일 경우 프레임 스킵을 수행할 오디오 버퍼 점유 임계점(퍼센트)을 설정합니다. 값이 높을수록 프레임을 자주 스킵하여 소리 깨짐 현상을 줄일 수 있습니다."
-#define WSWAN_60HZ_MODE_LABEL_KO NULL
-#define WSWAN_60HZ_MODE_INFO_0_KO NULL
+#define WSWAN_60HZ_MODE_LABEL_KO "60Hz 모드"
+#define WSWAN_60HZ_MODE_INFO_0_KO "매 5번째 프레임을 건너뛰어 화면을 WonderSwan의 기본 주사율인 75Hz가 아닌 60Hz로 표시합니다. 영상이 덜 부드럽게 표시되지만, 60Hz 이상의 주사율을 지원하지 않는 디스플레이에서의 화면 티어링 증상을 해결합니다."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_KO "소리 출력 샘플 레이트"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_KO "높은 값은 음질을 약간 향상시키지만 높은 성능을 필요로 합니다."
 #define WSWAN_SOUND_LOW_PASS_LABEL_KO "오디오 필터"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_KO NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_KO "오디오에 로우패스 필터를 적용하여 WonderSwan이 간혹 만들어내는 거친 소리를 부드럽게 변환합니다."
 
 struct retro_core_option_v2_category option_cats_ko[] = {
    { NULL, NULL, NULL },
@@ -6664,12 +6664,12 @@ struct retro_core_options_v2 options_oc = {
 #define WSWAN_FRAMESKIP_INFO_0_PL NULL
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_PL "Próg pominięcia ramki (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_PL NULL
-#define WSWAN_60HZ_MODE_LABEL_PL NULL
-#define WSWAN_60HZ_MODE_INFO_0_PL NULL
+#define WSWAN_60HZ_MODE_LABEL_PL "Tryb 60Hz"
+#define WSWAN_60HZ_MODE_INFO_0_PL "Uaktualnij wyświetlacz przy 60Hz zamiast natywnej częstotliwości odświeżania 75Hz WonderSwan poprzez upuszczanie co piątą klatkę. Zmniejsza płynność wideo, ale unika rozrywania ekranu na wyświetlaczach, które nie obsługują pracy natywnej powyżej 60 Hz."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_PL NULL
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_PL NULL
 #define WSWAN_SOUND_LOW_PASS_LABEL_PL "Filtr audio"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_PL NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_PL "Zastosuj filtr dźwiękowy o niskim współczynniku przenikania do \"łagodnych\" czasami surowych dźwięków wytwarzanych przez WonderSwan."
 
 struct retro_core_option_v2_category option_cats_pl[] = {
    { NULL, NULL, NULL },
@@ -7320,241 +7320,6 @@ struct retro_core_option_v2_definition option_defs_pt_pt[] = {
 struct retro_core_options_v2 options_pt_pt = {
    option_cats_pt_pt,
    option_defs_pt_pt
-};
-
-/* RETRO_LANGUAGE_RO */
-
-#define WSWAN_ROTATE_DISPLAY_LABEL_RO NULL
-#define WSWAN_ROTATE_DISPLAY_INFO_0_RO NULL
-#define OPTION_VAL_MANUAL_RO NULL
-#define OPTION_VAL_LANDSCAPE_RO NULL
-#define OPTION_VAL_PORTRAIT_RO NULL
-#define WSWAN_ROTATE_KEYMAP_LABEL_RO NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_RO NULL
-#define OPTION_VAL_AUTO_RO NULL
-#define WSWAN_MONO_PALETTE_LABEL_RO NULL
-#define WSWAN_MONO_PALETTE_INFO_0_RO NULL
-#define OPTION_VAL_DEFAULT_RO NULL
-#define OPTION_VAL_WONDERSWAN_RO NULL
-#define OPTION_VAL_WONDESWAN_COLOR_RO NULL
-#define OPTION_VAL_SWANCRYSTAL_RO NULL
-#define OPTION_VAL_GB_DMG_RO NULL
-#define OPTION_VAL_GB_POCKET_RO NULL
-#define OPTION_VAL_GB_LIGHT_RO NULL
-#define OPTION_VAL_BLOSSOM_PINK_RO NULL
-#define OPTION_VAL_BUBBLES_BLUE_RO NULL
-#define OPTION_VAL_BUTTERCUP_GREEN_RO NULL
-#define OPTION_VAL_DIGIVICE_RO NULL
-#define OPTION_VAL_GAME_COM_RO NULL
-#define OPTION_VAL_GAMEKING_RO NULL
-#define OPTION_VAL_GAME_MASTER_RO NULL
-#define OPTION_VAL_GOLDEN_WILD_RO NULL
-#define OPTION_VAL_GREENSCALE_RO NULL
-#define OPTION_VAL_HOKAGE_ORANGE_RO NULL
-#define OPTION_VAL_LABO_FAWN_RO NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_RO NULL
-#define OPTION_VAL_MICROVISION_RO NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_RO NULL
-#define OPTION_VAL_ODYSSEY_GOLD_RO NULL
-#define OPTION_VAL_SHINY_SKY_BLUE_RO NULL
-#define OPTION_VAL_SLIME_BLUE_RO NULL
-#define OPTION_VAL_TI_83_RO NULL
-#define OPTION_VAL_TRAVEL_WOOD_RO NULL
-#define OPTION_VAL_VIRTUAL_BOY_RO NULL
-#define WSWAN_GFX_COLORS_LABEL_RO NULL
-#define WSWAN_GFX_COLORS_INFO_0_RO NULL
-#define OPTION_VAL_16BIT_RO NULL
-#define OPTION_VAL_24BIT_RO NULL
-#define WSWAN_FRAMESKIP_LABEL_RO NULL
-#define WSWAN_FRAMESKIP_INFO_0_RO NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_RO NULL
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_RO NULL
-#define WSWAN_60HZ_MODE_LABEL_RO NULL
-#define WSWAN_60HZ_MODE_INFO_0_RO NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_RO NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_RO NULL
-#define WSWAN_SOUND_LOW_PASS_LABEL_RO NULL
-#define WSWAN_SOUND_LOW_PASS_INFO_0_RO NULL
-
-struct retro_core_option_v2_category option_cats_ro[] = {
-   { NULL, NULL, NULL },
-};
-struct retro_core_option_v2_definition option_defs_ro[] = {
-   {
-      "wswan_rotate_display",
-      WSWAN_ROTATE_DISPLAY_LABEL_RO,
-      NULL,
-      WSWAN_ROTATE_DISPLAY_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "manual",    OPTION_VAL_MANUAL_RO },
-         { "landscape", OPTION_VAL_LANDSCAPE_RO },
-         { "portrait",  OPTION_VAL_PORTRAIT_RO },
-         { NULL, NULL },
-      },
-      "manual",
-   },
-   {
-      "wswan_rotate_keymap",
-      WSWAN_ROTATE_KEYMAP_LABEL_RO,
-      NULL,
-      WSWAN_ROTATE_KEYMAP_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "auto",     OPTION_VAL_AUTO_RO },
-         { "disabled", OPTION_VAL_LANDSCAPE_RO },
-         { "enabled",  OPTION_VAL_PORTRAIT_RO },
-         { NULL, NULL},
-      },
-      "auto",
-   },
-   {
-      "wswan_mono_palette",
-      WSWAN_MONO_PALETTE_LABEL_RO,
-      NULL,
-      WSWAN_MONO_PALETTE_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "default",                OPTION_VAL_DEFAULT_RO },
-         { "wonderswan",             OPTION_VAL_WONDERSWAN_RO },
-         { "wondeswan_color",        OPTION_VAL_WONDESWAN_COLOR_RO },
-         { "swancrystal",            OPTION_VAL_SWANCRYSTAL_RO },
-         { "gb_dmg",                 OPTION_VAL_GB_DMG_RO },
-         { "gb_pocket",              OPTION_VAL_GB_POCKET_RO },
-         { "gb_light",               OPTION_VAL_GB_LIGHT_RO },
-         { "blossom_pink",           OPTION_VAL_BLOSSOM_PINK_RO },
-         { "bubbles_blue",           OPTION_VAL_BUBBLES_BLUE_RO },
-         { "buttercup_green",        OPTION_VAL_BUTTERCUP_GREEN_RO },
-         { "digivice",               OPTION_VAL_DIGIVICE_RO },
-         { "game_com",               OPTION_VAL_GAME_COM_RO },
-         { "gameking",               OPTION_VAL_GAMEKING_RO },
-         { "game_master",            OPTION_VAL_GAME_MASTER_RO },
-         { "golden_wild",            OPTION_VAL_GOLDEN_WILD_RO },
-         { "greenscale",             OPTION_VAL_GREENSCALE_RO },
-         { "hokage_orange",          OPTION_VAL_HOKAGE_ORANGE_RO },
-         { "labo_fawn",              OPTION_VAL_LABO_FAWN_RO },
-         { "legendary_super_saiyan", OPTION_VAL_LEGENDARY_SUPER_SAIYAN_RO },
-         { "microvision",            OPTION_VAL_MICROVISION_RO },
-         { "million_live_gold",      OPTION_VAL_MILLION_LIVE_GOLD_RO },
-         { "odyssey_gold",           OPTION_VAL_ODYSSEY_GOLD_RO },
-         { "shiny_sky_blue",         OPTION_VAL_SHINY_SKY_BLUE_RO },
-         { "slime_blue",             OPTION_VAL_SLIME_BLUE_RO },
-         { "ti_83",                  OPTION_VAL_TI_83_RO },
-         { "travel_wood",            OPTION_VAL_TRAVEL_WOOD_RO },
-         { "virtual_boy",            OPTION_VAL_VIRTUAL_BOY_RO },
-         { NULL, NULL },
-      },
-      "default"
-   },
-   {
-      "wswan_gfx_colors",
-      WSWAN_GFX_COLORS_LABEL_RO,
-      NULL,
-      WSWAN_GFX_COLORS_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "16bit", OPTION_VAL_16BIT_RO },
-         { "24bit", OPTION_VAL_24BIT_RO },
-         { NULL, NULL },
-      },
-      "16bit"
-   },
-   {
-      "wswan_frameskip",
-      WSWAN_FRAMESKIP_LABEL_RO,
-      NULL,
-      WSWAN_FRAMESKIP_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "disabled", NULL },
-         { "auto",     OPTION_VAL_AUTO_RO },
-         { "manual",   OPTION_VAL_MANUAL_RO },
-         { NULL, NULL },
-      },
-      "disabled"
-   },
-   {
-      "wswan_frameskip_threshold",
-      WSWAN_FRAMESKIP_THRESHOLD_LABEL_RO,
-      NULL,
-      WSWAN_FRAMESKIP_THRESHOLD_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "15", NULL },
-         { "18", NULL },
-         { "21", NULL },
-         { "24", NULL },
-         { "27", NULL },
-         { "30", NULL },
-         { "33", NULL },
-         { "36", NULL },
-         { "39", NULL },
-         { "42", NULL },
-         { "45", NULL },
-         { "48", NULL },
-         { "51", NULL },
-         { "54", NULL },
-         { "57", NULL },
-         { "60", NULL },
-         { NULL, NULL },
-      },
-      "33"
-   },
-   {
-      "wswan_60hz_mode",
-      WSWAN_60HZ_MODE_LABEL_RO,
-      NULL,
-      WSWAN_60HZ_MODE_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "disabled", NULL },
-         { "enabled",  NULL },
-         { NULL, NULL },
-      },
-      "enabled",
-   },
-   {
-      "wswan_sound_sample_rate",
-      WSWAN_SOUND_SAMPLE_RATE_LABEL_RO,
-      NULL,
-      WSWAN_SOUND_SAMPLE_RATE_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "11025",  NULL },
-         { "22050",  NULL },
-         { "44100",  NULL },
-         { "48000",  NULL },
-         { NULL, NULL },
-      },
-      "44100",
-   },
-   {
-      "wswan_sound_low_pass",
-      WSWAN_SOUND_LOW_PASS_LABEL_RO,
-      NULL,
-      WSWAN_SOUND_LOW_PASS_INFO_0_RO,
-      NULL,
-      NULL,
-      {
-         { "disabled", NULL },
-         { "enabled",  NULL },
-         { NULL, NULL },
-      },
-      "disabled",
-   },
-   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
-};
-struct retro_core_options_v2 options_ro = {
-   option_cats_ro,
-   option_defs_ro
 };
 
 /* RETRO_LANGUAGE_RU */
@@ -8779,12 +8544,12 @@ struct retro_core_options_v2 options_sv = {
 #define WSWAN_FRAMESKIP_INFO_0_TR "Ses ara belleğinin yetersiz çalışmasını (çatırtı) önlemek için kareleri atlayın. Görsel pürüzsüzlük pahasına performansı artırır. 'Otomatik', ön uç tarafından önerildiğinde çerçeveleri atlar. 'El ile', 'Kare Atlama Eşiği (%)' ayarını kullanır."
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_TR "Kare Atlama Eşiği (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_TR "'Kare Atlama', 'El İle' olarak ayarlandığında, altındaki karelerin atlanacağı ses arabelleği doluluk eşiğini (yüzde) belirtir. Daha yüksek değerler, karelerin daha sık yavaşlamasına neden olarak bozulma riskini azaltır."
-#define WSWAN_60HZ_MODE_LABEL_TR NULL
-#define WSWAN_60HZ_MODE_INFO_0_TR NULL
+#define WSWAN_60HZ_MODE_LABEL_TR "60Hz Kipi"
+#define WSWAN_60HZ_MODE_INFO_0_TR "Her beş karede bir düşürerek ekranı yerel 75Hz WonderSwan yenileme hızı yerine 60Hz olarak güncelleyin. Video düzgünlüğünü azaltır, ancak 60Hz üzerinde doğal çalışmayı desteklemeyen ekranlarda ekran yırtılmasını önler."
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_TR "Ses Çıkışı Örnek Oranı"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_TR "Daha yüksek değerler, performans pahasına ses kalitesini biraz artırır."
 #define WSWAN_SOUND_LOW_PASS_LABEL_TR "Ses Filtresi"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_TR NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_TR "WonderSwan ile üretilen bazen sert olan ince melodileri 'yumuşatmak' için düşük geçişli bir ses filtresi uygulayın."
 
 struct retro_core_option_v2_category option_cats_tr[] = {
    { NULL, NULL, NULL },
