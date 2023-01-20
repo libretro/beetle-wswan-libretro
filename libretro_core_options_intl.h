@@ -789,7 +789,7 @@ struct retro_core_options_v2 options_ca = {
 #define WSWAN_FRAMESKIP_INFO_0_CHS "跳过帧以避免运行下的音频缓冲区(崩溃)。提高性能以牺牲视觉性能。 “自动”跳板帧在前端建议时。“手动”使用了“Frameskip 阈值(%)”设置。"
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHS "跳帧阈值(%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHS "当'Frameskip'设置为“手动”时，这将指定音频缓冲区占用阈值(百分比)，低于此值的帧将被跳过。 较高的值会导致帧更频繁地丢失，从而降低破碎的风险。"
-#define WSWAN_60HZ_MODE_LABEL_CHS NULL
+#define WSWAN_60HZ_MODE_LABEL_CHS "60Hz 模式"
 #define WSWAN_60HZ_MODE_INFO_0_CHS NULL
 #define WSWAN_SOUND_SAMPLE_RATE_LABEL_CHS "声音输出采样率"
 #define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CHS "较高的数值略微提高了音质，牺牲了性能。"
