@@ -1021,7 +1021,7 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_16BIT_CHT NULL
 #define OPTION_VAL_24BIT_CHT NULL
 #define WSWAN_FRAMESKIP_LABEL_CHT "跳幀"
-#define WSWAN_FRAMESKIP_INFO_0_CHT "設定跳幀用以避免音訊緩衝區不足(產生破音)。用影像流暢度為代價提高效能。\n設定 <自動> 由前端系統控制跳幀。設定 <手動> 由「跳幀上限 (%)」控制跳幀。"
+#define WSWAN_FRAMESKIP_INFO_0_CHT "設定跳幀用以避免音訊緩衝區不足(產生破音), 用影像流暢度為代價提高效能。\n設定<自動>由前端系統控制跳幀, 設定<手動>由「跳幀上限(%)」控制跳幀。"
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHT "跳幀上限 (%)"
 #define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHT "設定「跳幀」為 <手動> 時音頻緩衝區使用上限(%)，低於上限的影格將被跳過。設定過高會導致頻繁丟失影格，過低則是出現破音。"
 #define WSWAN_60HZ_MODE_LABEL_CHT NULL
