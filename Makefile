@@ -15,15 +15,22 @@ unixcygpath = /$(subst :,,$(call unixpath,$1))
 # system platform
 ifeq ($(platform),)
    platform = unix
-   ifeq ($(shell uname -a),)
+   ifeq ($(shell uname -s),)
       EXE_EXT = .exe
       platform = win
-   else ifneq ($(findstring MINGW,$(shell uname -a)),)
+   else ifneq ($(findstring MINGW,$(shell uname -s)),)
       platform = win
-   else ifneq ($(findstring win,$(shell uname -a)),)
+   else ifneq ($(findstring win,$(shell uname -s)),)
       platform = win
-   else ifneq ($(findstring Darwin,$(shell uname -a)),)
+   else ifneq ($(findstring Darwin,$(shell uname -s)),)
       platform = osx
+      arch = intel
+      ifeq ($(shell uname -p),arm64)
+         arch = arm
+      endif
+      ifeq ($(shell uname -p),powerpc)
+         arch = ppc
+      endif
    endif
 else ifneq (,$(findstring armv,$(platform)))
    ifeq (,$(findstring classic_,$(platform)))
@@ -32,13 +39,6 @@ else ifneq (,$(findstring armv,$(platform)))
 else ifneq (,$(findstring rpi,$(platform)))
    override platform += unix
 endif
-
-ifeq ($(shell uname -p),powerpc)
-   arch = ppc
-else
-   arch = intel
-endif
-
 
 NEED_BPP = 16
 NEED_BLIP = 1
