@@ -980,56 +980,56 @@ struct retro_core_options_v2 options_chs = {
 /* RETRO_LANGUAGE_CHT */
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_CHT "螢幕旋轉"
-#define WSWAN_ROTATE_DISPLAY_INFO_0_CHT NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_CHT "設定螢幕旋轉方向, 設定<直向>用於一般顯示器(橫式)並正確配置, 設定<手動>隨時可用控制器切換方向(預設選擇鍵)。"
 #define OPTION_VAL_MANUAL_CHT "手動"
 #define OPTION_VAL_LANDSCAPE_CHT "橫向"
 #define OPTION_VAL_PORTRAIT_CHT "直向"
-#define WSWAN_ROTATE_KEYMAP_LABEL_CHT NULL
-#define WSWAN_ROTATE_KEYMAP_INFO_0_CHT NULL
+#define WSWAN_ROTATE_KEYMAP_LABEL_CHT "自訂旋轉按鍵"
+#define WSWAN_ROTATE_KEYMAP_INFO_0_CHT "自訂螢幕旋轉按鍵, 設定<自動>時依顯示自動調整符合的映射。\n僅限「螢幕旋轉」設定為<手動>時使用。"
 #define OPTION_VAL_AUTO_CHT "自動"
 #define WSWAN_MONO_PALETTE_LABEL_CHT "影像配色"
-#define WSWAN_MONO_PALETTE_INFO_0_CHT NULL
+#define WSWAN_MONO_PALETTE_INFO_0_CHT "設定WonderSwan單色遊戲畫面的8灰階著色, 選項(WS)是WonderSwan主機的擬真顯示。"
 #define OPTION_VAL_DEFAULT_CHT "灰階"
-#define OPTION_VAL_WONDERSWAN_CHT NULL
-#define OPTION_VAL_WONDESWAN_COLOR_CHT NULL
-#define OPTION_VAL_SWANCRYSTAL_CHT NULL
-#define OPTION_VAL_GB_DMG_CHT NULL
-#define OPTION_VAL_GB_POCKET_CHT NULL
-#define OPTION_VAL_GB_LIGHT_CHT NULL
-#define OPTION_VAL_BLOSSOM_PINK_CHT NULL
-#define OPTION_VAL_BUBBLES_BLUE_CHT "泡泡藍"
-#define OPTION_VAL_BUTTERCUP_GREEN_CHT NULL
-#define OPTION_VAL_DIGIVICE_CHT NULL
-#define OPTION_VAL_GAME_COM_CHT NULL
-#define OPTION_VAL_GAMEKING_CHT NULL
-#define OPTION_VAL_GAME_MASTER_CHT NULL
-#define OPTION_VAL_GOLDEN_WILD_CHT NULL
-#define OPTION_VAL_GREENSCALE_CHT NULL
+#define OPTION_VAL_WONDERSWAN_CHT "WS - WonderSwan 主機"
+#define OPTION_VAL_WONDESWAN_COLOR_CHT "WS - WonderSwan Color 主機"
+#define OPTION_VAL_SWANCRYSTAL_CHT "WS - SwanCrystal 主機"
+#define OPTION_VAL_GB_DMG_CHT "Game Boy 主機"
+#define OPTION_VAL_GB_POCKET_CHT "Game Boy Pocket 主機"
+#define OPTION_VAL_GB_LIGHT_CHT "Game Boy Light 主機"
+#define OPTION_VAL_BLOSSOM_PINK_CHT "飛天小女警花花粉"
+#define OPTION_VAL_BUBBLES_BLUE_CHT "飛天小女警泡泡藍"
+#define OPTION_VAL_BUTTERCUP_GREEN_CHT "飛天小女警毛毛綠"
+#define OPTION_VAL_DIGIVICE_CHT "怪獸對打機D2"
+#define OPTION_VAL_GAME_COM_CHT "Game.com 主機"
+#define OPTION_VAL_GAMEKING_CHT "GameKing 主機"
+#define OPTION_VAL_GAME_MASTER_CHT "Game Master 主機"
+#define OPTION_VAL_GOLDEN_WILD_CHT "荒野金"
+#define OPTION_VAL_GREENSCALE_CHT "綠色階"
 #define OPTION_VAL_HOKAGE_ORANGE_CHT "火影橘"
-#define OPTION_VAL_LABO_FAWN_CHT NULL
-#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_CHT NULL
-#define OPTION_VAL_MICROVISION_CHT NULL
-#define OPTION_VAL_MILLION_LIVE_GOLD_CHT NULL
-#define OPTION_VAL_ODYSSEY_GOLD_CHT NULL
+#define OPTION_VAL_LABO_FAWN_CHT "瓦楞棕"
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_CHT "傳說中的超級賽亞人 (綠光)"
+#define OPTION_VAL_MICROVISION_CHT "Microvision 主機"
+#define OPTION_VAL_MILLION_LIVE_GOLD_CHT "偶像大師百萬人演唱會 (金色)"
+#define OPTION_VAL_ODYSSEY_GOLD_CHT "奧德賽金幣"
 #define OPTION_VAL_SHINY_SKY_BLUE_CHT "閃亮藍"
 #define OPTION_VAL_SLIME_BLUE_CHT "史萊姆藍"
-#define OPTION_VAL_TI_83_CHT NULL
-#define OPTION_VAL_TRAVEL_WOOD_CHT NULL
-#define OPTION_VAL_VIRTUAL_BOY_CHT "虛擬男孩紅"
-#define WSWAN_GFX_COLORS_LABEL_CHT NULL
-#define WSWAN_GFX_COLORS_INFO_0_CHT NULL
-#define OPTION_VAL_16BIT_CHT NULL
-#define OPTION_VAL_24BIT_CHT NULL
+#define OPTION_VAL_TI_83_CHT "TI-83 工程計算機"
+#define OPTION_VAL_TRAVEL_WOOD_CHT "織夢島旅照模式 (粉撲色)"
+#define OPTION_VAL_VIRTUAL_BOY_CHT "Virtual Boy 主機 (紅黑色)"
+#define WSWAN_GFX_COLORS_LABEL_CHT "色彩深度 (需要重新啟動)"
+#define WSWAN_GFX_COLORS_INFO_0_CHT "全彩(24位元)速度較慢且不是所有平台都支援。"
+#define OPTION_VAL_16BIT_CHT "高彩 (16位元)"
+#define OPTION_VAL_24BIT_CHT "全彩 (24位元)"
 #define WSWAN_FRAMESKIP_LABEL_CHT "跳幀"
 #define WSWAN_FRAMESKIP_INFO_0_CHT "設定跳幀用以避免音訊緩衝區不足(產生破音), 用影像流暢度為代價提高效能。\n設定<自動>由前端系統控制跳幀, 設定<手動>由「跳幀上限(%)」控制跳幀。"
 #define WSWAN_FRAMESKIP_THRESHOLD_LABEL_CHT "跳幀上限 (%)"
-#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHT "設定「跳幀」為 <手動> 時音頻緩衝區使用上限(%)，低於上限的影格將被跳過。設定過高會導致頻繁丟失影格，過低則是出現破音。"
-#define WSWAN_60HZ_MODE_LABEL_CHT NULL
-#define WSWAN_60HZ_MODE_INFO_0_CHT NULL
-#define WSWAN_SOUND_SAMPLE_RATE_LABEL_CHT NULL
-#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CHT NULL
-#define WSWAN_SOUND_LOW_PASS_LABEL_CHT "音訊過濾器"
-#define WSWAN_SOUND_LOW_PASS_INFO_0_CHT NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_CHT "設定「跳幀」為<手動>時音頻緩衝區使用上限(%)。\n低於上限的影格將被跳過, 設定過高會導致頻繁丟失影格, 過低則是出現破音。"
+#define WSWAN_60HZ_MODE_LABEL_CHT "60Hz模式"
+#define WSWAN_60HZ_MODE_INFO_0_CHT "不使用WonderSwan預設的75Hz更新率, 使用60Hz更新率模式, 更新率每五幀下降一次。\n適用於不支援60Hz以上的裝置, 降低影像流暢度避免出現畫面撕裂。"
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_CHT "音訊輸出取樣率"
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_CHT "較高的值會些許提高音質但會降低效能。"
+#define WSWAN_SOUND_LOW_PASS_LABEL_CHT "音訊濾波器"
+#define WSWAN_SOUND_LOW_PASS_INFO_0_CHT "WonderSwan音樂晶片有時會產生刺耳聲, 使用低通音訊濾波器進行柔和處理。"
 
 struct retro_core_option_v2_category option_cats_cht[] = {
    { NULL, NULL, NULL },
