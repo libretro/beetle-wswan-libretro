@@ -454,7 +454,8 @@ static struct {
 {							\
 	if (ModRM >= 0xc0)				\
 		I.regs.w[Mod_RM.RM.w[ModRM]]=val;	\
-	else {						\
+	else        						\
+   {                             \
 		(*GetEA[ModRM])();			\
 		WriteWord( EA ,val);			\
 	}						\
@@ -631,12 +632,12 @@ static void nec_interrupt(unsigned int_num)
    I.TF = I.IF = 0;	
 
 
-   dest_off = ReadWord((int_num)*4);
-   dest_seg = ReadWord((int_num)*4+2);
+   dest_off    = ReadWord((int_num)*4);
+   dest_seg    = ReadWord((int_num)*4+2);
 
    PUSH(I.sregs[PS]);
    PUSH(I.pc);
-   I.pc = (uint16)dest_off;
+   I.pc        = (uint16)dest_off;
    I.sregs[PS] = (uint16)dest_seg;
 }
 
@@ -716,40 +717,57 @@ I.regs.w[IX] += -2 * I.DF + 1; CLK(6);
 
 static INLINE void i_real_cmpsw(void) 
 {
- uint32 src = GetMemW(DS1, I.regs.w[IY]); uint32 dst = GetMemW(DS0, I.regs.w[IX]); SUBW; I.regs.w[IY] += -4 * I.DF + 2; 
-I.regs.w[IX] += -4 * I.DF + 2; CLK(6); 
+   uint32 src = GetMemW(DS1, I.regs.w[IY]);
+   uint32 dst = GetMemW(DS0, I.regs.w[IX]);
+   SUBW;
+   I.regs.w[IY] += -4 * I.DF + 2; 
+   I.regs.w[IX] += -4 * I.DF + 2;
+   CLK(6); 
 }
 
 static INLINE void i_real_stosb(void) 
 {
- PutMemB(DS1,I.regs.w[IY],I.regs.b[AL]);       I.regs.w[IY] += -2 * I.DF + 1; CLK(3);  
+   PutMemB(DS1,I.regs.w[IY],I.regs.b[AL]);
+   I.regs.w[IY] += -2 * I.DF + 1;
+   CLK(3);  
 }
 
 static INLINE void i_real_stosw(void) 
 {
- PutMemW(DS1,I.regs.w[IY],I.regs.w[AW]);       I.regs.w[IY] += -4 * I.DF + 2; CLK(3);
+   PutMemW(DS1,I.regs.w[IY],I.regs.w[AW]);
+   I.regs.w[IY] += -4 * I.DF + 2;
+   CLK(3);
 }
 
 static INLINE void i_real_lodsb(void) 
 {
- I.regs.b[AL] = GetMemB(DS0,I.regs.w[IX]); I.regs.w[IX] += -2 * I.DF + 1; CLK(3); 
+   I.regs.b[AL] = GetMemB(DS0,I.regs.w[IX]);
+   I.regs.w[IX] += -2 * I.DF + 1;
+   CLK(3); 
 }
 
 static INLINE void i_real_lodsw(void) 
 {
- I.regs.w[AW] = GetMemW(DS0,I.regs.w[IX]); I.regs.w[IX] += -4 * I.DF + 2; CLK(3); 
+   I.regs.w[AW] = GetMemW(DS0,I.regs.w[IX]);
+   I.regs.w[IX] += -4 * I.DF + 2;
+   CLK(3); 
 }
 
 static INLINE void i_real_scasb(void) 
 { 
- uint32 src = GetMemB(DS1, I.regs.w[IY]);      uint32 dst = I.regs.b[AL]; SUBB;
- I.regs.w[IY] += -2 * I.DF + 1; CLK(4); 
+   uint32 src = GetMemB(DS1, I.regs.w[IY]);
+   uint32 dst = I.regs.b[AL]; SUBB;
+   I.regs.w[IY] += -2 * I.DF + 1;
+   CLK(4); 
 }
 
 static INLINE void i_real_scasw(void) 
 { 
- uint32 src = GetMemW(DS1, I.regs.w[IY]);      uint32 dst = I.regs.w[AW]; SUBW; 
- I.regs.w[IY] += -4 * I.DF + 2; CLK(4); 
+   uint32 src    = GetMemW(DS1, I.regs.w[IY]);
+   uint32 dst    = I.regs.w[AW];
+   SUBW; 
+   I.regs.w[IY] += -4 * I.DF + 2;
+   CLK(4); 
 }
 
 static void DoOP(uint8 opcode)
@@ -897,19 +915,14 @@ static void DoOP(uint8 opcode)
 
          OP( 0x62, i_chkind  ) 
          {
-            uint32 low,high,tmp;
-
             GetModRM;
-
-            low = GetRMWord(ModRM);
-            high = GetnextRMWord;
-            tmp = RegWord(ModRM);
+            uint32 low  = GetRMWord(ModRM);
+            uint32 high = GetnextRMWord;
+            uint32 tmp  = RegWord(ModRM);
 
             CLK(13);
             if (tmp<low || tmp>high) 
-            {
                nec_interrupt(5);
-            }
          } OP_EPILOGUE;
 
          OP( 0x68, i_push_d16 ) { uint32 tmp;	FETCHuint16(tmp); PUSH(tmp);	CLK(1);	} OP_EPILOGUE;
@@ -938,7 +951,7 @@ static void DoOP(uint8 opcode)
          OP( 0x7e, i_jle     ) { JMP((ZF)||(SF!=FLAG_O)); 	CLK(1); } OP_EPILOGUE;
          OP( 0x7f, i_jnle    ) { JMP((SF==FLAG_O)&&(!ZF));	CLK(1); } OP_EPILOGUE;
 
-         OP( 0x80, i_80pre   ) { uint32 dst, src; GetModRM; dst = GetRMByte(ModRM); src = FETCH;
+         OP( 0x80, i_80pre   ) { GetModRM; uint32 dst = GetRMByte(ModRM); uint32 src = FETCH;
             CLKM(3, 1);
             switch (ModRM & 0x38) {
                case 0x00: ADDB;			PutbackRMByte(ModRM,dst);	break;
@@ -952,7 +965,7 @@ static void DoOP(uint8 opcode)
             }
          } OP_EPILOGUE;
 
-         OP( 0x81, i_81pre   ) { uint32 dst, src; GetModRM; dst = GetRMWord(ModRM); src = FETCH; src+= (FETCH << 8);
+         OP( 0x81, i_81pre   ) { GetModRM; uint32 dst = GetRMWord(ModRM); uint32 src = FETCH; src+= (FETCH << 8);
             CLKM(3, 1);
             switch (ModRM & 0x38) {
                case 0x00: ADDW;			PutbackRMWord(ModRM,dst);	break;
@@ -966,11 +979,11 @@ static void DoOP(uint8 opcode)
             }
          } OP_EPILOGUE;
 
-         OP( 0x82, i_82pre   ) { uint32 dst, src; GetModRM; dst = GetRMByte(ModRM); src = (uint8)((int8)FETCH);
+         OP( 0x82, i_82pre   ) { GetModRM; uint32 dst = GetRMByte(ModRM); uint32 src = (uint8)((int8)FETCH);
             CLKM(3,1);
             switch (ModRM & 0x38) {
                case 0x00: ADDB;			PutbackRMByte(ModRM,dst);	break;
-               case 0x08: ORB;				PutbackRMByte(ModRM,dst);	break;
+               case 0x08: ORB;			PutbackRMByte(ModRM,dst);	break;
                case 0x10: src+=CF;	ADDB;	PutbackRMByte(ModRM,dst);	break;
                case 0x18: src+=CF;	SUBB;	PutbackRMByte(ModRM,dst);	break;
                case 0x20: ANDB;			PutbackRMByte(ModRM,dst);	break;
@@ -980,11 +993,11 @@ static void DoOP(uint8 opcode)
             }
          } OP_EPILOGUE;
 
-         OP( 0x83, i_83pre   ) { uint32 dst, src; GetModRM; dst = GetRMWord(ModRM); src = (uint16)((int16)((int8)FETCH));
+         OP( 0x83, i_83pre   ) { GetModRM; uint32 dst = GetRMWord(ModRM); uint32 src = (uint16)((int16)((int8)FETCH));
             CLKM(3,1);
             switch (ModRM & 0x38) {
                case 0x00: ADDW;			PutbackRMWord(ModRM,dst);	break;
-               case 0x08: ORW;				PutbackRMWord(ModRM,dst);	break;
+               case 0x08: ORW;			PutbackRMWord(ModRM,dst);	break;
                case 0x10: src+=CF;	ADDW;	PutbackRMWord(ModRM,dst);	break;
                case 0x18: src+=CF;	SUBW;	PutbackRMWord(ModRM,dst);	break;
                case 0x20: ANDW;			PutbackRMWord(ModRM,dst);	break;
@@ -999,13 +1012,13 @@ static void DoOP(uint8 opcode)
          OP( 0x86, i_xchg_br8  ) { DEF_br8;	RegByte(ModRM)=dst; PutbackRMByte(ModRM,src); CLKM(5,3); } OP_EPILOGUE;
          OP( 0x87, i_xchg_wr16 ) { DEF_wr16;	RegWord(ModRM)=dst; PutbackRMWord(ModRM,src); CLKM(5,3); } OP_EPILOGUE;
 
-         OP( 0x88, i_mov_br8   ) { uint8  src; GetModRM; src = RegByte(ModRM); 	PutRMByte(ModRM,src); 	CLK(1);	} OP_EPILOGUE;
-         OP( 0x89, i_mov_wr16  ) { uint16 src; GetModRM; src = RegWord(ModRM); 	PutRMWord(ModRM,src);	CLK(1); } OP_EPILOGUE;
-         OP( 0x8a, i_mov_r8b   ) { uint8  src; GetModRM; src = GetRMByte(ModRM);	RegByte(ModRM)=src;	CLK(1);	} OP_EPILOGUE;
-         OP( 0x8b, i_mov_r16w  ) { uint16 src; GetModRM; src = GetRMWord(ModRM);	RegWord(ModRM)=src; 	CLK(1); } OP_EPILOGUE;
+         OP( 0x88, i_mov_br8   ) { GetModRM; uint8 src = RegByte(ModRM); 	PutRMByte(ModRM,src); 	CLK(1);	} OP_EPILOGUE;
+         OP( 0x89, i_mov_wr16  ) { GetModRM; uint16 src = RegWord(ModRM); 	PutRMWord(ModRM,src);	CLK(1); } OP_EPILOGUE;
+         OP( 0x8a, i_mov_r8b   ) { GetModRM; uint8 src = GetRMByte(ModRM);	RegByte(ModRM)=src;	CLK(1);	} OP_EPILOGUE;
+         OP( 0x8b, i_mov_r16w  ) { GetModRM; uint16 src = GetRMWord(ModRM);	RegWord(ModRM)=src; 	CLK(1); } OP_EPILOGUE;
          OP( 0x8c, i_mov_wsreg ) { GetModRM; PutRMWord(ModRM,I.sregs[(ModRM & 0x38) >> 3]);		CLK(1);	} OP_EPILOGUE;
-         OP( 0x8d, i_lea       ) { uint16 ModRM = FETCH; if(ModRM >= 192) { } else { (void)(*GetEA[ModRM])(); } RegWord(ModRM)=EO; 	CLK(1);	} OP_EPILOGUE;
-         OP( 0x8e, i_mov_sregw ) { uint16 src; GetModRM; src = GetRMWord(ModRM); CLKM(3,2);
+         OP( 0x8d, i_lea       ) { uint16 ModRM = FETCH; if(ModRM < 192) { (void)(*GetEA[ModRM])(); } RegWord(ModRM)=EO; 	CLK(1);	} OP_EPILOGUE;
+         OP( 0x8e, i_mov_sregw ) { GetModRM; uint16 src = GetRMWord(ModRM); CLKM(3,2);
             switch (ModRM & 0x38) {
                case 0x00: I.sregs[DS1] = src; break; /* mov ds1,ew */
                case 0x08: I.sregs[PS] = src; break; /* mov cs,ew */
@@ -1095,9 +1108,10 @@ static void DoOP(uint8 opcode)
          } OP_EPILOGUE;
 
          OP( 0xc1, i_rotshft_wd8 ) {
-            uint32 src, dst;  uint8 c;
-            GetModRM; src = (unsigned)GetRMWord(ModRM); dst=src;
-            c=FETCH;
+            GetModRM;
+            uint32 src = (unsigned)GetRMWord(ModRM);
+            uint32 dst = src;
+            uint8 c    = FETCH;
             c&=0x1f;
             CLKM(5,3);
             if (c) switch (ModRM & 0x38) {
@@ -1388,7 +1402,6 @@ static void DoOP(uint8 opcode)
 
 /*****************************************************************************/
 
-
 unsigned v30mz_get_reg(int regnum)
 {
 	switch( regnum )
@@ -1424,8 +1437,6 @@ unsigned v30mz_get_reg(int regnum)
    }
 	return 0;
 }
-
-void nec_set_irq_line(int irqline, int state);
 
 void v30mz_set_reg(int regnum, unsigned val)
 {

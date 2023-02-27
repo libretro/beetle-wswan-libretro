@@ -332,15 +332,15 @@ void WSwan_MemoryInit(bool lang, bool IsWSC, uint32 ssize, bool SkipSaveLoad)
 {
    const uint16 byear = MDFN_GetSettingUI("wswan.byear");
    const uint8 bmonth = MDFN_GetSettingUI("wswan.bmonth");
-   const uint8 bday = MDFN_GetSettingUI("wswan.bday");
-   const uint8 sex = MDFN_GetSettingI("wswan.sex");
-   const uint8 blood = MDFN_GetSettingI("wswan.blood");
+   const uint8 bday   = MDFN_GetSettingUI("wswan.bday");
+   const uint8 sex    = MDFN_GetSettingI("wswan.sex");
+   const uint8 blood  = MDFN_GetSettingI("wswan.blood");
 
-   language = lang;
-   SkipSL = SkipSaveLoad;
+   language           = lang;
+   SkipSL             = SkipSaveLoad;
 
-   wsRAMSize = 65536;
-   sram_size = ssize;
+   wsRAMSize          = 65536;
+   sram_size          = ssize;
 
    // WSwan_EEPROMInit() will also clear wsEEPROM
    WSwan_EEPROMInit(MDFN_GetSettingS("wswan.name"), byear, bmonth, bday, sex, blood);

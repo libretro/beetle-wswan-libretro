@@ -60,25 +60,22 @@ static uint32 last_ts;
 
 #define MK_SAMPLE_CACHE	\
    {    \
-    int sample; \
-    sample = (((wsRAM[((SampleRAMPos << 6) + (sample_pos[ch] >> 1) + (ch << 4)) ] >> ((sample_pos[ch] & 1) ? 4 : 0)) & 0x0F));    \
+    int sample = (((wsRAM[((SampleRAMPos << 6) + (sample_pos[ch] >> 1) + (ch << 4)) ] >> ((sample_pos[ch] & 1) ? 4 : 0)) & 0x0F));    \
     sample_cache[ch][0] = sample * ((volume[ch] >> 4) & 0x0F);        \
     sample_cache[ch][1] = sample * ((volume[ch] >> 0) & 0x0F);        \
    }
 
 #define MK_SAMPLE_CACHE_NOISE	\
    {    \
-    int sample; \
-    sample = ((nreg & 1) ? 0xF : 0x0);	\
+    int sample = ((nreg & 1) ? 0xF : 0x0);	\
     sample_cache[ch][0] = sample * ((volume[ch] >> 4) & 0x0F);        \
     sample_cache[ch][1] = sample * ((volume[ch] >> 0) & 0x0F);        \
    }
 
 #define MK_SAMPLE_CACHE_VOICE \
    {    \
-    int sample, half; \
-    sample = volume[ch]; \
-    half = sample >> 1; \
+    int sample = volume[ch]; \
+    int half = sample >> 1; \
     sample_cache[ch][0] = (voice_volume & 4) ? sample : (voice_volume & 8) ? half : 0; \
     sample_cache[ch][1] = (voice_volume & 1) ? sample : (voice_volume & 2) ? half : 0; \
    }
@@ -112,9 +109,9 @@ void WSwan_SoundUpdate(void)
       }
       else if(ch == 2 && (control & 0x40) && sweep_value) /* Sweep */
       {
-         uint32 tmp_pt = 2048 - period[ch];
+         uint32 tmp_pt         = 2048 - period[ch];
          uint32 meow_timestamp = v30mz_timestamp - run_time;
-         uint32 tmp_run_time = run_time;
+         uint32 tmp_run_time   = run_time;
 
          while(tmp_run_time)
          {
@@ -235,9 +232,7 @@ void WSwan_SoundWrite(uint32 A, uint8 V)
          period[ch] = (period[ch] & 0x0700) | ((V & 0xFF) << 0);
    }
    else if(A >= 0x88 && A <= 0x8B)
-   {
       volume[A - 0x88] = V;
-   }
    else if(A == 0x8C)
       sweep_value = V;
    else if(A == 0x8D)
@@ -294,8 +289,7 @@ uint8 WSwan_SoundRead(uint32 A)
 
       if(A & 1)
          return(period[ch] >> 8);
-      else
-         return(period[ch]);
+      return(period[ch]);
    }
    else if(A >= 0x88 && A <= 0x8B)
       return(volume[A - 0x88]);
@@ -316,7 +310,7 @@ uint8 WSwan_SoundRead(uint32 A)
          break;
    }
 
-   return(0);
+   return 0;
 }
 
 int32 WSwan_SoundFlush(int16 **SoundBuf, int32 *SoundBufSize)
@@ -404,49 +398,49 @@ bool WSwan_SetSoundRate(uint32 rate)
 
 int WSwan_SoundStateAction(StateMem *sm, int load, int data_only)
 {
- SFORMAT StateRegs[] =
- {
-  SFARRAY16(period, 4),
-  SFARRAY(volume, 4),
-  SFVAR(voice_volume),
-  SFVAR(sweep_step),
-  SFVAR(sweep_value),
-  SFVAR(noise_control),
-  SFVAR(control),
-  SFVAR(output_control),
-  SFVAR(HVoiceCtrl),
-  SFVAR(HVoiceChanCtrl),
+   SFORMAT StateRegs[] =
+   {
+      SFARRAY16(period, 4),
+      SFARRAY(volume, 4),
+      SFVAR(voice_volume),
+      SFVAR(sweep_step),
+      SFVAR(sweep_value),
+      SFVAR(noise_control),
+      SFVAR(control),
+      SFVAR(output_control),
+      SFVAR(HVoiceCtrl),
+      SFVAR(HVoiceChanCtrl),
 
-  SFVAR(sweep_8192_divider),
-  SFVAR(sweep_counter),
-  SFVAR(SampleRAMPos),
-  SFARRAY32(period_counter, 4),
-  SFARRAY(sample_pos, 4),
-  SFVAR(nreg),
-  SFEND
- };
+      SFVAR(sweep_8192_divider),
+      SFVAR(sweep_counter),
+      SFVAR(SampleRAMPos),
+      SFARRAY32(period_counter, 4),
+      SFARRAY(sample_pos, 4),
+      SFVAR(nreg),
+      SFEND
+   };
 
- if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "PSG", false))
-  return(0);
+   if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "PSG", false))
+      return 0;
 
- if(load)
- {
-  unsigned ch;
-  if(sweep_8192_divider < 1)
-   sweep_8192_divider = 1;
+   if(load)
+   {
+      unsigned ch;
+      if(sweep_8192_divider < 1)
+         sweep_8192_divider = 1;
 
-  for(ch = 0; ch < 4; ch++)
-  {
-   period[ch] &= 0x7FF;
+      for(ch = 0; ch < 4; ch++)
+      {
+         period[ch] &= 0x7FF;
 
-   if(period_counter[ch] < 1)
-    period_counter[ch] = 1;
+         if(period_counter[ch] < 1)
+            period_counter[ch] = 1;
 
-   sample_pos[ch] &= 0x1F;
-  }
- }
+         sample_pos[ch] &= 0x1F;
+      }
+   }
 
- return(1);
+   return 1;
 }
 
 void WSwan_SoundReset(void)

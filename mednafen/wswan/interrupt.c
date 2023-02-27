@@ -14,17 +14,16 @@ static uint32 IVector_Cache;
 static void RecalcInterrupt(void)
 {
    unsigned i;
-
-   IOn_Cache = false;
-   IOn_Which = 0;
+   IOn_Cache     = false;
+   IOn_Which     = 0;
    IVector_Cache = 0;
 
    for(i = 0; i < 8; i++)
    {
       if(IStatus & IEnable & (1 << i))
       {
-         IOn_Cache = true;
-         IOn_Which = i;
+         IOn_Cache     = true;
+         IOn_Which     = i;
          IVector_Cache = (IVectorBase + i) * 4;
          break;
       }
@@ -44,10 +43,13 @@ void WSwan_InterruptWrite(uint32 A, uint8 V)
    switch(A)
    {
       case 0xB0:
-         IVectorBase = V; RecalcInterrupt();
+         IVectorBase = V;
+         RecalcInterrupt();
          break;
       case 0xB2:
-         IEnable = V; IStatus &= IEnable; RecalcInterrupt();
+         IEnable = V;
+         IStatus &= IEnable;
+         RecalcInterrupt();
          break;
       case 0xB6:
          IStatus &= ~V;
@@ -96,10 +98,10 @@ int WSwan_InterruptStateAction(StateMem *sm, int load, int data_only)
    };
 
    if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "INTR", false))
-      return(0);
+      return 0;
 
    if(load)
       RecalcInterrupt();
 
-   return(1);
+   return 1;
 }

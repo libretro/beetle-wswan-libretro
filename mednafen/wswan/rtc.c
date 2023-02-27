@@ -58,7 +58,7 @@ uint8 WSwan_RTCRead(uint32 A)
             return Data | 0x80;
 
          long_time = CurrentTime;
-         newtime = gmtime( &long_time );
+         newtime   = gmtime( &long_time );
 
          switch(wsCA15)
          {
@@ -94,9 +94,9 @@ void WSwan_RTCReset(void)
 {
    time_t happy_time = time(NULL);
 
-   CurrentTime = mktime(localtime(&happy_time));
+   CurrentTime       = mktime(localtime(&happy_time));
    ClockCycleCounter = 0;
-   wsCA15 = 0;
+   wsCA15            = 0;
 }
 
 void WSwan_RTCClock(uint32 cycles)
@@ -122,7 +122,6 @@ int WSwan_RTCStateAction(StateMem *sm, int load, int data_only)
    };
 
    if(!MDFNSS_StateAction(sm, load, data_only, StateRegs, "RTC", false))
-      return(0);
-
-   return(1);
+      return 0;
+   return 1;
 }
