@@ -1003,7 +1003,7 @@ struct retro_core_options_v2 options_chs = {
 #define OPTION_VAL_GAME_COM_CHT "Game.com 主機"
 #define OPTION_VAL_GAMEKING_CHT "GameKing 主機"
 #define OPTION_VAL_GAME_MASTER_CHT "Game Master 主機"
-#define OPTION_VAL_GOLDEN_WILD_CHT "荒野金"
+#define OPTION_VAL_GOLDEN_WILD_CHT "曠野金"
 #define OPTION_VAL_GREENSCALE_CHT "綠色階"
 #define OPTION_VAL_HOKAGE_ORANGE_CHT "火影橘"
 #define OPTION_VAL_LABO_FAWN_CHT "瓦楞棕"
