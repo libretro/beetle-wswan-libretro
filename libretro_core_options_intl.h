@@ -6382,6 +6382,241 @@ struct retro_core_options_v2 options_no = {
    option_defs_no
 };
 
+/* RETRO_LANGUAGE_OR */
+
+#define WSWAN_ROTATE_DISPLAY_LABEL_OR NULL
+#define WSWAN_ROTATE_DISPLAY_INFO_0_OR NULL
+#define OPTION_VAL_MANUAL_OR NULL
+#define OPTION_VAL_LANDSCAPE_OR NULL
+#define OPTION_VAL_PORTRAIT_OR NULL
+#define WSWAN_ROTATE_KEYMAP_LABEL_OR NULL
+#define WSWAN_ROTATE_KEYMAP_INFO_0_OR NULL
+#define OPTION_VAL_AUTO_OR NULL
+#define WSWAN_MONO_PALETTE_LABEL_OR NULL
+#define WSWAN_MONO_PALETTE_INFO_0_OR NULL
+#define OPTION_VAL_DEFAULT_OR NULL
+#define OPTION_VAL_WONDERSWAN_OR NULL
+#define OPTION_VAL_WONDESWAN_COLOR_OR NULL
+#define OPTION_VAL_SWANCRYSTAL_OR NULL
+#define OPTION_VAL_GB_DMG_OR NULL
+#define OPTION_VAL_GB_POCKET_OR NULL
+#define OPTION_VAL_GB_LIGHT_OR NULL
+#define OPTION_VAL_BLOSSOM_PINK_OR NULL
+#define OPTION_VAL_BUBBLES_BLUE_OR NULL
+#define OPTION_VAL_BUTTERCUP_GREEN_OR NULL
+#define OPTION_VAL_DIGIVICE_OR NULL
+#define OPTION_VAL_GAME_COM_OR NULL
+#define OPTION_VAL_GAMEKING_OR NULL
+#define OPTION_VAL_GAME_MASTER_OR NULL
+#define OPTION_VAL_GOLDEN_WILD_OR NULL
+#define OPTION_VAL_GREENSCALE_OR NULL
+#define OPTION_VAL_HOKAGE_ORANGE_OR NULL
+#define OPTION_VAL_LABO_FAWN_OR NULL
+#define OPTION_VAL_LEGENDARY_SUPER_SAIYAN_OR NULL
+#define OPTION_VAL_MICROVISION_OR NULL
+#define OPTION_VAL_MILLION_LIVE_GOLD_OR NULL
+#define OPTION_VAL_ODYSSEY_GOLD_OR NULL
+#define OPTION_VAL_SHINY_SKY_BLUE_OR NULL
+#define OPTION_VAL_SLIME_BLUE_OR NULL
+#define OPTION_VAL_TI_83_OR NULL
+#define OPTION_VAL_TRAVEL_WOOD_OR NULL
+#define OPTION_VAL_VIRTUAL_BOY_OR NULL
+#define WSWAN_GFX_COLORS_LABEL_OR NULL
+#define WSWAN_GFX_COLORS_INFO_0_OR NULL
+#define OPTION_VAL_16BIT_OR NULL
+#define OPTION_VAL_24BIT_OR NULL
+#define WSWAN_FRAMESKIP_LABEL_OR NULL
+#define WSWAN_FRAMESKIP_INFO_0_OR NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_LABEL_OR NULL
+#define WSWAN_FRAMESKIP_THRESHOLD_INFO_0_OR NULL
+#define WSWAN_60HZ_MODE_LABEL_OR NULL
+#define WSWAN_60HZ_MODE_INFO_0_OR NULL
+#define WSWAN_SOUND_SAMPLE_RATE_LABEL_OR NULL
+#define WSWAN_SOUND_SAMPLE_RATE_INFO_0_OR NULL
+#define WSWAN_SOUND_LOW_PASS_LABEL_OR NULL
+#define WSWAN_SOUND_LOW_PASS_INFO_0_OR NULL
+
+struct retro_core_option_v2_category option_cats_or[] = {
+   { NULL, NULL, NULL },
+};
+struct retro_core_option_v2_definition option_defs_or[] = {
+   {
+      "wswan_rotate_display",
+      WSWAN_ROTATE_DISPLAY_LABEL_OR,
+      NULL,
+      WSWAN_ROTATE_DISPLAY_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "manual",    OPTION_VAL_MANUAL_OR },
+         { "landscape", OPTION_VAL_LANDSCAPE_OR },
+         { "portrait",  OPTION_VAL_PORTRAIT_OR },
+         { NULL, NULL },
+      },
+      "manual",
+   },
+   {
+      "wswan_rotate_keymap",
+      WSWAN_ROTATE_KEYMAP_LABEL_OR,
+      NULL,
+      WSWAN_ROTATE_KEYMAP_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "auto",     OPTION_VAL_AUTO_OR },
+         { "disabled", OPTION_VAL_LANDSCAPE_OR },
+         { "enabled",  OPTION_VAL_PORTRAIT_OR },
+         { NULL, NULL},
+      },
+      "auto",
+   },
+   {
+      "wswan_mono_palette",
+      WSWAN_MONO_PALETTE_LABEL_OR,
+      NULL,
+      WSWAN_MONO_PALETTE_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "default",                OPTION_VAL_DEFAULT_OR },
+         { "wonderswan",             OPTION_VAL_WONDERSWAN_OR },
+         { "wondeswan_color",        OPTION_VAL_WONDESWAN_COLOR_OR },
+         { "swancrystal",            OPTION_VAL_SWANCRYSTAL_OR },
+         { "gb_dmg",                 OPTION_VAL_GB_DMG_OR },
+         { "gb_pocket",              OPTION_VAL_GB_POCKET_OR },
+         { "gb_light",               OPTION_VAL_GB_LIGHT_OR },
+         { "blossom_pink",           OPTION_VAL_BLOSSOM_PINK_OR },
+         { "bubbles_blue",           OPTION_VAL_BUBBLES_BLUE_OR },
+         { "buttercup_green",        OPTION_VAL_BUTTERCUP_GREEN_OR },
+         { "digivice",               OPTION_VAL_DIGIVICE_OR },
+         { "game_com",               OPTION_VAL_GAME_COM_OR },
+         { "gameking",               OPTION_VAL_GAMEKING_OR },
+         { "game_master",            OPTION_VAL_GAME_MASTER_OR },
+         { "golden_wild",            OPTION_VAL_GOLDEN_WILD_OR },
+         { "greenscale",             OPTION_VAL_GREENSCALE_OR },
+         { "hokage_orange",          OPTION_VAL_HOKAGE_ORANGE_OR },
+         { "labo_fawn",              OPTION_VAL_LABO_FAWN_OR },
+         { "legendary_super_saiyan", OPTION_VAL_LEGENDARY_SUPER_SAIYAN_OR },
+         { "microvision",            OPTION_VAL_MICROVISION_OR },
+         { "million_live_gold",      OPTION_VAL_MILLION_LIVE_GOLD_OR },
+         { "odyssey_gold",           OPTION_VAL_ODYSSEY_GOLD_OR },
+         { "shiny_sky_blue",         OPTION_VAL_SHINY_SKY_BLUE_OR },
+         { "slime_blue",             OPTION_VAL_SLIME_BLUE_OR },
+         { "ti_83",                  OPTION_VAL_TI_83_OR },
+         { "travel_wood",            OPTION_VAL_TRAVEL_WOOD_OR },
+         { "virtual_boy",            OPTION_VAL_VIRTUAL_BOY_OR },
+         { NULL, NULL },
+      },
+      "default"
+   },
+   {
+      "wswan_gfx_colors",
+      WSWAN_GFX_COLORS_LABEL_OR,
+      NULL,
+      WSWAN_GFX_COLORS_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "16bit", OPTION_VAL_16BIT_OR },
+         { "24bit", OPTION_VAL_24BIT_OR },
+         { NULL, NULL },
+      },
+      "16bit"
+   },
+   {
+      "wswan_frameskip",
+      WSWAN_FRAMESKIP_LABEL_OR,
+      NULL,
+      WSWAN_FRAMESKIP_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "auto",     OPTION_VAL_AUTO_OR },
+         { "manual",   OPTION_VAL_MANUAL_OR },
+         { NULL, NULL },
+      },
+      "disabled"
+   },
+   {
+      "wswan_frameskip_threshold",
+      WSWAN_FRAMESKIP_THRESHOLD_LABEL_OR,
+      NULL,
+      WSWAN_FRAMESKIP_THRESHOLD_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "15", NULL },
+         { "18", NULL },
+         { "21", NULL },
+         { "24", NULL },
+         { "27", NULL },
+         { "30", NULL },
+         { "33", NULL },
+         { "36", NULL },
+         { "39", NULL },
+         { "42", NULL },
+         { "45", NULL },
+         { "48", NULL },
+         { "51", NULL },
+         { "54", NULL },
+         { "57", NULL },
+         { "60", NULL },
+         { NULL, NULL },
+      },
+      "33"
+   },
+   {
+      "wswan_60hz_mode",
+      WSWAN_60HZ_MODE_LABEL_OR,
+      NULL,
+      WSWAN_60HZ_MODE_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "enabled",
+   },
+   {
+      "wswan_sound_sample_rate",
+      WSWAN_SOUND_SAMPLE_RATE_LABEL_OR,
+      NULL,
+      WSWAN_SOUND_SAMPLE_RATE_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "11025",  NULL },
+         { "22050",  NULL },
+         { "44100",  NULL },
+         { "48000",  NULL },
+         { NULL, NULL },
+      },
+      "44100",
+   },
+   {
+      "wswan_sound_low_pass",
+      WSWAN_SOUND_LOW_PASS_LABEL_OR,
+      NULL,
+      WSWAN_SOUND_LOW_PASS_INFO_0_OR,
+      NULL,
+      NULL,
+      {
+         { "disabled", NULL },
+         { "enabled",  NULL },
+         { NULL, NULL },
+      },
+      "disabled",
+   },
+   { NULL, NULL, NULL, NULL, NULL, NULL, {{0}}, NULL },
+};
+struct retro_core_options_v2 options_or = {
+   option_cats_or,
+   option_defs_or
+};
+
 /* RETRO_LANGUAGE_PL */
 
 #define WSWAN_ROTATE_DISPLAY_LABEL_PL "Obrót ekranu"
