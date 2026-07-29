@@ -57,7 +57,7 @@ struct retro_core_option_v2_category option_cats_us[] = {
 struct retro_core_option_v2_definition option_defs_us[] = {
    {
       "wswan_language",
-      "Language (Restart)",
+      "Language (Restart Required)",
       NULL,
       "Set the console language stored in the internal EEPROM. The only game known to check it is 'Digimon Tamers - Battle Spirit'. Takes effect when content is loaded.",
       NULL,
@@ -71,7 +71,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "wswan_name_source",
-      "Owner Name Source (Restart)",
+      "Owner Name Source (Restart Required)",
       NULL,
       "Choose the owner name written into the internal EEPROM. Several games greet the player with it. 'Frontend Username' uses the name configured in the frontend when one is available. Takes effect when content is loaded.",
       NULL,
@@ -85,7 +85,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "wswan_birth_year",
-      "Owner Birth Year (Restart)",
+      "Owner Birth Year (Restart Required)",
       NULL,
       "Set the owner birth year stored in the internal EEPROM. Some games trigger events on the owner's birthday. Takes effect when content is loaded.",
       NULL,
@@ -207,7 +207,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "wswan_birth_month",
-      "Owner Birth Month (Restart)",
+      "Owner Birth Month (Restart Required)",
       NULL,
       "Set the owner birth month stored in the internal EEPROM. Takes effect when content is loaded.",
       NULL,
@@ -231,7 +231,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "wswan_birth_day",
-      "Owner Birth Day (Restart)",
+      "Owner Birth Day (Restart Required)",
       NULL,
       "Set the owner birth day stored in the internal EEPROM. Takes effect when content is loaded.",
       NULL,
@@ -274,7 +274,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "wswan_sex",
-      "Owner Sex (Restart)",
+      "Owner Sex (Restart Required)",
       NULL,
       "Set the owner sex stored in the internal EEPROM. Takes effect when content is loaded.",
       NULL,
@@ -288,7 +288,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
    },
    {
       "wswan_blood",
-      "Owner Blood Type (Restart)",
+      "Owner Blood Type (Restart Required)",
       NULL,
       "Set the owner blood type stored in the internal EEPROM. Takes effect when content is loaded.",
       NULL,
