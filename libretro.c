@@ -709,9 +709,16 @@ int StateAction(StateMem *sm, int load, int data_only)
          lrav_60hz_pos = retro_60hz_audio.samples_buf_pos;
          if(lrav_60hz_pos > 8192)
             lrav_60hz_pos = 8192;
+         if(lrav_60hz_pos < 0)
+            lrav_60hz_pos = 0;
          if(lrav_60hz_pos > 0)
             memcpy(lrav_60hz_stage, retro_60hz_audio.samples_buf,
                   lrav_60hz_pos * sizeof(int16_t));
+         /* Zero the unused tail so the saved bytes depend only on the
+          * emulation state (left-over samples made identical states
+          * serialize differently, e.g. netplay CRC mismatches). */
+         memset(lrav_60hz_stage + lrav_60hz_pos, 0,
+               (8192 - lrav_60hz_pos) * sizeof(int16_t));
       }
       else
       {

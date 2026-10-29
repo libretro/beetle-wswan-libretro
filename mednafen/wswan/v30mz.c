@@ -1479,10 +1479,17 @@ void v30mz_execute(int cycles)
 
    while(v30mz_ICount > 0) 
    {
+      int32 before = v30mz_ICount;
 
       WSwan_InterruptCheck();
 
       DoOP(FETCHOP);
+
+      /* Guarantee forward progress: a run of opcodes that consume no
+       * cycles (e.g. the undefined FF /7 form after a corrupted stack)
+       * would otherwise keep this loop spinning forever. */
+      if(v30mz_ICount >= before)
+         CLK(1);
    }
 
 }
